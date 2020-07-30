@@ -4,6 +4,7 @@ import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
 import neointernship.chess.game.gameplay.kingstate.update.KingIsAttackedComputation;
 import neointernship.chess.game.gameplay.moveaction.commands.allow.AttackCommand;
+import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.figure.piece.King;
 import neointernship.chess.game.model.figure.piece.Pawn;
@@ -44,9 +45,11 @@ public class RealBasicPatterns implements IRealBasicPatterns {
             IStoryGame newStoryGame = new StoryGame((StoryGame) storyGame);
             IPossibleActionList newPossibleActionList = new PossibleActionList(board, newMediator, newStoryGame);
 
+            final Color colorFigure = figure.getColor();
+            final Color colorOpponent = Color.swapColor(colorFigure);
             // если это рокировка
             if (isCastling(figure, startField, finalField)) {
-                if (isCorrectCastling(figure, startField, finalField, newMediator, newPossibleActionList)) {
+                if (isCorrectCastling(colorOpponent, startField, finalField, newMediator, newPossibleActionList)) {
                     realList.add(finalField);
                 }
             } else {
@@ -60,11 +63,12 @@ public class RealBasicPatterns implements IRealBasicPatterns {
                     newMediator.deleteConnection(fieldAttackPawn);
 
                     newStoryGame.update(mediator.getFigure(startField));
-                    newPossibleActionList.updatePotentialLists();
+
+                    newPossibleActionList.updatePotentialLists(colorOpponent);
 
                     kingIsAttackedComputation = new KingIsAttackedComputation(newPossibleActionList, newMediator);
 
-                    if (!kingIsAttackedComputation.kingIsAttacked(figure.getColor())) {
+                    if (!kingIsAttackedComputation.kingIsAttacked(colorFigure)) {
                         realList.add(finalField);
                     }
 
@@ -78,11 +82,11 @@ public class RealBasicPatterns implements IRealBasicPatterns {
                     }
                     newMediator.addNewConnection(finalField, figure);
                     newStoryGame.update(mediator.getFigure(startField));
-                    newPossibleActionList.updatePotentialLists();
+                    newPossibleActionList.updatePotentialLists(colorOpponent);
 
                     kingIsAttackedComputation = new KingIsAttackedComputation(newPossibleActionList, newMediator);
 
-                    if (!kingIsAttackedComputation.kingIsAttacked(figure.getColor())) {
+                    if (!kingIsAttackedComputation.kingIsAttacked(colorFigure)) {
                         realList.add(finalField);
                     }
                 }
@@ -96,12 +100,12 @@ public class RealBasicPatterns implements IRealBasicPatterns {
                 Math.abs(startField.getYCoord() - finishField.getYCoord()) == 2;
     }
 
-    private boolean isCorrectCastling(final Figure figure,
+    private boolean isCorrectCastling(final Color colorOpponent,
                                       final IField startField,
                                       final IField finishField,
                                       final IMediator mediator,
                                       final IPossibleActionList possibleActionList) {
-        possibleActionList.updatePotentialLists();
+        possibleActionList.updatePotentialLists(colorOpponent);
         Collection<IField> forCastling = new ArrayList<>();
 
         int dif = startField.getYCoord() < finishField.getYCoord() ? 1 : -1;
@@ -112,7 +116,7 @@ public class RealBasicPatterns implements IRealBasicPatterns {
 
         kingIsAttackedComputation = new KingIsAttackedComputation(possibleActionList, mediator);
         for (IField tempField : forCastling) {
-            if (kingIsAttackedComputation.fieldIsAttacked(tempField, figure.getColor())) return false;
+            if (kingIsAttackedComputation.fieldIsAttacked(tempField, Color.swapColor(colorOpponent))) return false;
         }
         return true;
     }
