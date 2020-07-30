@@ -9,6 +9,7 @@ import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
 import neointernship.chess.game.story.StoryGame;
 import neointernship.web.client.communication.message.ChessCodesReaction;
+import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;
 
 public abstract class APlayer {
@@ -53,4 +54,8 @@ public abstract class APlayer {
     public IMediator getMediator() {
         return mediator;
     }
+
+    public abstract char getTransformation();
+
+    public abstract ClientCodes getHandShakeAnswer();
 }

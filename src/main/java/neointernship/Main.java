@@ -14,7 +14,10 @@ public class Main {
         ArrayList<ControllerBot> controllerBots = new ArrayList<>();
         ArrayList<Thread> threads = new ArrayList<>();
 
-        /*for (int i = 0; i < countBot; i++) {
+        ControllerBot bot1 = new ControllerBot(0);
+        ControllerBot bot2 = new ControllerBot(1);
+
+       /* for (int i = 0; i < countBot; i++) {
             threads.add(new Thread(new ControllerBot(i)));
         }
         for (Thread thread : threads){
@@ -25,11 +28,17 @@ public class Main {
         }*/
 
         for (int i = 0; i < countBot; i++) {
-            controllerBots.add(new ControllerBot(i));
+            controllerBots.add(new ControllerBot(i % 2));
         }
         for(ControllerBot controllerBot : controllerBots){
             threads.add(new Thread(controllerBot));
         }
+
+        /*for(int i = 0; i < countBot; i += 2){
+            threads.add(new Thread(bot1));
+            threads.add(new Thread(bot2));
+        }*/
+
         for (Thread thread : threads){
             thread.start();
         }

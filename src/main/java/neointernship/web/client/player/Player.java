@@ -5,17 +5,21 @@ import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
+import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Player extends APlayer {
     private ConsoleBoardWriter consoleBoardWriter;
+    final Scanner scanner;
 
     public Player(final Color color, final String name) {
         super(color, name);
+        scanner = new Scanner(System.in);
     }
 
     @Override
@@ -28,32 +32,12 @@ public class Player extends APlayer {
 
     @Override
     public String getAnswer() {
-        final Scanner scanner = new Scanner(System.in);
-        String[] strArr;
         String input;
-
-        boolean flag = false;
-
-        final List<Character> integers = Arrays.asList('1', '2', '3', '4', '5', '6', '7', '8');
-        final List<Character> chars = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
 
         do {
             System.out.print("Ваш ход: ");
-            input = scanner.nextLine();
-
-            if (input.trim().toLowerCase().equals("gg")) {
-                return input;
-            }
-
-            try {
-                if (input.length() != 5) throw new Exception();
-                strArr = input.split("-");
-                if (!chars.contains(strArr[0].charAt(0)) || !chars.contains(strArr[1].charAt(0))) throw new Exception();
-                if (!integers.contains(strArr[0].charAt(1)) || !integers.contains(strArr[1].charAt(1))) throw new Exception();
-                flag = true;
-            } catch (final Exception ignore) { }
-        } while (!flag);
-
+            input = scanner.nextLine().trim().toLowerCase();
+        } while (!Pattern.matches("[a-h]+[1-8]+[-|–|—]+[a-h]+[1-8]", input) && !input.equals("gg"));
         return input;
     }
 
@@ -63,4 +47,36 @@ public class Player extends APlayer {
 
         consoleBoardWriter.printBoard();
     }
+
+    @Override
+    public char getTransformation() {
+        final List<Character> figureList = Arrays.asList('Q', 'N', 'B', 'R');
+        char figure;
+
+        do {
+            System.out.println("В какую фигуру обратить пешку:\nQ - ферзь\nB - слон\nN - конь\nR - ладья");
+            final String string = scanner.nextLine().trim().toUpperCase();
+            figure = string.charAt(0);
+        } while (!figureList.contains(figure));
+
+        return figure;
+    }
+
+    @Override
+    public ClientCodes getHandShakeAnswer() {
+        String answer = "";
+
+        for (int i = 0; i < 3 && !answer.equals("да") && !answer.equals("нет"); i++) {
+            System.out.println("Оппонент найден.\nВы готовы? (да/нет):");
+            answer = scanner.nextLine().trim().toLowerCase();
+        }
+
+        if (answer.equals("да")) {
+            return ClientCodes.YES;
+        }else {
+            return ClientCodes.NO;
+        }
+    }
+
+
 }
