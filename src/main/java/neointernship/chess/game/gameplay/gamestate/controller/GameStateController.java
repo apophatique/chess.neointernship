@@ -16,6 +16,7 @@ import neointernship.chess.game.story.IStoryGame;
 
 public class GameStateController implements IGameStateController {
     private IGameState currentState;
+    private final IPossibleActionList possibleActionList;
 
     private final FiguresHaveMovesComputation figuresHaveMovesComputation;
     private final GameStateDefineLogic gameStateDefineLogic;
@@ -26,6 +27,7 @@ public class GameStateController implements IGameStateController {
     public GameStateController(final IPossibleActionList possibleActionList,
                                final IMediator mediator,
                                final IStoryGame storyGame) {
+        this.possibleActionList = possibleActionList;
 
         currentState = new GameState(EnumGameState.ALIVE, Color.BOTH);
         figuresHaveMovesComputation = new FiguresHaveMovesComputation(possibleActionList, mediator);
@@ -48,6 +50,8 @@ public class GameStateController implements IGameStateController {
 
     @Override
     public void update(Color color) {
+        possibleActionList.updateRealLists();
+
         kingStateController.update(color);
 
         final KingState kingState = kingStateController.getKingState(color);

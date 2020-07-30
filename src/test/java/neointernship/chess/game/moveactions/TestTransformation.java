@@ -27,7 +27,7 @@ public class TestTransformation extends TestAllowCommand {
 
         IAnswer answer = new Answer(1, 0, 0, 0, '0');
 
-        TurnStatus result = allowMoveCommand.execute(figureW.getColor(), answer);
+        TurnStatus result = allowMoveCommand.execute(answer);
 
         assertEquals(TurnStatus.TRANSFORMATION_BEFORE, result);
 
@@ -53,7 +53,7 @@ public class TestTransformation extends TestAllowCommand {
 
         IAnswer answer = new Answer(1, 0, 0, 1, '0');
 
-        TurnStatus result = allowMoveCommand.execute(figureW.getColor(), answer);
+        TurnStatus result = allowMoveCommand.execute(answer);
 
         assertEquals(TurnStatus.TRANSFORMATION_BEFORE, result);
 
@@ -75,7 +75,7 @@ public class TestTransformation extends TestAllowCommand {
 
         IAnswer answer = new Answer(0, 0, 0, 0, 'N');
 
-        TurnStatus result = allowMoveCommand.execute(figureW.getColor(), answer);
+        TurnStatus result = allowMoveCommand.execute(answer);
 
         assertEquals(TurnStatus.TRANSFORMATION_AFTER, result);
 

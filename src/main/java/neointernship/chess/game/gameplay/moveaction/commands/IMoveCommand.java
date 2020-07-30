@@ -5,5 +5,5 @@ import neointernship.chess.game.model.enums.Color;
 import neointernship.web.client.communication.message.TurnStatus;
 
 public interface IMoveCommand {
-    TurnStatus execute(final Color color, final IAnswer answer);
+    TurnStatus execute(final IAnswer answer);
 }

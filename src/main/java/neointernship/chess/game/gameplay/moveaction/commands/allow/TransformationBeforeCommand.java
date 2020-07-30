@@ -12,6 +12,7 @@ public class TransformationBeforeCommand extends AbstractCommand implements IAll
 
     public TransformationBeforeCommand(final IBoard board, final IMediator mediator) {
         super(board, mediator);
+        turnStatus = TurnStatus.TRANSFORMATION_BEFORE;
     }
 
     @Override
@@ -30,18 +31,11 @@ public class TransformationBeforeCommand extends AbstractCommand implements IAll
     }
 
     @Override
-    public boolean check(IAnswer answer) {
-        final IField startField = board.getField(answer.getStartX(), answer.getStartY());
+    public boolean check(final IField startField,final IField finishField) {
         final Figure startFigure = mediator.getFigure(startField);
-        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());
 
         return startFigure.getClass() == Pawn.class && (
-                finalField.getXCoord() == board.getSize() - 1 ||
-                        finalField.getXCoord() == 0);
-    }
-
-    @Override
-    public TurnStatus getTurnStatus() {
-        return TurnStatus.TRANSFORMATION_BEFORE;
+                finishField.getXCoord() == board.getSize() - 1 ||
+                        finishField.getXCoord() == 0);
     }
 }

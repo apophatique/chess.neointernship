@@ -52,22 +52,22 @@ public class AllowMoveCommand implements IMoveCommand {
 
 
     @Override
-    public TurnStatus execute(final Color color, final IAnswer answer) {
+    public TurnStatus execute(final IAnswer answer) {
         final IField startField = board.getField(answer.getStartX(), answer.getStartY());
         final Figure startFigure = mediator.getFigure(startField);
+
+        final IField finishField = board.getField(answer.getFinalX(), answer.getFinalY());
         storyGame.update(startFigure);
 
-        final IAllowCommand currentCommand = getCommand(answer);
+        final IAllowCommand currentCommand = getCommand(startField,finishField);
         currentCommand.execute(answer); // делаю ход
-
-        possibleActionList.updateRealLists();
 
         return currentCommand.getTurnStatus();
     }
 
-    private IAllowCommand getCommand(IAnswer answer) {
+    public IAllowCommand getCommand(final IField startField,final IField finishField) {
         for (IAllowCommand command : commandQueue) {
-            if (command.check(answer)) return command;
+            if (command.check(startField, finishField)) return command;
         }
         return null;
     }

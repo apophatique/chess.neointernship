@@ -12,6 +12,7 @@ public class MoveCommand extends AbstractCommand implements IAllowCommand{
 
     public MoveCommand(IBoard board, IMediator mediator) {
         super(board, mediator);
+        turnStatus = TurnStatus.MOVE;
     }
 
     @Override
@@ -26,13 +27,7 @@ public class MoveCommand extends AbstractCommand implements IAllowCommand{
     }
 
     @Override
-    public boolean check(IAnswer answer) {
+    public boolean check(final IField startField,final IField finishField) {
         return true;
     }
-
-    @Override
-    public TurnStatus getTurnStatus() {
-        return TurnStatus.MOVE;
-    }
-
 }

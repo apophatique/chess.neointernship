@@ -3,7 +3,10 @@ package neointernship.chess.game.gameplay.figureactions.patterns.real;
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
 import neointernship.chess.game.gameplay.kingstate.update.KingIsAttackedComputation;
+import neointernship.chess.game.gameplay.moveaction.commands.allow.AllowMoveCommand;
 import neointernship.chess.game.gameplay.moveaction.commands.allow.AttackCommand;
+import neointernship.chess.game.gameplay.moveaction.commands.allow.IAllowCommand;
+import neointernship.chess.game.model.answer.Answer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.figure.piece.King;
@@ -14,6 +17,7 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
 import neointernship.chess.game.story.StoryGame;
+import neointernship.web.client.communication.message.TurnStatus;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,100 +36,33 @@ public class RealBasicPatterns implements IRealBasicPatterns {
         this.storyGame = storyGame;
     }
 
-    // todo избавится от всех этих костылей
     @Override
     public Collection<IField> getRealMoveList(Figure figure, Collection<IField> potentialMoveList) {
-
+        IAllowCommand command;
         final ArrayList<IField> realList = new ArrayList<>();
         final IField startField = mediator.getField(figure);
+        final Color colorFigure = figure.getColor();
+        final Color colorOpponent = Color.swapColor(colorFigure);
 
-        for (IField finalField : potentialMoveList) {
+        for (IField finishField : potentialMoveList) {
 
             IMediator newMediator = new Mediator(mediator);
             IStoryGame newStoryGame = new StoryGame((StoryGame) storyGame);
             IPossibleActionList newPossibleActionList = new PossibleActionList(board, newMediator, newStoryGame);
 
-            final Color colorFigure = figure.getColor();
-            final Color colorOpponent = Color.swapColor(colorFigure);
-            // если это рокировка
-            if (isCastling(figure, startField, finalField)) {
-                if (isCorrectCastling(colorOpponent, startField, finalField, newMediator, newPossibleActionList)) {
-                    realList.add(finalField);
-                }
-            } else {
-                // взятие на проходе
-                if(isAisleTake(figure,startField,finalField)) {
+            AllowMoveCommand allowMoveCommand =
+                    new AllowMoveCommand(newMediator,newPossibleActionList,board,newStoryGame);
 
-                    final IField fieldAttackPawn = board.getField(startField.getXCoord(), finalField.getYCoord());
+            command = allowMoveCommand.getCommand(startField,finishField);
 
-                    newMediator.deleteConnection(startField);
-                    newMediator.addNewConnection(finalField, figure);
-                    newMediator.deleteConnection(fieldAttackPawn);
+            command.execute(new Answer(startField.getXCoord(),startField.getYCoord(),finishField.getXCoord(),finishField.getYCoord(),'Q'));
 
-                    newStoryGame.update(mediator.getFigure(startField));
+            newPossibleActionList.updatePotentialLists(colorOpponent);
 
-                    newPossibleActionList.updatePotentialLists(colorOpponent);
-
-                    kingIsAttackedComputation = new KingIsAttackedComputation(newPossibleActionList, newMediator);
-
-                    if (!kingIsAttackedComputation.kingIsAttacked(colorFigure)) {
-                        realList.add(finalField);
-                    }
-
-                }else {
-
-                    Figure finalFigure = newMediator.getFigure(finalField);
-
-                    newMediator.deleteConnection(startField);
-                    if (finalFigure != null) {
-                        newMediator.deleteConnection(finalField);
-                    }
-                    newMediator.addNewConnection(finalField, figure);
-                    newStoryGame.update(mediator.getFigure(startField));
-                    newPossibleActionList.updatePotentialLists(colorOpponent);
-
-                    kingIsAttackedComputation = new KingIsAttackedComputation(newPossibleActionList, newMediator);
-
-                    if (!kingIsAttackedComputation.kingIsAttacked(colorFigure)) {
-                        realList.add(finalField);
-                    }
-                }
+            if(command.isCorrect(colorFigure,newPossibleActionList)){
+                realList.add(finishField);
             }
         }
         return realList;
-    }
-
-    private boolean isCastling(final Figure figure, IField startField, IField finishField) {
-        return figure.getClass() == King.class &&
-                Math.abs(startField.getYCoord() - finishField.getYCoord()) == 2;
-    }
-
-    private boolean isCorrectCastling(final Color colorOpponent,
-                                      final IField startField,
-                                      final IField finishField,
-                                      final IMediator mediator,
-                                      final IPossibleActionList possibleActionList) {
-        possibleActionList.updatePotentialLists(colorOpponent);
-        Collection<IField> forCastling = new ArrayList<>();
-
-        int dif = startField.getYCoord() < finishField.getYCoord() ? 1 : -1;
-
-        forCastling.add(startField);
-        forCastling.add(board.getField(startField.getXCoord(), startField.getYCoord() + dif));
-        forCastling.add(finishField);
-
-        kingIsAttackedComputation = new KingIsAttackedComputation(possibleActionList, mediator);
-        for (IField tempField : forCastling) {
-            if (kingIsAttackedComputation.fieldIsAttacked(tempField, Color.swapColor(colorOpponent))) return false;
-        }
-        return true;
-    }
-
-    private boolean isAisleTake(final Figure figure,IField startField,IField finishField){
-
-        return figure.getClass() == Pawn.class &&
-                Math.abs(startField.getYCoord() - finishField.getYCoord()) == 1 &&
-                mediator.getFigure(finishField) == null;
-
     }
 }
