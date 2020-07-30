@@ -8,11 +8,11 @@ public class Client {
      *
      * @param args аргументы командной строки
      */
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws InterruptedException {
         startController();
     }
 
-    private static void startController() {
+    private static void startController() throws InterruptedException {
         final Controller controller = new Controller();
         controller.start();
     }

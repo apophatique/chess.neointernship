@@ -25,7 +25,7 @@ public abstract class APlayer {
         this.name = name;
     }
 
-    public void init(final IMediator mediator, final IBoard board, final Color color){
+    public void init(final IMediator mediator, final IBoard board, final Color color) {
         this.mediator = mediator;
         this.board = board;
         this.color = color;
@@ -33,7 +33,7 @@ public abstract class APlayer {
         this.chessCodesReaction = new ChessCodesReaction(board, mediator);
     }
 
-    public abstract String getAnswer();
+    public abstract String getAnswer() throws InterruptedException;
 
     public String getName() {
         return name;
@@ -43,7 +43,7 @@ public abstract class APlayer {
         return color;
     }
 
-    public void updateMediator(final IAnswer answer, final TurnStatus turnStatus) {
+    public void updateMediator(final IAnswer answer, final TurnStatus turnStatus) throws InterruptedException {
         final IField startField = board.getField(answer.getStartX(), answer.getStartY());
         final Figure startFigure = mediator.getFigure(startField);
         storyGame.update(startFigure);
@@ -53,6 +53,10 @@ public abstract class APlayer {
 
     public IMediator getMediator() {
         return mediator;
+    }
+
+    public IBoard getBoard() {
+        return board;
     }
 
     public abstract char getTransformation();

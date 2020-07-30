@@ -29,7 +29,7 @@ public class ControllerBot implements Runnable {
     int gameTime;
     private int i = 0;
 
-    public ControllerBot(int i){
+    public ControllerBot(int i) {
         name = "bot № " + i;
         this.i = i;
     }

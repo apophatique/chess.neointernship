@@ -50,9 +50,6 @@ public class Server implements IServer {
         lobbyList = new ConcurrentLinkedQueue<>();
     }
 
-
-
-
     public void deleteLobby(final Lobby lobby) {
         lobbyList.remove(lobby);
     }
@@ -82,13 +79,13 @@ public class Server implements IServer {
             do {
                 whiteSideConnection = whiteSideWaitingConnectionList.poll();
                 clientCodes = checkPlayers(whiteSideConnection);
-            }while (whiteSideWaitingConnectionList.size() > 0 && clientCodes != ClientCodes.YES);
+            } while (whiteSideWaitingConnectionList.size() > 0 && clientCodes != ClientCodes.YES);
             if (clientCodes == ClientCodes.NO) return;
 
             do {
                 blackSideConnection = blackSideWaitingConnectionList.poll();
                 clientCodes = checkPlayers(blackSideConnection);
-            }while (blackSideWaitingConnectionList.size() > 0 && clientCodes != ClientCodes.YES);
+            } while (blackSideWaitingConnectionList.size() > 0 && clientCodes != ClientCodes.YES);
 
             if (clientCodes == ClientCodes.NO) {
                 whiteSideWaitingConnectionList.add(whiteSideConnection);
@@ -127,14 +124,14 @@ public class Server implements IServer {
 
             final UserConnection connection = new UserConnection(in, out, socket, color, name);
 
-            setColorInQeueu(connection); // добавляет в нужную очередь
+            setColorInQueue(connection); // добавляет в нужную очередь
 
         } catch (final Exception e) {
             ErrorLoggerServer.logException(e);
         }
     }
 
-    public void setColorInQeueu(final UserConnection connection){
+    public void setColorInQueue(final UserConnection connection) {
         switch (connection.getColor()){
             case WHITE:
                 whiteSideWaitingConnectionList.add(connection);
@@ -155,10 +152,10 @@ public class Server implements IServer {
             case BOTH:
                 final boolean whiteIsEmpty = whiteSideWaitingConnectionList.isEmpty();
                 final boolean blackIsEmpty = blackSideWaitingConnectionList.isEmpty();
-                if(whiteIsEmpty && blackIsEmpty){
-                    if(universalColorConnection == null){
+                if (whiteIsEmpty && blackIsEmpty) {
+                    if (universalColorConnection == null){
                         universalColorConnection = connection;
-                    }else{
+                    } else {
                         universalColorConnection.setColor(WHITE);
                         whiteSideWaitingConnectionList.add(universalColorConnection);
                         universalColorConnection = null;
@@ -166,7 +163,7 @@ public class Server implements IServer {
                         blackSideWaitingConnectionList.add(connection);
                     }
 
-                }else {
+                } else {
                     if (whiteIsEmpty) {
                         connection.setColor(WHITE);
                         whiteSideWaitingConnectionList.add(connection);
@@ -201,7 +198,7 @@ public class Server implements IServer {
         }
     }
 
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws IOException {
         final Server server = new Server();
         server.startServer();
     }

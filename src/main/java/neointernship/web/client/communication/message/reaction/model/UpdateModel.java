@@ -9,7 +9,9 @@ import java.io.BufferedWriter;
 
 public class UpdateModel implements IMessageCodeModel {
     @Override
-    public void execute(final APlayer player, final BufferedReader in, final BufferedWriter out) throws Exception {
+    public void execute(final APlayer player,
+                        final BufferedReader in,
+                        final BufferedWriter out) throws Exception {
         final String updateString = in.readLine();
         final UpdateDto updateDto = UpdateSerializer.deserialize(updateString);
         updateDto.validate();

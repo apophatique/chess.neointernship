@@ -5,6 +5,8 @@ import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
+import neointernship.web.client.GUI.Input.Input;
+import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;
 
@@ -14,38 +16,42 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class Player extends APlayer {
-    private ConsoleBoardWriter consoleBoardWriter;
+    private BoardView boardView;
     final Scanner scanner;
+    private final Input input;
 
-    public Player(final Color color, final String name) {
+    public Player(final Color color, final String name, final Input input) {
         super(color, name);
         scanner = new Scanner(System.in);
+
+        this.input = input;
     }
 
     @Override
     public void init(final IMediator mediator, final IBoard board, final Color color) {
         super.init(mediator, board, color);
 
-        this.consoleBoardWriter = new ConsoleBoardWriter(mediator, board);
-        consoleBoardWriter.printBoard();
+        this.boardView = new BoardView(mediator, board);
     }
 
     @Override
-    public String getAnswer() {
-        String input;
+    public String getAnswer() throws InterruptedException {
+        String answer;
 
         do {
             System.out.print("Ваш ход: ");
-            input = scanner.nextLine().trim().toLowerCase();
-        } while (!Pattern.matches("[a-h]+[1-8]+[-|–|—]+[a-h]+[1-8]", input) && !input.equals("gg"));
-        return input;
+            answer = input.getMoveAnswer().trim().toLowerCase();
+        } while (!Pattern.matches("[a-h]+[1-8]+[-|–|—]+[a-h]+[1-8]", answer) && !answer.equals("gg"));
+
+        return answer;
     }
 
     @Override
-    public void updateMediator(final IAnswer answer, final TurnStatus turnStatus) {
+    public void updateMediator(final IAnswer answer, final TurnStatus turnStatus) throws InterruptedException {
         super.updateMediator(answer, turnStatus);
 
-        consoleBoardWriter.printBoard();
+        boardView.update();
+        boardView.display();
     }
 
     @Override

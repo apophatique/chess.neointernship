@@ -1,8 +1,10 @@
 package neointernship.web.client.GUI.board.view;
 
 import neointernship.chess.game.model.figure.piece.Figure;
+import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.board.Board;
+import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.GUI.board.labels.ChessLabel;
 import neointernship.web.client.GUI.board.labels.labelsgetter.LabelsRepository;
@@ -11,8 +13,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BoardView extends JFrame {
-    private final Board board;
-    private final Mediator mediator;
+    private final IBoard board;
+    private final IMediator mediator;
 
     private final LabelsRepository labelsRepository;
 
@@ -20,7 +22,7 @@ public class BoardView extends JFrame {
     Container contentPane = getContentPane();
 
 
-    public BoardView(final Mediator mediator, final Board board) {
+    public BoardView(final IMediator mediator, final IBoard board) {
         this.mediator = mediator;
         this.board = board;
 

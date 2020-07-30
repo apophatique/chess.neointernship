@@ -1,7 +1,13 @@
 package neointernship.web.client.controller;
 
 import neointernship.chess.game.model.enums.Color;
+import neointernship.chess.game.model.mediator.Mediator;
+import neointernship.chess.game.model.playmap.board.Board;
 import neointernship.chess.logger.ErrorLoggerClient;
+import neointernship.web.client.GUI.Input.Input;
+import neointernship.web.client.GUI.Viewer;
+import neointernship.web.client.GUI.board.view.BoardView;
+import neointernship.web.client.communication.data.BoardInfoContainer;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.MessageDto;
 import neointernship.web.client.communication.message.ModelMessageReaction;
@@ -9,6 +15,7 @@ import neointernship.web.client.communication.serializer.MessageSerializer;
 import neointernship.web.client.player.APlayer;
 import neointernship.web.client.player.Bot;
 import neointernship.web.client.player.Player;
+import neointernship.web.client.player.PlayerType;
 
 import java.io.*;
 import java.net.Socket;
@@ -17,6 +24,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Controller {
+    private Input input;
     private BufferedReader in = null;
     private BufferedWriter out = null;
     private Socket socket;
@@ -25,11 +33,11 @@ public class Controller {
     private APlayer player;
     private boolean endGame = false;
 
-    public void start() {
+    public void start() throws InterruptedException {
+        input = new Input();
         modelMessageReaction = new ModelMessageReaction(socket);
 
         startConnection();
-
         initPlayer();
 
         while (!endGame) {
@@ -38,41 +46,26 @@ public class Controller {
                 final MessageDto messageDto = MessageSerializer.deserialize(jsonMessage);
                 messageDto.validate();
                 modelMessageReaction.get(messageDto.getClientCodes()).execute(player, in, out);
-                if (messageDto.getClientCodes() == ClientCodes.END_GAME) endGame = true;
+
+                if (messageDto.getClientCodes() == ClientCodes.END_GAME) {
+                    endGame = true;
+                }
             } catch (final Exception e) {
                 ErrorLoggerClient.getLogger(player.getName()).logException(e);
             }
         }
     }
 
-    private void initPlayer() {
-        final Scanner scanner = new Scanner(System.in);
-        String playerType;
-        String colorType;
-
-        final HashMap<String, Color> colors = new HashMap<>();
-        final HashMap<String, APlayer> players = new HashMap<>();
-
-        colors.put("белые", Color.WHITE);
-        colors.put("черные", Color.BLACK);
-        colors.put("любой", Color.BOTH);
-
-        do {
-            System.out.println("Желаемый цвет: белые, черные или любой?");
-            colorType = scanner.nextLine().trim().toLowerCase();
-        } while (!colors.containsKey(colorType));
+    private void initPlayer() throws InterruptedException {
+        final HashMap<PlayerType, APlayer> players = new HashMap<>();
 
 
-        System.out.println("Введите имя:");
-        final String name = scanner.nextLine().trim();
+        final PlayerType playerType = input.getPlayerType();
+        final String name = input.getUserName().trim();
+        final Color color = input.getColor();
 
-        players.put("человек", new Player(colors.get(colorType), name));
-        players.put("бот", new Bot(colors.get(colorType), name));
-
-        do {
-            System.out.println("Человек или бот:");
-            playerType = scanner.nextLine().trim().toLowerCase();
-        } while (!players.containsKey(playerType));
+        players.put(PlayerType.HUMAN, new Player(color, name, input));
+        players.put(PlayerType.BOT, new Bot(color, name));
 
         player = players.get(playerType);
         ErrorLoggerClient.addLogger(name);

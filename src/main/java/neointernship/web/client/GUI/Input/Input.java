@@ -1,6 +1,7 @@
 package neointernship.web.client.GUI.Input;
 
 import neointernship.chess.game.model.enums.Color;
+import neointernship.web.client.player.PlayerType;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -57,6 +58,10 @@ public class Input {
         askLabel.setText("Your move: ");
 
         return getAnswer();
+    }
+
+    public PlayerType getPlayerType() {
+        return PlayerType.HUMAN;
     }
 
     private String getAnswer() throws InterruptedException {

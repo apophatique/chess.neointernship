@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class TurnModel implements IMessageCodeModel {
     @Override
-    public void execute(final APlayer player, final BufferedReader in, final BufferedWriter out) throws IOException {
+    public void execute(final APlayer player, final BufferedReader in, final BufferedWriter out) throws IOException, InterruptedException {
         final String turnString = player.getAnswer();
         final Message message;
         if (turnString.equals("gg")) {
