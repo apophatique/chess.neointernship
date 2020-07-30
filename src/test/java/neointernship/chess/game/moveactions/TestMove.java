@@ -24,7 +24,7 @@ public class TestMove extends TestAllowCommand {
 
         IAnswer answer = new Answer(0, 0, 1, 1, 'Q');
 
-        TurnStatus result = allowMoveCommand.execute(figure.getColor(), answer);
+        TurnStatus result = allowMoveCommand.execute(answer);
 
         assertEquals(TurnStatus.MOVE, result);
 

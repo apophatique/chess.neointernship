@@ -22,7 +22,7 @@ public class RestrictMoveCommand implements IMoveCommand {
     }
 
     @Override
-    public TurnStatus execute(final Color color, final IAnswer answer) {
+    public TurnStatus execute(final IAnswer answer) {
         return TurnStatus.ERROR;
     }
 }

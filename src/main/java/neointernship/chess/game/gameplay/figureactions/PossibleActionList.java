@@ -4,6 +4,7 @@ import neointernship.chess.game.gameplay.figureactions.patterns.potential.IPoten
 import neointernship.chess.game.gameplay.figureactions.patterns.potential.PotentialBasicPatterns;
 import neointernship.chess.game.gameplay.figureactions.patterns.real.IRealBasicPatterns;
 import neointernship.chess.game.gameplay.figureactions.patterns.real.RealBasicPatterns;
+import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
@@ -38,6 +39,16 @@ public class PossibleActionList implements IPossibleActionList {
         potentialFigureAction.clear();
 
         for (Figure figure : mediator.getFigures()) {
+            potentialFigureAction.put(figure, new ArrayList<>());
+
+            potentialFigureAction.get(figure).addAll(Intermediary.getList(figure, potentialPatterns));
+        }
+    }
+
+    @Override
+    public void updatePotentialLists(Color color) {
+
+        for (Figure figure : mediator.getFigures(color)) {
             potentialFigureAction.put(figure, new ArrayList<>());
 
             potentialFigureAction.get(figure).addAll(Intermediary.getList(figure, potentialPatterns));

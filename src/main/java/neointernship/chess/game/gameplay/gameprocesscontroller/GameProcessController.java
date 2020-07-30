@@ -32,7 +32,7 @@ public class GameProcessController implements IGameProcessController {
     public void makeTurn(final Color color, final IAnswer answer) {
         final MoveState moveState = moveCorrectnessValidator.check(color, answer);
         final IMoveCommand moveCommand = movesRepository.getCommand(moveState);
-        turnStatus = moveCommand.execute(color, answer);
+        turnStatus = moveCommand.execute(answer);
     }
 
     @Override

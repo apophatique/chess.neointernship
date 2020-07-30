@@ -15,6 +15,7 @@ public class AisleTakeCommand extends AbstractCommand implements IAllowCommand {
 
     public AisleTakeCommand(IBoard board, IMediator mediator) {
         super(board, mediator);
+        turnStatus = TurnStatus.AISLE_TAKE;
     }
 
     @Override
@@ -33,18 +34,11 @@ public class AisleTakeCommand extends AbstractCommand implements IAllowCommand {
     }
 
     @Override
-    public boolean check(IAnswer answer) {
-        final IField startField = board.getField(answer.getStartX(), answer.getStartY());
+    public boolean check(final IField startField,final IField finishField) {
+
         final Figure startFigure = mediator.getFigure(startField);
-        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());
 
         return startFigure.getClass() == Pawn.class &&
-                Math.abs(startField.getYCoord() - finalField.getYCoord()) == 1;
+                Math.abs(startField.getYCoord() - finishField.getYCoord()) == 1;
     }
-
-    @Override
-    public TurnStatus getTurnStatus() {
-        return TurnStatus.AISLE_TAKE;
-    }
-
 }

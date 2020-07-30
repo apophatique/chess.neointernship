@@ -45,7 +45,7 @@ public class TestAisleTake extends TestAllowCommand {
 
         IAnswer answer = new Answer(3, 4, 2, 3, 'Q');
 
-        TurnStatus result = allowMoveCommand.execute(figureW.getColor(), answer);
+        TurnStatus result = allowMoveCommand.execute(answer);
 
         assertEquals(TurnStatus.AISLE_TAKE, result);
 
@@ -72,7 +72,7 @@ public class TestAisleTake extends TestAllowCommand {
 
         IAnswer answer = new Answer(4, 4, 5, 3, 'Q');
 
-        TurnStatus result = allowMoveCommand.execute(figureW.getColor(), answer);
+        TurnStatus result = allowMoveCommand.execute(answer);
 
         assertEquals(TurnStatus.AISLE_TAKE, result);
 

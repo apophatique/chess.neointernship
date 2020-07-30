@@ -13,6 +13,7 @@ public class TransformationAfterCommand extends AbstractCommand implements IAllo
 
     public TransformationAfterCommand(IBoard board, IMediator mediator) {
         super(board, mediator);
+        turnStatus = TurnStatus.TRANSFORMATION_AFTER;
     }
 
     @Override
@@ -29,17 +30,10 @@ public class TransformationAfterCommand extends AbstractCommand implements IAllo
     }
 
     @Override
-    public boolean check(IAnswer answer) {
-        final IField startField = board.getField(answer.getStartX(), answer.getStartY());
+    public boolean check(final IField startField,final IField finishField) {
         final Figure startFigure = mediator.getFigure(startField);
         return startFigure.getClass() == Pawn.class && (
                 startField.getXCoord() == board.getSize() - 1 ||
                         startField.getXCoord() == 0);
     }
-
-    @Override
-    public TurnStatus getTurnStatus() {
-        return TurnStatus.TRANSFORMATION_AFTER;
-    }
-
 }

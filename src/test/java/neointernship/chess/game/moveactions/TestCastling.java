@@ -63,7 +63,7 @@ public class TestCastling extends TestAllowCommand {
                 fieldKing.getYCoord() + offset,
                 'Q');
 
-        TurnStatus result = allowMoveCommand.execute(king.getColor(), answer);
+        TurnStatus result = allowMoveCommand.execute(answer);
 
         assertEquals(TurnStatus.CASTLING, result);
 

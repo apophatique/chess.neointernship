@@ -29,7 +29,7 @@ public class TestAttack extends TestAllowCommand {
 
         IAnswer answer = new Answer(0, 0, 0, 6, 'Q');
 
-        TurnStatus result = allowMoveCommand.execute(figureW.getColor(), answer);
+        TurnStatus result = allowMoveCommand.execute(answer);
 
         assertEquals(TurnStatus.ATTACK, result);
 
