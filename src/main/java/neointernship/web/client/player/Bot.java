@@ -7,6 +7,7 @@ import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
+import neointernship.web.client.communication.message.ClientCodes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,4 +57,16 @@ public class Bot extends APlayer {
 
         return turn;
     }
+
+    @Override
+    public char getTransformation() {
+        return 'Q';
+    }
+
+    @Override
+    public ClientCodes getHandShakeAnswer() {
+        return ClientCodes.YES;
+    }
+
+
 }

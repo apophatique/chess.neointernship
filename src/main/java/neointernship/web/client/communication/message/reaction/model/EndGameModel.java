@@ -26,7 +26,7 @@ public class EndGameModel implements IMessageCodeModel {
 
         final EnumGameState enumGameState = endGameDto.getEnumGameState();
 
-        System.out.println(enumGameState.toString());
+        System.out.println(enumGameState.getMessage());
         if (in != null) in.close();
         if (out != null) out.close();
         if (socket != null) socket.close();

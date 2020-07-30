@@ -27,9 +27,11 @@ public class ControllerBot implements Runnable {
 
     private String name;
     int gameTime;
+    private int i = 0;
 
     public ControllerBot(int i){
         name = "bot № " + i;
+        this.i = i;
     }
 
     @Override
@@ -59,7 +61,7 @@ public class ControllerBot implements Runnable {
     }
 
     private void initPlayer() {
-        player = new Bot(Color.BOTH,name);
+        player = new Bot(i == 0 ? Color.WHITE : Color.BLACK,name);
     }
 
     private void startConnection() {
