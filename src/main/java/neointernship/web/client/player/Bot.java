@@ -2,34 +2,55 @@ package neointernship.web.client.player;
 
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
+import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
+import neointernship.chess.game.model.enums.EnumGameState;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
+import neointernship.web.client.GUI.Input.Input;
+import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
+import neointernship.web.client.communication.message.TurnStatus;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class Bot extends APlayer {
+    private BoardView boardView;
     private IPossibleActionList possibleActionList;
     private final Random random;
+    private final Input input;
 
 
-    public Bot(final Color color, final String name) {
+    public Bot(final Color color, final String name,final Input input) {
         super(color, name);
         this.random = new Random();
+        this.input = input;
+
     }
 
     public void init(final IMediator mediator, final IBoard board, final Color color) {
         super.init(mediator, board, color);
         this.possibleActionList = new PossibleActionList(board, mediator, storyGame);
+
+        this.boardView = new BoardView(mediator, board);
+        boardView.display();
+    }
+
+    @Override
+    public void updateMediator(final IAnswer answer, final TurnStatus turnStatus) throws InterruptedException {
+        super.updateMediator(answer, turnStatus);
+
+        boardView.update();
+        boardView.display();
     }
 
     @Override
     public String getAnswer() {
+
         final List<Figure> figures = (List<Figure>) mediator.getFigures(getColor());
         List<IField> fields;
         Figure figure;
@@ -55,6 +76,12 @@ public class Bot extends APlayer {
         turn += turn + chars.get(startField.getYCoord()) + integers.get(startField.getXCoord()) +  "-" +
                 chars.get(finalField.getYCoord()) + integers.get(finalField.getXCoord());
 
+        // todo задержка
+       /* try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
         return turn;
     }
 
@@ -64,9 +91,14 @@ public class Bot extends APlayer {
     }
 
     @Override
-    public ClientCodes getHandShakeAnswer() {
+    public ClientCodes getHandShakeAnswer() throws InterruptedException {
+        input.getHandShakeAnswer();
         return ClientCodes.YES;
     }
 
+    @Override
+    public void endGame(final EnumGameState enumGameState) {
+        input.endGame(enumGameState,getColor());
+    }
 
 }

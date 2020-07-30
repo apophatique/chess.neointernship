@@ -1,13 +1,16 @@
 package neointernship.web.client.GUI.Input;
 
 import neointernship.chess.game.model.enums.Color;
+import neointernship.chess.game.model.enums.EnumGameState;
 import neointernship.web.client.player.PlayerType;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class Input {
     private final JLabel postLabel;
@@ -24,13 +27,14 @@ public class Input {
      * считывает сообщение
      */
     private final JTextField textfield;
-    private String name = "name";
+    private String name = "имя";
+    private PlayerType type;
 
 
     public Input() {
         frame = new JFrame(name);
-        button = new JButton("Submit");
-        button.setBounds(180,95,95, 32);
+        button = new JButton("Ввод");
+        button.setBounds(180, 95, 95, 32);
 
         askLabel = new JLabel();
         askLabel.setBounds(10, -18, 250, 100);
@@ -45,40 +49,56 @@ public class Input {
         frame.add(textfield);
         frame.add(askLabel);
         frame.add(button);
-        frame.setSize(320,175);
+        frame.setBounds(500,250,320,175);
         frame.setLayout(null);
         frame.setVisible(true);
     }
 
     public String getUserName() throws InterruptedException {
-        askLabel.setText("Enter your name: ");
+        askLabel.setText("Введите ваше имя: ");
         name = getAnswer();
         frame.setTitle(name);
         return name;
     }
 
     public Color getColor() throws InterruptedException {
+        Map<String,Color> colorMap = new HashMap<>();
+        colorMap.put("белые",Color.WHITE);
+        colorMap.put("черные",Color.BLACK);
+        colorMap.put("любой",Color.BOTH);
+
         askLabel.setText("Выберите цвет");
+
         String answerColor = getAnswer();
+
+        while (!colorMap.containsKey(answerColor)){
+            askLabel.setText("белые / черные / любой");
+            answerColor = getAnswer();
+        };
+
+        Color color = colorMap.get(answerColor);
+
         askLabel.setText("Ищем оппонента...");
-
-       Color color = (answerColor.equals("white")) ? neointernship.chess.game.model.enums.Color.WHITE :
-               neointernship.chess.game.model.enums.Color.BLACK;
-
-        frame.setTitle(name + " " + color);
+        frame.setTitle(name + " " + color.getMessage());
         return color;
     }
 
     public String getHandShakeAnswer() throws InterruptedException {
-        askLabel.setText("Оппонент найден. Вы готовы?");
-
-        return getAnswer();
+        if(type == PlayerType.BOT){
+            askLabel.setText("я играю не мешайте)");
+        }else{
+            askLabel.setText("Оппонент найден. Вы готовы?");
+            return getAnswer();
+        }
+        return "";
     }
+
     public String getMoveAnswer() throws InterruptedException {
         askLabel.setText("Ваш ход");
 
         return getAnswer();
     }
+
     public String getTransformAnswer() throws InterruptedException {
         askLabel.setText("В какую фигуру обратить пешку?");
 
@@ -86,11 +106,24 @@ public class Input {
     }
 
     public PlayerType getPlayerType() throws InterruptedException {
-        askLabel.setText("Ho are you? ");
-        String answerColor = getAnswer();
+        Map<String,PlayerType> typeMap = new HashMap<>();
+        typeMap.put("человек",PlayerType.HUMAN);
+        typeMap.put("бот",PlayerType.BOT);
+        askLabel.setText("Кто ты?");
+        String answerType = getAnswer();
 
-        return (answerColor.equals("human")) ? PlayerType.HUMAN :
-               PlayerType.BOT;
+        while (!typeMap.containsKey(answerType)) {
+            askLabel.setText("человек / бот ?");
+            answerType = getAnswer();
+        }
+
+        type = typeMap.get(answerType);
+
+        if(type == PlayerType.BOT){
+            askLabel.setText("Я жду противника...");
+        }
+
+        return type;
     }
 
     private String getAnswer() throws InterruptedException {
@@ -125,5 +158,13 @@ public class Input {
         button.setVisible(false);
 
         return answer[0];
+    }
+
+    public void endGame(final EnumGameState enumGameState,final Color color){
+        if(enumGameState == EnumGameState.MATE){
+            askLabel.setText("Конец игры победа " + color.getMessage());
+        }else {
+            askLabel.setText(enumGameState.getMessage());
+        }
     }
 }

@@ -2,6 +2,7 @@ package neointernship.web.client.player;
 
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
+import neointernship.chess.game.model.enums.EnumGameState;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.web.client.GUI.Input.Input;
@@ -79,6 +80,11 @@ public class Player extends APlayer {
         }else {
             return ClientCodes.NO;
         }
+    }
+
+    @Override
+    public void endGame(final EnumGameState enumGameState) {
+        input.endGame(enumGameState,getColor());
     }
 
 }

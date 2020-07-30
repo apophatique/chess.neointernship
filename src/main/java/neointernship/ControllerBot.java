@@ -2,6 +2,7 @@ package neointernship;
 
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.logger.ErrorLoggerClient;
+import neointernship.web.client.GUI.Input.Input;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.MessageDto;
 import neointernship.web.client.communication.message.ModelMessageReaction;
@@ -61,7 +62,7 @@ public class ControllerBot implements Runnable {
     }
 
     private void initPlayer() {
-        player = new Bot(i == 0 ? Color.WHITE : Color.BLACK,name);
+        player = new Bot(i == 0 ? Color.WHITE : Color.BLACK,name,new Input());
     }
 
     private void startConnection() {

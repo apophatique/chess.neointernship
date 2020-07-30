@@ -5,9 +5,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public enum Color {
-    BLACK,
-    WHITE,
-    BOTH;
+    WHITE("белые"),
+    BLACK("черные"),
+    BOTH("любой");
+
+    private String message;
+
+    Color(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 
     public static Color swapColor(Color color){
         return color == Color.WHITE ? Color.BLACK : Color.WHITE;

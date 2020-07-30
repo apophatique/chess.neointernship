@@ -2,8 +2,6 @@ package neointernship.web.client.GUI.board.view;
 
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
-import neointernship.chess.game.model.mediator.Mediator;
-import neointernship.chess.game.model.playmap.board.Board;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.GUI.board.labels.ChessLabel;
@@ -47,7 +45,8 @@ public class BoardView extends JFrame {
         }
 
         setLocationRelativeTo(null);
-        setSize(800, 768);
+
+        setBounds(650,50,700, 700);
         setVisible(true);
     }
 
