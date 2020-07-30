@@ -13,7 +13,7 @@ public class WhiteFiguresLabelsRepository implements ILabelsRepository {
                 put('N', "\u2658");
                 put('B', "\u2657");
                 put('K', "\u2654");
-                put('Q', "\u2654");
+                put('Q', "\u2655");
             }
         };
     }

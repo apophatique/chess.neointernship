@@ -16,11 +16,6 @@ public class HandShakeModel implements IMessageCodeModel {
     public void execute(final APlayer player, final BufferedReader in, final BufferedWriter out) throws Exception {
         Message message = new Message(player.getHandShakeAnswer());
 
-        if (player.getClass() == Player.class) {
-            final Scanner scanner = new Scanner(System.in);
-
-        }
-
         out.write(MessageSerializer.serialize(message) + "\n");
         out.flush();
     }

@@ -32,7 +32,7 @@ public class BoardView extends JFrame {
         startUpdate();
     }
 
-    public void display() throws InterruptedException {
+    public void display() {
         setTitle("Chess board");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

@@ -6,9 +6,10 @@ import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.board.Board;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.GUI.Viewer;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ViewerTest {
     Viewer viewer;
@@ -27,13 +28,12 @@ public class ViewerTest {
         IField field2 = board.getField(3, 4);
         mediator.addNewConnection(field2, figureFactory.createFigure('Q', Color.BLACK));
 
-
         viewer = new Viewer(board, mediator);
     }
 
     @Test
     public void getNameTest() throws InterruptedException {
-        Assert.assertEquals("zxc", viewer.getPlayerName());
+        assertEquals("zxc", viewer.getPlayerName());
     }
 
     @Test

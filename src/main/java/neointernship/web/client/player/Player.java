@@ -1,6 +1,5 @@
 package neointernship.web.client.player;
 
-import neointernship.chess.game.console.ConsoleBoardWriter;
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.mediator.IMediator;
@@ -32,6 +31,7 @@ public class Player extends APlayer {
         super.init(mediator, board, color);
 
         this.boardView = new BoardView(mediator, board);
+        boardView.display();
     }
 
     @Override
@@ -39,7 +39,6 @@ public class Player extends APlayer {
         String answer;
 
         do {
-            System.out.print("Ваш ход: ");
             answer = input.getMoveAnswer().trim().toLowerCase();
         } while (!Pattern.matches("[a-h]+[1-8]+[-|–|—]+[a-h]+[1-8]", answer) && !answer.equals("gg"));
 
@@ -55,13 +54,12 @@ public class Player extends APlayer {
     }
 
     @Override
-    public char getTransformation() {
+    public char getTransformation() throws InterruptedException {
         final List<Character> figureList = Arrays.asList('Q', 'N', 'B', 'R');
         char figure;
 
         do {
-            System.out.println("В какую фигуру обратить пешку:\nQ - ферзь\nB - слон\nN - конь\nR - ладья");
-            final String string = scanner.nextLine().trim().toUpperCase();
+            final String string = input.getTransformAnswer().trim().toUpperCase();
             figure = string.charAt(0);
         } while (!figureList.contains(figure));
 
@@ -69,12 +67,11 @@ public class Player extends APlayer {
     }
 
     @Override
-    public ClientCodes getHandShakeAnswer() {
+    public ClientCodes getHandShakeAnswer() throws InterruptedException {
         String answer = "";
 
         for (int i = 0; i < 3 && !answer.equals("да") && !answer.equals("нет"); i++) {
-            System.out.println("Оппонент найден.\nВы готовы? (да/нет):");
-            answer = scanner.nextLine().trim().toLowerCase();
+            answer = input.getHandShakeAnswer().trim().toLowerCase();
         }
 
         if (answer.equals("да")) {
@@ -83,6 +80,5 @@ public class Player extends APlayer {
             return ClientCodes.NO;
         }
     }
-
 
 }

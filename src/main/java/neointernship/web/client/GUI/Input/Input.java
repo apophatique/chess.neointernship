@@ -11,19 +11,29 @@ import java.util.List;
 
 public class Input {
     private final JLabel postLabel;
-    private final JFrame f;
-    private final JButton b;
+    private final JFrame frame;
+    /**
+     * кнопка
+     */
+    private final JButton button;
+    /**
+     * выводит сообщение
+     */
     private final JLabel askLabel;
+    /**
+     * считывает сообщение
+     */
     private final JTextField textfield;
+    private String name = "name";
 
 
     public Input() {
-        f = new JFrame("Chess answer dialog");
-        b = new JButton("Submit");
-        b.setBounds(180,95,95, 32);
+        frame = new JFrame(name);
+        button = new JButton("Submit");
+        button.setBounds(180,95,95, 32);
 
         askLabel = new JLabel();
-        askLabel.setBounds(10, -18, 150, 100);
+        askLabel.setBounds(10, -18, 250, 100);
 
         postLabel = new JLabel();
         postLabel.setBounds(10, 110, 200, 100);
@@ -31,50 +41,70 @@ public class Input {
         textfield = new JTextField();
         textfield.setBounds(25, 50, 250, 35);
 
-        f.add(postLabel);
-        f.add(textfield);
-        f.add(askLabel);
-        f.add(b);
-        f.setSize(320,175);
-        f.setLayout(null);
-        f.setVisible(true);
+        frame.add(postLabel);
+        frame.add(textfield);
+        frame.add(askLabel);
+        frame.add(button);
+        frame.setSize(320,175);
+        frame.setLayout(null);
+        frame.setVisible(true);
     }
 
     public String getUserName() throws InterruptedException {
         askLabel.setText("Enter your name: ");
-
-        return getAnswer();
+        name = getAnswer();
+        frame.setTitle(name);
+        return name;
     }
 
     public Color getColor() throws InterruptedException {
-        askLabel.setText("Choose play color (white/black/smth else random): ");
-        String answer = getAnswer();
+        askLabel.setText("Выберите цвет");
+        String answerColor = getAnswer();
+        askLabel.setText("Ищем оппонента...");
 
-        return (answer.equals("white")) ? neointernship.chess.game.model.enums.Color.WHITE :
-                neointernship.chess.game.model.enums.Color.BLACK;
+       Color color = (answerColor.equals("white")) ? neointernship.chess.game.model.enums.Color.WHITE :
+               neointernship.chess.game.model.enums.Color.BLACK;
+
+        frame.setTitle(name + " " + color);
+        return color;
     }
 
+    public String getHandShakeAnswer() throws InterruptedException {
+        askLabel.setText("Оппонент найден. Вы готовы?");
+
+        return getAnswer();
+    }
     public String getMoveAnswer() throws InterruptedException {
-        askLabel.setText("Your move: ");
+        askLabel.setText("Ваш ход");
+
+        return getAnswer();
+    }
+    public String getTransformAnswer() throws InterruptedException {
+        askLabel.setText("В какую фигуру обратить пешку?");
 
         return getAnswer();
     }
 
-    public PlayerType getPlayerType() {
-        return PlayerType.HUMAN;
+    public PlayerType getPlayerType() throws InterruptedException {
+        askLabel.setText("Ho are you? ");
+        String answerColor = getAnswer();
+
+        return (answerColor.equals("human")) ? PlayerType.HUMAN :
+               PlayerType.BOT;
     }
 
     private String getAnswer() throws InterruptedException {
+        textfield.setText("");
         textfield.revalidate();
         textfield.repaint();
         textfield.setVisible(true);
-        b.revalidate();
-        b.setVisible(true);
+        button.revalidate();
+        button.setVisible(true);
 
         final String[] answer = new String[1];
         List<Integer> holder = new LinkedList<Integer>();
 
-        b.addActionListener(new ActionListener() {
+        button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 synchronized (holder) {
@@ -91,8 +121,8 @@ public class Input {
         }
         textfield.validate();
         textfield.setVisible(false);
-        b.validate();
-        b.setVisible(false);
+        button.validate();
+        button.setVisible(false);
 
         return answer[0];
     }

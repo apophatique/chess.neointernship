@@ -59,7 +59,7 @@ public abstract class APlayer {
         return board;
     }
 
-    public abstract char getTransformation();
+    public abstract char getTransformation() throws InterruptedException;
 
-    public abstract ClientCodes getHandShakeAnswer();
+    public abstract ClientCodes getHandShakeAnswer() throws InterruptedException;
 }
