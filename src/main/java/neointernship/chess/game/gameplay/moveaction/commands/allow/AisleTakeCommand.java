@@ -2,6 +2,7 @@ package neointernship.chess.game.gameplay.moveaction.commands.allow;
 
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.figure.piece.Figure;
+import neointernship.chess.game.model.figure.piece.Pawn;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
@@ -21,14 +22,24 @@ public class AisleTakeCommand extends AbstractCommand implements IAllowCommand {
         final IField startField = board.getField(answer.getStartX(), answer.getStartY());
         final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());
 
-        final IField fieldAttackPawn = board.getField(answer.getStartX(),answer.getFinalY());
+        final IField fieldAttackPawn = board.getField(answer.getStartX(), answer.getFinalY());
 
         final Figure startFigure = mediator.getFigure(startField);
 
         mediator.deleteConnection(startField);
-        mediator.addNewConnection(finalField,startFigure);
+        mediator.addNewConnection(finalField, startFigure);
         mediator.deleteConnection(fieldAttackPawn);
 
+    }
+
+    @Override
+    public boolean check(IAnswer answer) {
+        final IField startField = board.getField(answer.getStartX(), answer.getStartY());
+        final Figure startFigure = mediator.getFigure(startField);
+        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());
+
+        return startFigure.getClass() == Pawn.class &&
+                Math.abs(startField.getYCoord() - finalField.getYCoord()) == 1;
     }
 
     @Override

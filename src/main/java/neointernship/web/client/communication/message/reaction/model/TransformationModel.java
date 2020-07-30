@@ -25,7 +25,7 @@ public class TransformationModel implements IMessageCodeModel {
         if (player.getClass() == Player.class) {
             final Scanner scanner = new Scanner(System.in);
 
-            final List<Character> figureList = Arrays.asList('Q', 'K', 'B', 'R');
+            final List<Character> figureList = Arrays.asList('Q', 'N', 'B', 'R');
             char figure;
 
             do {

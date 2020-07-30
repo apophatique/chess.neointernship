@@ -52,6 +52,9 @@ public class TestHeadEnd {
         printer = new ConsoleBoardWriter(mediator, board);
         activeColorController.update();
     }
+    public void updateList(){
+        possibleActionList.updateRealLists();
+    }
 
     private void initMediator(final Map<IField, Figure> figureMap) {
         for (IField field : figureMap.keySet()) {

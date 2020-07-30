@@ -1,13 +1,14 @@
 package neointernship.web.client.player;
 
 import neointernship.chess.game.console.ConsoleBoardWriter;
-import neointernship.chess.game.model.answer.AnswerSimbol;
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.web.client.communication.message.TurnStatus;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Player extends APlayer {
@@ -26,18 +27,34 @@ public class Player extends APlayer {
     }
 
     @Override
-    public IAnswer getAnswer() {
+    public String getAnswer() {
         final Scanner scanner = new Scanner(System.in);
-        System.out.format("%s player turn to move: ", getName());
-        final String input = scanner.nextLine();
-        /*final String[] answerString = input.split(" ");
+        String[] strArr;
+        String input;
 
-        final IAnswer answer = new Answer(Integer.parseInt(answerString[0]), Integer.parseInt(answerString[1]),
-                Integer.parseInt(answerString[2]), Integer.parseInt(answerString[3]), 'Q');
-        return answer;*/
-        String[] strArr = input.split("-");
+        boolean flag = false;
 
-        return new AnswerSimbol(strArr[0].charAt(0), strArr[0].charAt(1), strArr[1].charAt(0), strArr[1].charAt(1));
+        final List<Character> integers = Arrays.asList('1', '2', '3', '4', '5', '6', '7', '8');
+        final List<Character> chars = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
+
+        do {
+            System.out.print("Ваш ход: ");
+            input = scanner.nextLine();
+
+            if (input.trim().toLowerCase().equals("gg")) {
+                return input;
+            }
+
+            try {
+                if (input.length() != 5) throw new Exception();
+                strArr = input.split("-");
+                if (!chars.contains(strArr[0].charAt(0)) || !chars.contains(strArr[1].charAt(0))) throw new Exception();
+                if (!integers.contains(strArr[0].charAt(1)) || !integers.contains(strArr[1].charAt(1))) throw new Exception();
+                flag = true;
+            } catch (final Exception ignore) { }
+        } while (!flag);
+
+        return input;
     }
 
     @Override

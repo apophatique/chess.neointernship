@@ -1,7 +1,6 @@
 package neointernship.web.server.connection.userconnection;
 
 import neointernship.chess.game.model.enums.Color;
-import neointernship.chess.game.model.player.IPlayer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,7 +11,7 @@ public class UserConnection {
     private final BufferedWriter out;
     private final Socket socket;
 
-    private final Color color;
+    private Color color;
     private final String name;
 
     public UserConnection(final BufferedReader in,
@@ -41,6 +40,9 @@ public class UserConnection {
 
     public Color getColor() {
         return color;
+    }
+    public void setColor(final Color color) {
+        this.color = color;
     }
 
     public String getName() {

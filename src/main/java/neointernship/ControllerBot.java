@@ -1,4 +1,4 @@
-package neointernship.web.client.controller;
+package neointernship;
 
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.logger.ErrorLoggerClient;
@@ -6,17 +6,17 @@ import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.MessageDto;
 import neointernship.web.client.communication.message.ModelMessageReaction;
 import neointernship.web.client.communication.serializer.MessageSerializer;
+import neointernship.web.client.controller.Connection;
 import neointernship.web.client.player.APlayer;
 import neointernship.web.client.player.Bot;
-import neointernship.web.client.player.Player;
 
 import java.io.*;
 import java.net.Socket;
 import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.Scanner;
 
-public class Controller {
+
+public class ControllerBot implements Runnable {
+
     private BufferedReader in = null;
     private BufferedWriter out = null;
     private Socket socket;
@@ -25,7 +25,16 @@ public class Controller {
     private APlayer player;
     private boolean endGame = false;
 
-    public void start() {
+    private String name;
+    int gameTime;
+
+    public ControllerBot(int i){
+        name = "bot № " + i;
+    }
+
+    @Override
+    public void run() {
+        LocalTime startTime = LocalTime.now();
         modelMessageReaction = new ModelMessageReaction(socket);
 
         startConnection();
@@ -43,39 +52,14 @@ public class Controller {
                 ErrorLoggerClient.getLogger(player.getName()).logException(e);
             }
         }
+        gameTime = startTime.getSecond() - LocalTime.now().getSecond();
+    }
+    public int getTime(){
+        return gameTime;
     }
 
     private void initPlayer() {
-        final Scanner scanner = new Scanner(System.in);
-        String playerType;
-        String colorType;
-
-        final HashMap<String, Color> colors = new HashMap<>();
-        final HashMap<String, APlayer> players = new HashMap<>();
-
-        colors.put("белые", Color.WHITE);
-        colors.put("черные", Color.BLACK);
-        colors.put("любой", Color.BOTH);
-
-        do {
-            System.out.println("Желаемый цвет: белые, черные или любой?");
-            colorType = scanner.nextLine().trim().toLowerCase();
-        } while (!colors.containsKey(colorType));
-
-
-        System.out.println("Введите имя:");
-        final String name = scanner.nextLine().trim();
-
-        players.put("человек", new Player(colors.get(colorType), name));
-        players.put("бот", new Bot(colors.get(colorType), name));
-
-        do {
-            System.out.println("Человек или бот:");
-            playerType = scanner.nextLine().trim().toLowerCase();
-        } while (!players.containsKey(playerType));
-
-        player = players.get(playerType);
-        ErrorLoggerClient.addLogger(name);
+        player = new Bot(Color.BOTH,name);
     }
 
     private void startConnection() {

@@ -47,13 +47,13 @@ public class GameLogger implements IGameLogger{
     @Override
     public void logPlayerMoveAction(final Color color, final Figure figure,
                                     final IField startField, final IField finalField, final TurnStatus chessCodes) {
-        logger.info(chessCodes.name() + "- Игрок " + color + " сделал ход фигурой " + figure.getName() + " из клетки " +
+        logger.info(chessCodes.getMessage() + "- Игрок " + color + " сделал ход фигурой " + figure.getName() + " из клетки " +
                 startField.showField() + " в клетку " + finalField.showField());
     }
 
     @Override
     public void logEndGame(final EnumGameState enumGameState) {
-        logger.info("Конец игры - " + enumGameState);
+        logger.info("Конец игры - " + enumGameState.getMessage());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GameLogger implements IGameLogger{
 
     @Override
     public void logDraw(final IDrawController drawController ) {
-        logger.info("Ничья : " + drawController.getState());
+        logger.info("Ничья : " + drawController.getState().getMessage());
     }
 
 }

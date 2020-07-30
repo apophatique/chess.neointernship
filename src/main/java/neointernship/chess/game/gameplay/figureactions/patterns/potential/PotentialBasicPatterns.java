@@ -212,7 +212,7 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
 
             for (final Figure rook : mediator.getFigures(king.getColor())){
                 // если есть ладья которой не ходил
-                if (rook.getClass() == Rook.class && !storyGame.isMove(rook)) {
+                if (rook.getClass() == Rook.class && !storyGame.isMove(rook) && mediator.getField(rook).getXCoord() == fieldKing.getXCoord()) {
                     // если между ними нет других фигур
                     boolean haveFigure = false;
                     final IField fieldRook = mediator.getField(rook);

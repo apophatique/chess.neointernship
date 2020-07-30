@@ -8,8 +8,8 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
 import neointernship.chess.game.story.StoryGame;
-import neointernship.web.client.communication.message.TurnStatus;
 import neointernship.web.client.communication.message.ChessCodesReaction;
+import neointernship.web.client.communication.message.TurnStatus;
 
 public abstract class APlayer {
     protected IMediator mediator;
@@ -32,7 +32,7 @@ public abstract class APlayer {
         this.chessCodesReaction = new ChessCodesReaction(board, mediator);
     }
 
-    public abstract IAnswer getAnswer();
+    public abstract String getAnswer();
 
     public String getName() {
         return name;

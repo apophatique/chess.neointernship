@@ -6,6 +6,9 @@
 *.log
 *log*.txt
 
+# Statistics file
+*statistics*.txt
+
 # Package Files #
 *.jar
 *.war

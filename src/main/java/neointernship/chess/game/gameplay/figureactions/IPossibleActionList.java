@@ -7,9 +7,11 @@ import java.util.Collection;
 
 public interface IPossibleActionList {
     Collection<IField> getPotentialList(final Figure figure);
+
     void updatePotentialLists();
 
     Collection<IField> getRealList(final Figure figure);
+
     void updateRealLists();
 }
 

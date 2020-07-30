@@ -1,7 +1,7 @@
 package neointernship.chess.game.gameplay.figureactions;
 
+import neointernship.chess.game.gameplay.figureactions.patterns.potential.IPotentialBasicPatterns;
 import neointernship.chess.game.gameplay.figureactions.patterns.potential.PotentialBasicPatterns;
-import neointernship.chess.game.gameplay.figureactions.patterns.potential.IPotentialBasicPatterns;;
 import neointernship.chess.game.gameplay.figureactions.patterns.real.IRealBasicPatterns;
 import neointernship.chess.game.gameplay.figureactions.patterns.real.RealBasicPatterns;
 import neointernship.chess.game.model.figure.piece.Figure;
@@ -18,16 +18,16 @@ public class PossibleActionList implements IPossibleActionList {
     private final IPotentialBasicPatterns potentialPatterns;
     private final IRealBasicPatterns realPatterns;
 
-    private Map<Figure, Collection<IField>> realFigureActions;
-    private Map<Figure, Collection<IField>> potentialFigureAction;
+    private final Map<Figure, Collection<IField>> realFigureActions;
+    private final Map<Figure, Collection<IField>> potentialFigureAction;
 
     public PossibleActionList(final IBoard board,
                               final IMediator mediator,
                               final IStoryGame storyGame) {
         this.mediator = mediator;
 
-        this.potentialPatterns = new PotentialBasicPatterns(mediator, board,storyGame);
-        this.realPatterns = new RealBasicPatterns(mediator, board,storyGame);
+        this.potentialPatterns = new PotentialBasicPatterns(mediator, board, storyGame);
+        this.realPatterns = new RealBasicPatterns(mediator, board, storyGame);
 
         this.realFigureActions = new HashMap<>();
         this.potentialFigureAction = new HashMap<>();
@@ -73,7 +73,7 @@ public class PossibleActionList implements IPossibleActionList {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PossibleActionList that = (PossibleActionList) o;
-        return  Objects.equals(realFigureActions, that.realFigureActions);
+        return Objects.equals(realFigureActions, that.realFigureActions);
     }
 
     @Override

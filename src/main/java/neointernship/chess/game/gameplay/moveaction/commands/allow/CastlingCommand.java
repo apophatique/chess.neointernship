@@ -2,6 +2,7 @@ package neointernship.chess.game.gameplay.moveaction.commands.allow;
 
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.figure.piece.Figure;
+import neointernship.chess.game.model.figure.piece.King;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
@@ -43,6 +44,16 @@ public class CastlingCommand extends AbstractCommand implements IAllowCommand {
         mediator.deleteConnection(startFieldRook);
         mediator.addNewConnection(finalFieldKing,king);
         mediator.addNewConnection(finalFieldRook,rook);
+    }
+
+    @Override
+    public boolean check(IAnswer answer) {
+        final IField startField = board.getField(answer.getStartX(), answer.getStartY());
+        final Figure startFigure = mediator.getFigure(startField);
+        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());
+
+        return startFigure.getClass() == King.class &&
+                Math.abs(startField.getYCoord() - finalField.getYCoord()) > 1;
     }
 
     @Override
