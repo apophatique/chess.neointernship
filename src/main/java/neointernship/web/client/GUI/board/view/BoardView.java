@@ -16,8 +16,14 @@ public class BoardView extends JFrame {
 
     private final LabelsRepository labelsRepository;
 
+    private final GridLayout gridLayout;
+
     private ChessLabel[][] labels;
     Container contentPane = getContentPane();
+
+    private final ChessLabel[] sideNumbers;
+    private final ChessLabel[] sideLetters;
+    private final ChessLabel lastLabel;
 
 
     public BoardView(final IMediator mediator, final IBoard board) {
@@ -25,32 +31,45 @@ public class BoardView extends JFrame {
         this.board = board;
 
         labelsRepository = new LabelsRepository();
+
         labels = new ChessLabel[board.getSize()][board.getSize()];
+        sideLetters = new ChessLabel[board.getSize()];
+        sideNumbers = new ChessLabel[board.getSize()];
+        lastLabel = new ChessLabel(" ");
+
+        gridLayout = new GridLayout(9, 9);
+        setTitle("Chess board");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
 
         startUpdate();
     }
 
     public void display() {
-        setTitle("Chess board");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        GridLayout gridLayout = new GridLayout(8, 8);
-
         contentPane.setLayout(gridLayout);
         for (int i = 0; i < board.getSize(); i++) {
+            contentPane.add(sideNumbers[i]);
             for (int j = 0; j < board.getSize(); j++) {
-                labels[i][j].set(i, j);
                 contentPane.add(labels[i][j]);
             }
         }
+        contentPane.add(lastLabel);
+        for (int i = 0; i < board.getSize(); i++) {
+            contentPane.add(sideLetters[i]);
+        }
 
-        setLocationRelativeTo(null);
 
         setBounds(650,50,700, 700);
         setVisible(true);
     }
 
     public void update() {
+        for (int i = 0; i < board.getSize(); i++) {
+            getContentPane().remove(sideLetters[i]);
+            getContentPane().remove(sideNumbers[i]);
+        }
+        getContentPane().remove(lastLabel);
+
         for (int i = 0; i < board.getSize(); i++) {
             for (int j = 0; j < board.getSize(); j++) {
                 getContentPane().remove(labels[i][j]);
@@ -68,12 +87,22 @@ public class BoardView extends JFrame {
 
 
                 labels[i][j].set(i, j);
-                contentPane.add(labels[i][j]);
             }
         }
     }
 
     private void startUpdate() {
+        for (int i = 0; i < board.getSize(); i++) {
+            String labelNumber = String.valueOf(8 - i);
+            sideNumbers[i] = new ChessLabel(labelNumber);
+            sideNumbers[i].set(i, 8);
+
+            String labelLetter = String.valueOf((char)((int)('\u0041') + i));
+            sideLetters[i] = new ChessLabel(labelLetter);
+            sideLetters[i].set(8, i);
+        }
+
+
         for (int i = 0; i < board.getSize(); i++) {
             for (int j = 0; j < board.getSize(); j++) {
                 IField field = board.getField(i, j);

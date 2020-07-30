@@ -39,5 +39,6 @@ public class ViewerTest {
     @Test
     public void displayBoardTest() throws InterruptedException {
         viewer.displayBoard();
+        Thread.sleep(10000);
     }
 }
