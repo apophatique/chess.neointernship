@@ -2,22 +2,18 @@ package neointernship.chess.game.gameplay.figureactions.patterns.real;
 
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
-import neointernship.chess.game.gameplay.kingstate.update.KingIsAttackedComputation;
 import neointernship.chess.game.gameplay.moveaction.commands.allow.AllowMoveCommand;
-import neointernship.chess.game.gameplay.moveaction.commands.allow.AttackCommand;
 import neointernship.chess.game.gameplay.moveaction.commands.allow.IAllowCommand;
 import neointernship.chess.game.model.answer.Answer;
+import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
-import neointernship.chess.game.model.figure.piece.King;
-import neointernship.chess.game.model.figure.piece.Pawn;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
 import neointernship.chess.game.story.StoryGame;
-import neointernship.web.client.communication.message.TurnStatus;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +21,6 @@ import java.util.Collection;
 public class RealBasicPatterns implements IRealBasicPatterns {
     private final IMediator mediator;
     private final IBoard board;
-    private KingIsAttackedComputation kingIsAttackedComputation;
     private final IStoryGame storyGame;
 
     public RealBasicPatterns(final IMediator mediator,
@@ -51,15 +46,21 @@ public class RealBasicPatterns implements IRealBasicPatterns {
             IPossibleActionList newPossibleActionList = new PossibleActionList(board, newMediator, newStoryGame);
 
             AllowMoveCommand allowMoveCommand =
-                    new AllowMoveCommand(newMediator,newPossibleActionList,board,newStoryGame);
+                    new AllowMoveCommand(newMediator, newPossibleActionList, board, newStoryGame);
 
-            command = allowMoveCommand.getCommand(startField,finishField);
+            command = allowMoveCommand.getCommand(startField, finishField);
+            IAnswer answer = new Answer(
+                    startField.getXCoord(),
+                    startField.getYCoord(),
+                    finishField.getXCoord(),
+                    finishField.getYCoord(),
+                    'Q');
 
-            command.execute(new Answer(startField.getXCoord(),startField.getYCoord(),finishField.getXCoord(),finishField.getYCoord(),'Q'));
+            command.execute(answer);
 
             newPossibleActionList.updatePotentialLists(colorOpponent);
 
-            if(command.isCorrect(colorFigure,newPossibleActionList)){
+            if (command.isCorrect(colorFigure, newPossibleActionList)) {
                 realList.add(finishField);
             }
         }
