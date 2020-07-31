@@ -19,7 +19,6 @@ public class BoardView extends JFrame {
     private ChessLabel[][] labels;
     Container contentPane = getContentPane();
 
-
     public BoardView(final IMediator mediator, final IBoard board) {
         this.mediator = mediator;
         this.board = board;
@@ -46,7 +45,7 @@ public class BoardView extends JFrame {
 
         setLocationRelativeTo(null);
 
-        setBounds(650,50,700, 700);
+        setSize(700, 700);
         setVisible(true);
     }
 

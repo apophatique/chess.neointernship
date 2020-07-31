@@ -29,7 +29,6 @@ public class Bot extends APlayer {
         super(color, name);
         this.random = new Random();
         this.input = input;
-
     }
 
     public void init(final IMediator mediator, final IBoard board, final Color color) {
@@ -97,8 +96,9 @@ public class Bot extends APlayer {
     }
 
     @Override
-    public void endGame(final EnumGameState enumGameState) {
-        input.endGame(enumGameState,getColor());
+    public void endGame(final EnumGameState enumGameState,final Color color) throws InterruptedException {
+        input.endGame(enumGameState,color);
+        boardView.dispose();
     }
 
 }

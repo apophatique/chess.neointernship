@@ -78,13 +78,15 @@ public class Player extends APlayer {
         if (answer.equals("да")) {
             return ClientCodes.YES;
         }else {
+            input.invise();
             return ClientCodes.NO;
         }
     }
 
     @Override
-    public void endGame(final EnumGameState enumGameState) {
-        input.endGame(enumGameState,getColor());
+    public void endGame(final EnumGameState enumGameState,final Color color) throws InterruptedException {
+        input.endGame(enumGameState,color);
+        boardView.dispose();
     }
 
 }

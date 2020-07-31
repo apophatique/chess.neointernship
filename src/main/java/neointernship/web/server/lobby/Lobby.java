@@ -4,6 +4,7 @@ import neointernship.chess.game.console.ConsoleBoardWriter;
 import neointernship.chess.game.gameplay.activecolorcontroller.ActiveColorController;
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
+import neointernship.chess.game.gameplay.gamestate.state.IGameState;
 import neointernship.chess.game.gameplay.loop.GameLoop;
 import neointernship.chess.game.gameplay.loop.IGameLoop;
 import neointernship.chess.game.model.answer.AnswerSimbol;
@@ -143,12 +144,12 @@ public class Lobby extends Thread {
         }
     }
 
-    private void sendEndGame(final EnumGameState enumGameState) {
+    private void sendEndGame(final EnumGameState enumGameState,final Color color) {
         for (final UserConnection userConnection : connectionController.getConnections()) {
             final BufferedWriter out = userConnection.getOut();
             final IMessage msg = new Message(ClientCodes.END_GAME);
 
-            final IEndGame endGame = new EndGame(enumGameState);
+            final IEndGame endGame = new EndGame(enumGameState,color);
 
             try {
                 send(out, MessageSerializer.serialize(msg));
@@ -230,14 +231,16 @@ public class Lobby extends Thread {
 
         gameLoop.getMatchResult();
 
-        EnumGameState enumGameState = gameLoop.getMatchResult().getValue();
+        IGameState gameState = gameLoop.getMatchResult();
 
-        if (answerMsg.getClientCodes() == ClientCodes.END_GAME) enumGameState = EnumGameState.RESIGNATION;
+        if (answerMsg.getClientCodes() == ClientCodes.END_GAME) {
+            gameState.updateValue(EnumGameState.RESIGNATION,connection.getColor());
+        }
 
-        sendEndGame(enumGameState);
-        GameLogger.getLogger(lobbyId).logEndGame(enumGameState);
+        sendEndGame(gameState.getValue(),gameLoop.getMatchResult().getColor());
+        GameLogger.getLogger(lobbyId).logEndGame(gameState.getValue());
 
-        setStatistics(connection, enumGameState);
+        setStatistics(connection, gameState.getValue());
         downService();
     }
 

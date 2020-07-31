@@ -64,5 +64,5 @@ public abstract class APlayer {
 
     public abstract ClientCodes getHandShakeAnswer() throws InterruptedException;
 
-    public void endGame(final EnumGameState enumGameState){}
+    public abstract void endGame(final EnumGameState enumGameState,final Color color) throws InterruptedException;
 }

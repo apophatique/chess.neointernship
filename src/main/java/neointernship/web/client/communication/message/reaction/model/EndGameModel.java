@@ -1,5 +1,6 @@
 package neointernship.web.client.communication.message.reaction.model;
 
+import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.enums.EnumGameState;
 import neointernship.web.client.communication.data.endgame.EndGameDto;
 import neointernship.web.client.communication.serializer.EndGameSerializer;
@@ -24,9 +25,10 @@ public class EndGameModel implements IMessageCodeModel {
 
         endGameDto.validate();
 
+        final Color color = endGameDto.getColor();
         final EnumGameState enumGameState = endGameDto.getEnumGameState();
 
-        player.endGame(enumGameState);
+        player.endGame(enumGameState,color);
 
         if (in != null) in.close();
         if (out != null) out.close();

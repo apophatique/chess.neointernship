@@ -30,11 +30,12 @@ public class Statistics {
 
         if (!fileString.equals("")) PersonsStatistics.setPersonsStatistics(fileString);
 
-        if (!fileString.contains(nameFirstPlayer)) {
+
+        if (!PersonsStatistics.getPersonStatistics().containsKey(nameFirstPlayer)) {
             PersonsStatistics.addPerson(nameFirstPlayer);
         }
 
-        if (!fileString.contains(nameSecondPlayer)) {
+        if (!PersonsStatistics.getPersonStatistics().containsKey(nameSecondPlayer)) {
             PersonsStatistics.addPerson(nameSecondPlayer);
         }
 

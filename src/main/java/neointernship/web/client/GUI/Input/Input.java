@@ -93,6 +93,10 @@ public class Input {
         return "";
     }
 
+    public void invise(){
+        frame.setVisible(false);
+    }
+
     public String getMoveAnswer() throws InterruptedException {
         askLabel.setText("Ваш ход");
 
@@ -160,11 +164,38 @@ public class Input {
         return answer[0];
     }
 
-    public void endGame(final EnumGameState enumGameState,final Color color){
+    public void endGame(final EnumGameState enumGameState,final Color color) throws InterruptedException {
         if(enumGameState == EnumGameState.MATE){
-            askLabel.setText("Конец игры победа " + color.getMessage());
+            askLabel.setText("Мат. Победа " + Color.swapColor(color).getMessage());
         }else {
-            askLabel.setText(enumGameState.getMessage());
+            if(enumGameState == EnumGameState.RESIGNATION) {
+                askLabel.setText("Игрок сдался. Победа " + Color.swapColor(color).getMessage());
+            }else {
+                askLabel.setText(enumGameState.getMessage());
+            }
         }
+        button.revalidate();
+        button.setVisible(true);
+        button.setText("Выход");
+
+        List<Integer> holder = new LinkedList<Integer>();
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                synchronized (holder) {
+                    holder.add(0);
+                    holder.notify();
+                }
+            }
+        });
+        synchronized (holder) {
+            while (holder.isEmpty())
+                holder.wait();
+            holder.remove(0);
+        }
+
+        button.validate();
+        frame.dispose();
     }
 }
