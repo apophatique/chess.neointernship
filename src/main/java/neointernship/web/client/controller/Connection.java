@@ -27,7 +27,7 @@ public class Connection {
                 socket = new Socket(ip, port);
                // System.out.println(String.format("Client started, ip: %s, port: %d", ip, port));
             } catch (final IOException e) {
-                System.err.println("Socket failed");
+//                System.err.println("Socket failed");
             }
         } while (socket == null);
     }
