@@ -9,7 +9,7 @@ import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
-import neointernship.web.client.GUI.Input.Input;
+import neointernship.web.client.GUI.Input.IInput;
 import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;
@@ -22,10 +22,10 @@ public class Bot extends APlayer {
     private BoardView boardView;
     private IPossibleActionList possibleActionList;
     private final Random random;
-    private final Input input;
+    private final IInput input;
 
 
-    public Bot(final Color color, final String name,final Input input) {
+    public Bot(final Color color, final String name, final IInput input) {
         super(color, name);
         this.random = new Random();
         this.input = input;
@@ -36,15 +36,16 @@ public class Bot extends APlayer {
         this.possibleActionList = new PossibleActionList(board, mediator, storyGame);
 
         this.boardView = new BoardView(mediator, board);
-        boardView.display();
+        if (!input.isVoid()) boardView.display();
     }
 
     @Override
     public void updateMediator(final IAnswer answer, final TurnStatus turnStatus) throws InterruptedException {
         super.updateMediator(answer, turnStatus);
-
-        boardView.update();
-        boardView.display();
+        if (!input.isVoid()) {
+            boardView.update();
+            boardView.display();
+        }
     }
 
     @Override
@@ -72,7 +73,7 @@ public class Bot extends APlayer {
 
         final IField startField = mediator.getField(figure);
 
-        turn += turn + chars.get(startField.getYCoord()) + integers.get(startField.getXCoord()) +  "-" +
+        turn += turn + chars.get(startField.getYCoord()) + integers.get(startField.getXCoord()) + "-" +
                 chars.get(finalField.getYCoord()) + integers.get(finalField.getXCoord());
 
         // todo задержка
@@ -96,7 +97,7 @@ public class Bot extends APlayer {
     }
 
     @Override
-    public void endGame(final EnumGameState enumGameState,final Color color) throws InterruptedException {
+    public void endGame(final EnumGameState enumGameState, final Color color) throws InterruptedException {
         input.endGame(enumGameState,color);
         boardView.dispose();
     }

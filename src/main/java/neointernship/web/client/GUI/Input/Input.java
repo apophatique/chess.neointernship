@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class Input {
+public class Input implements IInput {
     private final JLabel postLabel;
     private final JFrame frame;
     /**
@@ -197,5 +197,10 @@ public class Input {
 
         button.validate();
         frame.dispose();
+    }
+
+    @Override
+    public boolean isVoid() {
+        return false;
     }
 }

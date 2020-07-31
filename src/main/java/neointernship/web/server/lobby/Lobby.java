@@ -226,7 +226,7 @@ public class Lobby extends Thread {
             if (answerMsg.getClientCodes() == ClientCodes.END_GAME) break;
 
             sendUpdatedMediator(answer, turnStatus);
-            boardWriter.printBoard();
+           // boardWriter.printBoard();
         }
 
         gameLoop.getMatchResult();

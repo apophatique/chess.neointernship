@@ -5,6 +5,7 @@ import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.enums.EnumGameState;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
+import neointernship.web.client.GUI.Input.IInput;
 import neointernship.web.client.GUI.Input.Input;
 import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
@@ -18,7 +19,7 @@ import java.util.regex.Pattern;
 public class Player extends APlayer {
     private BoardView boardView;
     final Scanner scanner;
-    private final Input input;
+    private final IInput input;
 
     public Player(final Color color, final String name, final Input input) {
         super(color, name);

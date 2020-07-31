@@ -23,7 +23,7 @@ public class ChessLabel extends JLabel {
         } else {
             setFont(font);
             setOpaque(true);
-            setBackground((idx + row) % 2 == 0 ? bgDark : bgLight);
+            setBackground((idx + row) % 2 == 0 ? bgLight : bgDark);
             setHorizontalAlignment(SwingConstants.CENTER);
         }
     }
