@@ -24,7 +24,6 @@ public class Bot extends APlayer {
     private final Random random;
     private final IInput input;
 
-
     public Bot(final Color color, final String name, final IInput input) {
         super(color, name);
         this.random = new Random();
@@ -76,12 +75,6 @@ public class Bot extends APlayer {
         turn += turn + chars.get(startField.getYCoord()) + integers.get(startField.getXCoord()) + "-" +
                 chars.get(finalField.getYCoord()) + integers.get(finalField.getXCoord());
 
-        // todo задержка
-       /* try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
         return turn;
     }
 

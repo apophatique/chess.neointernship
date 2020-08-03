@@ -25,7 +25,6 @@ public class BoardView extends JFrame {
     private final ChessLabel[] sideLetters;
     private final ChessLabel lastLabel;
 
-
     public BoardView(final IMediator mediator, final IBoard board) {
         this.mediator = mediator;
         this.board = board;

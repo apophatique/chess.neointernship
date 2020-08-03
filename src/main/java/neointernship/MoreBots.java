@@ -6,7 +6,7 @@ public class MoreBots {
 
     public static void main(String[] args)  {
 
-        int countBot = 10;
+        int countBot = 2;
 
         ArrayList<ControllerBot> controllerBots = new ArrayList<>();
         ArrayList<Thread> threads = new ArrayList<>();
@@ -17,11 +17,9 @@ public class MoreBots {
         for(ControllerBot controllerBot : controllerBots){
             threads.add(new Thread(controllerBot));
         }
-
         for (Thread thread : threads){
             thread.start();
         }
-
     }
 
 }
