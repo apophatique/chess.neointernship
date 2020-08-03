@@ -34,7 +34,7 @@ public class AisleTakeCommand extends AbstractCommand implements IAllowCommand {
     }
 
     @Override
-    public boolean check(final IField startField,final IField finishField) {
+    public boolean check(final IField startField, final IField finishField) {
 
         final Figure startFigure = mediator.getFigure(startField);
 

@@ -16,7 +16,7 @@ public final class Pair<T, U> {
     /**
      * Class constructor that initializes Pair fields with passed objects.
      *
-     * @param first First object.
+     * @param first  First object.
      * @param second Second object.
      */
     public Pair(final T first, final U second) {
@@ -28,7 +28,6 @@ public final class Pair<T, U> {
      * Override of {@link Object#equals(Object)} method.
      *
      * @param o Object instance to check equality with.
-     *
      * @return Boolean value that presents result of checking.
      */
     @Override
@@ -43,6 +42,7 @@ public final class Pair<T, U> {
         return Objects.equals(first, pair.first) &&
                 Objects.equals(second, pair.second);
     }
+
     /**
      * Override of Object method.
      *

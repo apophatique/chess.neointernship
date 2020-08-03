@@ -144,12 +144,12 @@ public class Lobby extends Thread {
         }
     }
 
-    private void sendEndGame(final EnumGameState enumGameState,final Color color) {
+    private void sendEndGame(final EnumGameState enumGameState, final Color color) {
         for (final UserConnection userConnection : connectionController.getConnections()) {
             final BufferedWriter out = userConnection.getOut();
             final IMessage msg = new Message(ClientCodes.END_GAME);
 
-            final IEndGame endGame = new EndGame(enumGameState,color);
+            final IEndGame endGame = new EndGame(enumGameState, color);
 
             try {
                 send(out, MessageSerializer.serialize(msg));
@@ -226,7 +226,7 @@ public class Lobby extends Thread {
             if (answerMsg.getClientCodes() == ClientCodes.END_GAME) break;
 
             sendUpdatedMediator(answer, turnStatus);
-           // boardWriter.printBoard();
+            // boardWriter.printBoard();
         }
 
         gameLoop.getMatchResult();
@@ -234,10 +234,10 @@ public class Lobby extends Thread {
         IGameState gameState = gameLoop.getMatchResult();
 
         if (answerMsg.getClientCodes() == ClientCodes.END_GAME) {
-            gameState.updateValue(EnumGameState.RESIGNATION,connection.getColor());
+            gameState.updateValue(EnumGameState.RESIGNATION, connection.getColor());
         }
 
-        sendEndGame(gameState.getValue(),gameLoop.getMatchResult().getColor());
+        sendEndGame(gameState.getValue(), gameLoop.getMatchResult().getColor());
         GameLogger.getLogger(lobbyId).logEndGame(gameState.getValue());
 
         setStatistics(connection, gameState.getValue());

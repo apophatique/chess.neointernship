@@ -35,9 +35,9 @@ public class GameLoop implements IGameLoop {
 
         this.activeColorController = activeColorController;
 
-        gameStateController = new GameStateController(possibleActionList, mediator,storyGame);
+        gameStateController = new GameStateController(possibleActionList, mediator, storyGame);
 
-        gameProcessController = new GameProcessController(mediator, possibleActionList, board,storyGame);
+        gameProcessController = new GameProcessController(mediator, possibleActionList, board, storyGame);
     }
 
     /**
@@ -51,7 +51,7 @@ public class GameLoop implements IGameLoop {
 
         final TurnStatus turnStatus = gameProcessController.getTurnStatus();
 
-        if(turnStatus != TurnStatus.ERROR) {
+        if (turnStatus != TurnStatus.ERROR) {
             gameStateController.update(Color.swapColor(activeColor));
         }
         return turnStatus;

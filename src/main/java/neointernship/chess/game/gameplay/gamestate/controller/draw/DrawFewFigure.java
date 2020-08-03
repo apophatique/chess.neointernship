@@ -20,7 +20,7 @@ public class DrawFewFigure implements IDrawController {
     @Override
     public boolean isDraw(final IMediator mediator) {
         final Collection<Figure> figures = mediator.getFigures();
-        if(figures.size() == 3) {
+        if (figures.size() == 3) {
             for (final Figure figure : figures) {
                 if (figure.getClass() == Knight.class) return true;
             }
@@ -33,9 +33,9 @@ public class DrawFewFigure implements IDrawController {
         return EnumGameState.DRAW_FEW_FIGURE;
     }
 
-    private boolean isBishops(final Collection<Figure> figures,final IMediator mediator){
+    private boolean isBishops(final Collection<Figure> figures, final IMediator mediator) {
         final Set<Color> colors = new HashSet<>();
-        for(final Figure figure : figures) {
+        for (final Figure figure : figures) {
             if (figure.getClass() != King.class) {
                 final IField field = mediator.getField(figure);
                 colors.add(field.getColor());

@@ -3,7 +3,6 @@ package neointernship.chess.game.gameplay.moveaction.commands.allow;
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.gameplay.moveaction.commands.IMoveCommand;
 import neointernship.chess.game.model.answer.IAnswer;
-import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
@@ -59,13 +58,13 @@ public class AllowMoveCommand implements IMoveCommand {
         final IField finishField = board.getField(answer.getFinalX(), answer.getFinalY());
         storyGame.update(startFigure);
 
-        final IAllowCommand currentCommand = getCommand(startField,finishField);
+        final IAllowCommand currentCommand = getCommand(startField, finishField);
         currentCommand.execute(answer); // делаю ход
 
         return currentCommand.getTurnStatus();
     }
 
-    public IAllowCommand getCommand(final IField startField,final IField finishField) {
+    public IAllowCommand getCommand(final IField startField, final IField finishField) {
         for (IAllowCommand command : commandQueue) {
             if (command.check(startField, finishField)) return command;
         }

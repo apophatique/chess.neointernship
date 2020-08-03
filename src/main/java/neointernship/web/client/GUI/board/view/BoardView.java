@@ -58,7 +58,7 @@ public class BoardView extends JFrame {
         }
 
 
-        setBounds(650,50,700, 700);
+        setBounds(650, 50, 700, 700);
         setVisible(true);
     }
 
@@ -96,7 +96,7 @@ public class BoardView extends JFrame {
             sideNumbers[i] = new ChessLabel(labelNumber);
             sideNumbers[i].set(i, 8);
 
-            String labelLetter = String.valueOf((char)((int)('\u0041') + i));
+            String labelLetter = String.valueOf((char) ((int) ('\u0041') + i));
             sideLetters[i] = new ChessLabel(labelLetter);
             sideLetters[i].set(8, i);
         }

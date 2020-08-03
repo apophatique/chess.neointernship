@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 
-public class GameLogger implements IGameLogger{
+public class GameLogger implements IGameLogger {
     private static final HashMap<Integer, IGameLogger> mapLogger = new HashMap<>();
     private final Logger logger;
 
@@ -72,7 +72,7 @@ public class GameLogger implements IGameLogger{
     }
 
     @Override
-    public void logDraw(final IDrawController drawController ) {
+    public void logDraw(final IDrawController drawController) {
         logger.info("Ничья : " + drawController.getState().getMessage());
     }
 

@@ -11,12 +11,12 @@ import neointernship.chess.game.model.playmap.field.IField;
 import java.util.List;
 import java.util.Random;
 
-public class RandomBot extends Player{
+public class RandomBot extends Player {
 
     Random random;
 
     public RandomBot(Color color) {
-        super("Random bot",color);
+        super("Random bot", color);
         random = new Random();
     }
 
@@ -46,12 +46,12 @@ public class RandomBot extends Player{
 //        }
 
         IAnswer answer = new Answer(startField.getXCoord(), startField.getYCoord(),
-                finalField.getXCoord(), finalField.getYCoord(),'Q');
-        printAnswer(startField,finalField);
+                finalField.getXCoord(), finalField.getYCoord(), 'Q');
+        printAnswer(startField, finalField);
         return answer;
     }
 
-    private void printAnswer(final IField start,final IField finish){
+    private void printAnswer(final IField start, final IField finish) {
         System.out.println("Color = " + super.getColor());
         System.out.println(start.showField() + " - " + finish.showField());
     }

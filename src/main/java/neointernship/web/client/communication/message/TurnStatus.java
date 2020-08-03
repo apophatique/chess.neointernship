@@ -10,10 +10,12 @@ public enum TurnStatus {
     ERROR("Ошибочка вышла");
 
     private String message;
+
     TurnStatus(final String message) {
         this.message = message;
     }
-    public String getMessage(){
+
+    public String getMessage() {
         return message;
     }
 }

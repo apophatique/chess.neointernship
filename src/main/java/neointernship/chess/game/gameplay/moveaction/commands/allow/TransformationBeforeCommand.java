@@ -31,7 +31,7 @@ public class TransformationBeforeCommand extends AbstractCommand implements IAll
     }
 
     @Override
-    public boolean check(final IField startField,final IField finishField) {
+    public boolean check(final IField startField, final IField finishField) {
         final Figure startFigure = mediator.getFigure(startField);
 
         return startFigure.getClass() == Pawn.class && (

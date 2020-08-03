@@ -5,5 +5,6 @@ import neointernship.chess.game.model.mediator.IMediator;
 
 public interface IDrawController {
     boolean isDraw(IMediator mediator);
+
     EnumGameState getState();
 }

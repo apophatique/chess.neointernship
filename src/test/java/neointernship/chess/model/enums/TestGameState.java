@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 
 public class TestGameState {
     @Test
-    public void testGetMessage(){
-        assertEquals("Игра продолжается",EnumGameState.ALIVE.getMessage());
+    public void testGetMessage() {
+        assertEquals("Игра продолжается", EnumGameState.ALIVE.getMessage());
     }
 }

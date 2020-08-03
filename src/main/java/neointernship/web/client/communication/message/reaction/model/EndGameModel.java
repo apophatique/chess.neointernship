@@ -13,7 +13,7 @@ import java.net.Socket;
 public class EndGameModel implements IMessageCodeModel {
     private final Socket socket;
 
-    public EndGameModel(final Socket socket){
+    public EndGameModel(final Socket socket) {
         this.socket = socket;
     }
 
@@ -28,7 +28,7 @@ public class EndGameModel implements IMessageCodeModel {
         final Color color = endGameDto.getColor();
         final EnumGameState enumGameState = endGameDto.getEnumGameState();
 
-        player.endGame(enumGameState,color);
+        player.endGame(enumGameState, color);
 
         if (in != null) in.close();
         if (out != null) out.close();

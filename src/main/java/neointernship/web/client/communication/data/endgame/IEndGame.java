@@ -12,5 +12,6 @@ import neointernship.chess.game.model.enums.EnumGameState;
 })
 public interface IEndGame {
     EnumGameState getEnumGameState();
+
     Color getColor();
 }

@@ -90,8 +90,8 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
 
         final IField currentField = mediator.getField(figure);
 
-        final int[] onesList = new int[] {1, -1};
-        final int[] twosList = new int[] {2, -2};
+        final int[] onesList = new int[]{1, -1};
+        final int[] twosList = new int[]{2, -2};
 
         for (final int one : onesList) {
             for (final int two : twosList) {
@@ -115,7 +115,7 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
 
         int offset = (figure.getColor() == Color.BLACK) ? 1 : -1;
 
-        final int[] onesList = new int[] {1, -1};
+        final int[] onesList = new int[]{1, -1};
         for (final int one : onesList) {
             addAttackField(figure.getColor(), currentField.getXCoord() + offset, currentField.getYCoord() + one, possibleAttackFields);
         }
@@ -157,7 +157,7 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
         final IField lastFieldLastFigure = storyGame.getLastField();
         final IField realFieldLastFigure = mediator.getField(lastFigure);
 
-        if(realFieldLastFigure != null && lastFieldLastFigure != null) { // может быть null если было превращение
+        if (realFieldLastFigure != null && lastFieldLastFigure != null) { // может быть null если было превращение
             if (currentField.getXCoord() == startXCoord && lastFigure.getColor() == Color.swapColor(color)) {
                 if (lastFigure.getClass() == Pawn.class) {
                     if (Math.abs(realFieldLastFigure.getXCoord() - lastFieldLastFigure.getXCoord()) == 2) {
@@ -176,7 +176,7 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
 
         final IField fieldKing = mediator.getField(king);
 
-        final int[] onesList = new int[] {1, -1};
+        final int[] onesList = new int[]{1, -1};
 
         for (final int one : onesList) {
             for (final int two : onesList) {
@@ -210,7 +210,7 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
         // если король не ходил
         if (!storyGame.isMove(king)) {
 
-            for (final Figure rook : mediator.getFigures(king.getColor())){
+            for (final Figure rook : mediator.getFigures(king.getColor())) {
                 // если есть ладья которой не ходил
                 if (rook.getClass() == Rook.class && !storyGame.isMove(rook) && mediator.getField(rook).getXCoord() == fieldKing.getXCoord()) {
                     // если между ними нет других фигур
@@ -227,8 +227,8 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
                         fieldTemp = board.getField(fieldKing.getXCoord(), fieldTemp.getYCoord() + dif);
                     }
                     //если фигур нет
-                    if(!haveFigure){
-                        final IField finalField = board.getField(fieldKing.getXCoord(),fieldKing.getYCoord() + (2 * dif));
+                    if (!haveFigure) {
+                        final IField finalField = board.getField(fieldKing.getXCoord(), fieldKing.getYCoord() + (2 * dif));
                         possibleAttackFields.add(finalField);
                     }
                 }

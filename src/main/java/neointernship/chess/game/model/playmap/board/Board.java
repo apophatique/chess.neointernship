@@ -27,8 +27,8 @@ public class Board implements IBoard {
     private void initializeBoard() {
         fieldMatrix = new IField[BOARD_SIZE][BOARD_SIZE];
         for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE ; j++) {
-                fieldMatrix[i][j] = new Field(i,j);
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                fieldMatrix[i][j] = new Field(i, j);
             }
         }
     }

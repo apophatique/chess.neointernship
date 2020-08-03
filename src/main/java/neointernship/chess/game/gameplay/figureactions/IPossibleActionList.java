@@ -13,6 +13,7 @@ public interface IPossibleActionList {
 
     /**
      * обновляет список потенциальных ходов для фигур цвета color
+     *
      * @param color
      */
     void updatePotentialLists(final Color color);

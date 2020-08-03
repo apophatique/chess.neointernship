@@ -111,15 +111,15 @@ public class TestAisleTake extends TestAllowCommand {
 
         assertEquals(EnumGameState.ALIVE, testHeadEnd.getState().getValue());
 
-        IAnswer answer0 = new Answer(3,6, 3,7, 'Q');
+        IAnswer answer0 = new Answer(3, 6, 3, 7, 'Q');
         testHeadEnd.doAllowIteration(answer0);
         testHeadEnd.printBoard();
 
-        IAnswer answer1 = new Answer(1,5, 3,5, 'Q');
+        IAnswer answer1 = new Answer(1, 5, 3, 5, 'Q');
         testHeadEnd.doAllowIteration(answer1);
         testHeadEnd.printBoard();
 
-        IAnswer answer2 = new Answer(3,4, 2,5, 'Q');
+        IAnswer answer2 = new Answer(3, 4, 2, 5, 'Q');
         testHeadEnd.doRestringIteration(answer2);
         testHeadEnd.printBoard();
 

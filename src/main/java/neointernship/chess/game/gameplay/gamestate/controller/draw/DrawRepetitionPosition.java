@@ -10,21 +10,23 @@ public class DrawRepetitionPosition implements IDrawController {
 
     private static final Integer MAX_REPETITION = 3;
     private static final Integer START_REPETITION = 1;
-    private Map<Position,Integer> mapPosition;
+    private Map<Position, Integer> mapPosition;
     private int currentSizeMediator;
 
     public DrawRepetitionPosition() {
         mapPosition = new HashMap<>();
     }
+
     /**
      * проверка на 3х кратное повторении позиции
+     *
      * @param mediator
      * @return
      */
     @Override
     public boolean isDraw(IMediator mediator) {
         final int newSize = mediator.getFigures().size();
-        if(currentSizeMediator != newSize){
+        if (currentSizeMediator != newSize) {
             currentSizeMediator = newSize;
             mapPosition.clear();
         }
@@ -32,14 +34,14 @@ public class DrawRepetitionPosition implements IDrawController {
 
         Integer count = mapPosition.get(newPosition);
 
-        if(count == null){
-            mapPosition.put(newPosition,START_REPETITION);
-        }else{
+        if (count == null) {
+            mapPosition.put(newPosition, START_REPETITION);
+        } else {
             count++;
-            mapPosition.replace(newPosition,count);
+            mapPosition.replace(newPosition, count);
         }
-        for(Integer i : mapPosition.values()){
-            if(i >= MAX_REPETITION) return true;
+        for (Integer i : mapPosition.values()) {
+            if (i >= MAX_REPETITION) return true;
         }
         return false;
     }

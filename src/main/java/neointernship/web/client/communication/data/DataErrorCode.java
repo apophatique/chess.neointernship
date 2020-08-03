@@ -1,6 +1,6 @@
 package neointernship.web.client.communication.data;
 
-public enum  DataErrorCode {
+public enum DataErrorCode {
     NOT_MEDIATOR("Отсутствует медиатор"),
     NOT_BOARD("Отсутствует доска"),
     NOT_COLOR("Отсутствует цвет"),

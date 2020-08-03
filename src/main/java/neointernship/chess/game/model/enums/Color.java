@@ -19,7 +19,7 @@ public enum Color {
         return message;
     }
 
-    public static Color swapColor(Color color){
+    public static Color swapColor(Color color) {
         return color == Color.WHITE ? Color.BLACK : Color.WHITE;
     }
 

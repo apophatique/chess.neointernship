@@ -9,7 +9,7 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("InitGame")
-public class InitGame implements IInitGame{
+public class InitGame implements IInitGame {
     @JsonProperty
     private final IMediator mediator;
     @JsonProperty

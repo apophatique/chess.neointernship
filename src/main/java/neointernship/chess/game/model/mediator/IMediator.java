@@ -16,14 +16,17 @@ import java.util.Collection;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 public interface IMediator {
     IField getField(final Figure figure);
+
     Figure getFigure(final IField field);
 
     Collection<Figure> getFigures(final Color color);
+
     Collection<Figure> getFigures();
 
     Figure getKing(final Color color);
 
     void addNewConnection(final IField field, final Figure figure);
+
     void deleteConnection(final IField field);
 
     void clear();

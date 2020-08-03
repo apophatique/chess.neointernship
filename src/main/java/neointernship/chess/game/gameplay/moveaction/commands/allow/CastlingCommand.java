@@ -29,8 +29,8 @@ public class CastlingCommand extends AbstractCommand implements IAllowCommand {
 
     @Override
     public void execute(IAnswer answer) {
-        startFieldKing = board.getField(answer.getStartX(),answer.getStartY());
-        finishFieldKing = board.getField(answer.getFinalX(),answer.getFinalY());
+        startFieldKing = board.getField(answer.getStartX(), answer.getStartY());
+        finishFieldKing = board.getField(answer.getFinalX(), answer.getFinalY());
 
         Figure king = mediator.getFigure(startFieldKing);
 
@@ -38,11 +38,11 @@ public class CastlingCommand extends AbstractCommand implements IAllowCommand {
         int difCoordRook = 1;
 
         // если двигаемся вправо
-        if(startFieldKing.getYCoord() < finishFieldKing.getYCoord()){
+        if (startFieldKing.getYCoord() < finishFieldKing.getYCoord()) {
             yStartCoordRook = 7;
             difCoordRook = -1;
         }
-        IField startFieldRook = board.getField(startFieldKing.getXCoord(),yStartCoordRook);
+        IField startFieldRook = board.getField(startFieldKing.getXCoord(), yStartCoordRook);
 
         IField finalFieldRook = board.getField(
                 finishFieldKing.getXCoord(),
@@ -52,12 +52,12 @@ public class CastlingCommand extends AbstractCommand implements IAllowCommand {
 
         mediator.deleteConnection(startFieldKing);
         mediator.deleteConnection(startFieldRook);
-        mediator.addNewConnection(finishFieldKing,king);
-        mediator.addNewConnection(finalFieldRook,rook);
+        mediator.addNewConnection(finishFieldKing, king);
+        mediator.addNewConnection(finalFieldRook, rook);
     }
 
     @Override
-    public boolean check(final IField startField,final IField finishField) {
+    public boolean check(final IField startField, final IField finishField) {
         final Figure startFigure = mediator.getFigure(startField);
 
         return startFigure.getClass() == King.class &&
@@ -76,7 +76,7 @@ public class CastlingCommand extends AbstractCommand implements IAllowCommand {
 
         KingIsAttackedComputation kingIsAttackedComputation = new KingIsAttackedComputation(possibleActionList, mediator);
         for (IField tempField : forCastling) {
-            if (kingIsAttackedComputation.fieldIsAttacked(tempField,colorFigure)) return false;
+            if (kingIsAttackedComputation.fieldIsAttacked(tempField, colorFigure)) return false;
         }
         return true;
     }

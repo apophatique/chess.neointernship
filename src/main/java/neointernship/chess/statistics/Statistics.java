@@ -12,11 +12,11 @@ public class Statistics {
     }
 
     public synchronized static void setStatistics(final String nameFirstPlayer,
-                                     final Color colorFirstPlayer,
-                                     final EnumMatchResult matchResultFirstPlayer,
-                                     final String nameSecondPlayer,
-                                     final Color colorSecondPlayer,
-                                     final EnumMatchResult matchResultSecondPlayer) throws IOException {
+                                                  final Color colorFirstPlayer,
+                                                  final EnumMatchResult matchResultFirstPlayer,
+                                                  final String nameSecondPlayer,
+                                                  final Color colorSecondPlayer,
+                                                  final EnumMatchResult matchResultSecondPlayer) throws IOException {
         if (!file.exists()) {
             file.createNewFile();
         }

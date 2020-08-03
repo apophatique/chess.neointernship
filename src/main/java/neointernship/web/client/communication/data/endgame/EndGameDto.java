@@ -18,10 +18,10 @@ public class EndGameDto implements IEndGame {
     private Color color;
 
     public boolean validate() throws Exception {
-        if (gameState == null){
+        if (gameState == null) {
             throw new DataException(DataErrorCode.NOT_END_GAME);
         }
-        if (color == null){
+        if (color == null) {
             throw new DataException(DataErrorCode.NOT_COLOR);
         }
         return true;

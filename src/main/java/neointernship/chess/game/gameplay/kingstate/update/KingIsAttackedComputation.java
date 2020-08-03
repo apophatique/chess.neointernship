@@ -4,11 +4,9 @@ import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
-import neointernship.chess.game.model.playmap.board.Board;
 import neointernship.chess.game.model.playmap.field.IField;
 
 import java.util.Collection;
-import java.util.Objects;
 
 public final class KingIsAttackedComputation {
     private final IPossibleActionList possibleActionList;
@@ -34,7 +32,7 @@ public final class KingIsAttackedComputation {
         return false;
     }
 
-    public boolean fieldIsAttacked(IField field,Color color) {
+    public boolean fieldIsAttacked(IField field, Color color) {
         Color opponentColor = Color.swapColor(color);
         for (Figure figure : mediator.getFigures(opponentColor)) {
             Collection<IField> collection = possibleActionList.getPotentialList(figure);

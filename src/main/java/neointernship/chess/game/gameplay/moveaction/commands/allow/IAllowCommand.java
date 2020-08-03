@@ -8,7 +8,9 @@ import neointernship.web.client.communication.message.TurnStatus;
 
 public interface IAllowCommand {
     void execute(IAnswer answer);
-    boolean check(final IField startField,final IField finishField);
+
+    boolean check(final IField startField, final IField finishField);
+
     TurnStatus getTurnStatus();
 
     boolean isCorrect(final Color colorFigure, final IPossibleActionList possibleActionList);

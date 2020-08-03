@@ -49,7 +49,7 @@ public class Input implements IInput {
         frame.add(textfield);
         frame.add(askLabel);
         frame.add(button);
-        frame.setBounds(500,250,320,175);
+        frame.setBounds(500, 250, 320, 175);
         frame.setLayout(null);
         frame.setVisible(true);
     }
@@ -62,19 +62,20 @@ public class Input implements IInput {
     }
 
     public Color getColor() throws InterruptedException {
-        Map<String,Color> colorMap = new HashMap<>();
-        colorMap.put("белые",Color.WHITE);
-        colorMap.put("черные",Color.BLACK);
-        colorMap.put("любой",Color.BOTH);
+        Map<String, Color> colorMap = new HashMap<>();
+        colorMap.put("белые", Color.WHITE);
+        colorMap.put("черные", Color.BLACK);
+        colorMap.put("любой", Color.BOTH);
 
         askLabel.setText("Выберите цвет");
 
         String answerColor = getAnswer();
 
-        while (!colorMap.containsKey(answerColor)){
+        while (!colorMap.containsKey(answerColor)) {
             askLabel.setText("белые / черные / любой");
             answerColor = getAnswer();
-        };
+        }
+        ;
 
         Color color = colorMap.get(answerColor);
 
@@ -84,16 +85,16 @@ public class Input implements IInput {
     }
 
     public String getHandShakeAnswer() throws InterruptedException {
-        if(type == PlayerType.BOT){
+        if (type == PlayerType.BOT) {
             askLabel.setText("я играю не мешайте)");
-        }else{
+        } else {
             askLabel.setText("Оппонент найден. Вы готовы?");
             return getAnswer();
         }
         return "";
     }
 
-    public void invise(){
+    public void invise() {
         frame.setVisible(false);
     }
 
@@ -110,9 +111,9 @@ public class Input implements IInput {
     }
 
     public PlayerType getPlayerType() throws InterruptedException {
-        Map<String,PlayerType> typeMap = new HashMap<>();
-        typeMap.put("человек",PlayerType.HUMAN);
-        typeMap.put("бот",PlayerType.BOT);
+        Map<String, PlayerType> typeMap = new HashMap<>();
+        typeMap.put("человек", PlayerType.HUMAN);
+        typeMap.put("бот", PlayerType.BOT);
         askLabel.setText("Кто ты?");
         String answerType = getAnswer();
 
@@ -123,7 +124,7 @@ public class Input implements IInput {
 
         type = typeMap.get(answerType);
 
-        if(type == PlayerType.BOT){
+        if (type == PlayerType.BOT) {
             askLabel.setText("Я жду противника...");
         }
 
@@ -164,13 +165,13 @@ public class Input implements IInput {
         return answer[0];
     }
 
-    public void endGame(final EnumGameState enumGameState,final Color color) throws InterruptedException {
-        if(enumGameState == EnumGameState.MATE){
+    public void endGame(final EnumGameState enumGameState, final Color color) throws InterruptedException {
+        if (enumGameState == EnumGameState.MATE) {
             askLabel.setText("Мат. Победа " + Color.swapColor(color).getMessage());
-        }else {
-            if(enumGameState == EnumGameState.RESIGNATION) {
+        } else {
+            if (enumGameState == EnumGameState.RESIGNATION) {
                 askLabel.setText("Игрок сдался. Победа " + Color.swapColor(color).getMessage());
-            }else {
+            } else {
                 askLabel.setText(enumGameState.getMessage());
             }
         }

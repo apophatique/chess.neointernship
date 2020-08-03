@@ -7,7 +7,7 @@ public class TransformationDto implements ITransformation {
     Character figureChar;
 
     public void validate() throws DataException {
-        if (figureChar == null){
+        if (figureChar == null) {
             throw new DataException(DataErrorCode.NOT_FIGURE_CHAR);
         }
     }

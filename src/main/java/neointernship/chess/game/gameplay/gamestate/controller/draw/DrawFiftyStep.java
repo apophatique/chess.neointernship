@@ -13,13 +13,15 @@ public class DrawFiftyStep implements IDrawController {
     private int countStep;
     private int lastSizeMediator;
 
-    public DrawFiftyStep(IStoryGame storyGame){
+    public DrawFiftyStep(IStoryGame storyGame) {
         this.storyGame = storyGame;
         countStep = 0;
         lastSizeMediator = 32;
     }
+
     /**
      * Правило 50 ходов. Прошло 50 ходов подряд, без вязтия фигуры или хода першки.
+     *
      * @param mediator
      * @return
      */
@@ -28,12 +30,12 @@ public class DrawFiftyStep implements IDrawController {
         final int newSizeMediator = mediator.getFigures().size();
 
         final Figure figure = storyGame.getLastFigureMove();
-        if(figure == null) return false;
+        if (figure == null) return false;
 
-        if(lastSizeMediator == newSizeMediator
+        if (lastSizeMediator == newSizeMediator
                 && figure.getClass() != Pawn.class) {
             countStep++;
-        }else{
+        } else {
             countStep = 0;
             lastSizeMediator = newSizeMediator;
         }

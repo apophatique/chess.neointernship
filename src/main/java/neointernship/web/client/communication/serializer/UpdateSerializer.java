@@ -8,7 +8,8 @@ import neointernship.web.client.communication.data.update.UpdateDto;
 public class UpdateSerializer {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private UpdateSerializer(){}
+    private UpdateSerializer() {
+    }
 
     public static String serialize(final IUpdate update) throws JsonProcessingException {
         return objectMapper.writeValueAsString(update);

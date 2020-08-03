@@ -1,6 +1,5 @@
 package neointernship.chess.game.gameplay.gamestate.controller.draw;
 
-import neointernship.chess.game.gameplay.gamestate.controller.IGameStateController;
 import neointernship.chess.game.gameplay.gamestate.state.GameState;
 import neointernship.chess.game.gameplay.gamestate.state.IGameState;
 import neointernship.chess.game.model.enums.Color;
@@ -33,8 +32,8 @@ public class DrawStateController {
 
 
     public void update() {
-        for(final IDrawController drawController : drawControllers){
-            if(drawController.isDraw(mediator)){
+        for (final IDrawController drawController : drawControllers) {
+            if (drawController.isDraw(mediator)) {
                 actualState = drawController.getState();
             }
         }

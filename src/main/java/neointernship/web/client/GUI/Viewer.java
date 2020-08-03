@@ -2,8 +2,6 @@ package neointernship.web.client.GUI;
 
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.mediator.IMediator;
-import neointernship.chess.game.model.mediator.Mediator;
-import neointernship.chess.game.model.playmap.board.Board;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.web.client.GUI.Input.Input;
 import neointernship.web.client.GUI.board.view.BoardView;

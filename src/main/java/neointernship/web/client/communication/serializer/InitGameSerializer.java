@@ -8,7 +8,8 @@ import neointernship.web.client.communication.data.initgame.InitGameDto;
 public class InitGameSerializer {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private InitGameSerializer(){}
+    private InitGameSerializer() {
+    }
 
     public static String serialize(final IInitGame initGame) throws JsonProcessingException {
         return objectMapper.writeValueAsString(initGame);

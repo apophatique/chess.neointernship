@@ -5,6 +5,8 @@ import neointernship.chess.game.model.enums.Color;
 
 public interface IGameStateController {
     boolean isMatchAlive();
+
     IGameState getState();
+
     void update(final Color color);
 }

@@ -30,7 +30,7 @@ public class TransformationAfterCommand extends AbstractCommand implements IAllo
     }
 
     @Override
-    public boolean check(final IField startField,final IField finishField) {
+    public boolean check(final IField startField, final IField finishField) {
         final Figure startFigure = mediator.getFigure(startField);
         return startFigure.getClass() == Pawn.class && (
                 startField.getXCoord() == board.getSize() - 1 ||

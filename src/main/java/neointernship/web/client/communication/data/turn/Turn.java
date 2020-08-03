@@ -7,7 +7,7 @@ import neointernship.chess.game.model.answer.IAnswer;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("Turn")
-public class Turn implements ITurn{
+public class Turn implements ITurn {
     @JsonProperty
     private final IAnswer answer;
 

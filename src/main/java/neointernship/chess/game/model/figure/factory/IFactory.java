@@ -5,7 +5,6 @@ import neointernship.chess.game.model.figure.piece.Figure;
 
 public interface IFactory {
     /**
-     *
      * @param pieceName
      * @return
      */

@@ -7,7 +7,7 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.communication.message.TurnStatus;
 
-public class MoveCommand extends AbstractCommand implements IAllowCommand{
+public class MoveCommand extends AbstractCommand implements IAllowCommand {
 
 
     public MoveCommand(IBoard board, IMediator mediator) {
@@ -27,7 +27,7 @@ public class MoveCommand extends AbstractCommand implements IAllowCommand{
     }
 
     @Override
-    public boolean check(final IField startField,final IField finishField) {
+    public boolean check(final IField startField, final IField finishField) {
         return true;
     }
 }

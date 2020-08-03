@@ -9,11 +9,17 @@ import neointernship.web.client.communication.message.TurnStatus;
 
 public interface IGameLogger {
     void logStartGame(final String firstPlayerName, final String secondPlayerName);
+
     void logPlayerMoveAction(final Color color, final Figure figure,
                              final IField startField, final IField finalField, final TurnStatus chessCodes);
+
     void logEndGame(final EnumGameState enumGameState);
+
     void logPlayerWrongAction(final Color color, final IField field);
+
     void logPlayerWin(final Color color);
+
     void logStalemate();
-    void logDraw(final IDrawController drawController );
+
+    void logDraw(final IDrawController drawController);
 }

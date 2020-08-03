@@ -11,5 +11,6 @@ import neointernship.chess.game.model.enums.Color;
 })
 public interface IInitInfo {
     String getName();
+
     Color getColor();
 }

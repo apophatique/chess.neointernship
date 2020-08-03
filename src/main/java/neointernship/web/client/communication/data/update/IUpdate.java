@@ -12,5 +12,6 @@ import neointernship.web.client.communication.message.TurnStatus;
 })
 public interface IUpdate {
     IAnswer getAnswer();
+
     TurnStatus getTurnStatus();
 }

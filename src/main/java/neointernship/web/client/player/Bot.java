@@ -91,7 +91,7 @@ public class Bot extends APlayer {
 
     @Override
     public void endGame(final EnumGameState enumGameState, final Color color) throws InterruptedException {
-        input.endGame(enumGameState,color);
+        input.endGame(enumGameState, color);
         boardView.dispose();
     }
 

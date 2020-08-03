@@ -32,6 +32,7 @@ public class TestStory {
         fieldFigureMap = new HashMap<>();
         answerMap = new HashMap<>();
     }
+
     @Test
     public void testGet() {
         IMediator mediator = new Mediator();
@@ -54,7 +55,7 @@ public class TestStory {
     }
 
     @Test
-    public void testUpdate(){
+    public void testUpdate() {
 
         final Figure kingW = new King(Color.WHITE);
         final IField fieldKingW = new Field(7, 4);
@@ -71,33 +72,33 @@ public class TestStory {
         testHeadEnd.doAllowIteration(answer);
 
         assertTrue(result.isMove(kingW));
-        assertEquals(kingW,result.getLastFigureMove());
-        assertEquals(fieldKingW,result.getLastField());
+        assertEquals(kingW, result.getLastFigureMove());
+        assertEquals(fieldKingW, result.getLastField());
     }
 
     @Test
-    public void testCastling(){
+    public void testCastling() {
         final Figure kingW = new King(Color.WHITE);
-        final IField fieldKingW = new Field(7,4);
+        final IField fieldKingW = new Field(7, 4);
         fieldFigureMap.put(fieldKingW, kingW);
 
         final Figure rookW = new Rook(Color.WHITE);
-        final IField fieldRookW = new Field(7,7);
+        final IField fieldRookW = new Field(7, 7);
         fieldFigureMap.put(fieldRookW, rookW);
 
         final Figure kingB = new King(Color.BLACK);
-        final IField fieldKingB = new Field(0,0);
+        final IField fieldKingB = new Field(0, 0);
         fieldFigureMap.put(fieldKingB, kingB);
 
         testHeadEnd = new TestHeadEnd(fieldFigureMap);
 
-        IAnswer answer1 = new Answer(7,4, 6,4, 'Q');
+        IAnswer answer1 = new Answer(7, 4, 6, 4, 'Q');
         IAnswer answer2 = new Answer(0, 0, 0, 1, 'Q');
 
-        IAnswer answer3 = new Answer(6,4, 7,4, 'Q');
+        IAnswer answer3 = new Answer(6, 4, 7, 4, 'Q');
         IAnswer answer4 = new Answer(0, 1, 0, 0, 'Q');
 
-        IAnswer answerMain = new Answer(7,4, 7, 6, 'Q');
+        IAnswer answerMain = new Answer(7, 4, 7, 6, 'Q');
 
         answerMap.put(1, answer1);
         answerMap.put(2, answer2);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class MoreBots {
 
-    public static void main(String[] args)  {
+    public static void main(String[] args) {
 
         int countBot = 2;
 
@@ -14,10 +14,10 @@ public class MoreBots {
         for (int i = 0; i < countBot; i++) {
             controllerBots.add(new ControllerBot(i));
         }
-        for(ControllerBot controllerBot : controllerBots){
+        for (ControllerBot controllerBot : controllerBots) {
             threads.add(new Thread(controllerBot));
         }
-        for (Thread thread : threads){
+        for (Thread thread : threads) {
             thread.start();
         }
     }

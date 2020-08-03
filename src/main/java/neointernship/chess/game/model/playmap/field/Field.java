@@ -1,7 +1,8 @@
 package neointernship.chess.game.model.playmap.field;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import neointernship.chess.game.model.answer.RepositiryChar;
-import com.fasterxml.jackson.annotation.*;
 import neointernship.chess.game.model.enums.Color;
 
 import java.util.Objects;
@@ -24,7 +25,7 @@ public class Field implements IField {
     }
 
     @JsonCreator
-    public Field(final String field){
+    public Field(final String field) {
         final String[] params = field.split(":");
         this.x = Integer.parseInt(params[0].trim());
         this.y = Integer.parseInt(params[1].trim());
@@ -45,9 +46,10 @@ public class Field implements IField {
 
     /**
      * Определяет какой цвет у клетки с координатами (x,y)
+     *
      * @return
      */
-    private Color initColor(){
+    private Color initColor() {
         return (x + y) % 2 == 0 ? Color.WHITE : Color.BLACK;
     }
 

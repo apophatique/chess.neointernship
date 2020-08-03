@@ -1,12 +1,12 @@
 package neointernship.chess.game.gameplay.kingstate.controller;
 
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
+import neointernship.chess.game.gameplay.kingstate.subscriber.IKingStateSubscriber;
 import neointernship.chess.game.gameplay.kingstate.update.KingIsAttackedComputation;
 import neointernship.chess.game.gameplay.kingstate.update.KingStateDefineLogic;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.enums.KingState;
 import neointernship.chess.game.model.mediator.IMediator;
-import neointernship.chess.game.gameplay.kingstate.subscriber.IKingStateSubscriber;
 
 import java.util.ArrayList;
 import java.util.HashMap;

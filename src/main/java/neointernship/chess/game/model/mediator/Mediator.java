@@ -35,9 +35,9 @@ public class Mediator implements IMediator, Cloneable {
 
     public Mediator(final IMediator mediator) {
         this();
-        for (final Figure figure : mediator.getFigures()){
+        for (final Figure figure : mediator.getFigures()) {
             final IField field = mediator.getField(figure);
-            addNewConnection(field,figure);
+            addNewConnection(field, figure);
         }
     }
 
@@ -45,10 +45,10 @@ public class Mediator implements IMediator, Cloneable {
     public Mediator(final String string) {
         this();
         final Factory factory = new Factory();
-        for (final String maps1 : string.split("<")){
-            for (final String maps2: maps1.split(">")) {
+        for (final String maps1 : string.split("<")) {
+            for (final String maps2 : maps1.split(">")) {
                 final String[] maps3 = maps2.split(";");
-                if (maps3.length == 2){
+                if (maps3.length == 2) {
                     final IField field = new Field(maps3[0]);
                     final String[] maps4 = maps3[1].split(":");
                     final Figure figure = factory.createFigure(maps4[1].trim().charAt(0), Color.parseColor(maps4[2].trim()));
@@ -61,7 +61,7 @@ public class Mediator implements IMediator, Cloneable {
     /**
      * Добавление новой связи
      *
-     * @param field поле
+     * @param field  поле
      * @param figure фигура
      */
     @Override
@@ -92,6 +92,7 @@ public class Mediator implements IMediator, Cloneable {
 
     /**
      * Получение фигуры, стоящей на данном поле.
+     *
      * @param field - входящее поле.
      * @return фигура или null.
      */
@@ -109,6 +110,7 @@ public class Mediator implements IMediator, Cloneable {
 
     /**
      * Возвращает все фигуры.
+     *
      * @return колекция фигур или null
      */
     public Collection<Figure> getFigures() {
@@ -117,6 +119,7 @@ public class Mediator implements IMediator, Cloneable {
 
     /**
      * Поиск поля, на котором стоит данная фигура.
+     *
      * @param figure - входимая фигура.
      * @return поле.
      */
@@ -148,7 +151,7 @@ public class Mediator implements IMediator, Cloneable {
     @JsonValue
     public String toString() {
         String string = "";
-        for (final IField field: mediator.keySet()) {
+        for (final IField field : mediator.keySet()) {
             string += "<" + field.toString() + ";" + mediator.get(field).toString() + ">";
         }
         return string;

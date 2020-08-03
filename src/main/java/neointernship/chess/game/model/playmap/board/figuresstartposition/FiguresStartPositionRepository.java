@@ -49,23 +49,24 @@ public class FiguresStartPositionRepository {
         return startPosition;
     }
 
-    private String pawns(){
+    private String pawns() {
         return "PPPPPPPP";
     }
 
-    private String voids(){
+    private String voids() {
         return "................................";
     }
 
-    private String figuresForClassicChess(){
+    private String figuresForClassicChess() {
         return "RNBQKBNR";
     }
 
     /**
      * Метод генерирует строку с расстановкой фигур для игры шахмат Фишера
+     *
      * @return строка расстановки последнего ряда
      */
-    private String figuresForFischerChess(){
+    private String figuresForFischerChess() {
         final Random random = new Random();
         final char[] figures = new char[size];
         int position = Math.abs(random.nextInt() % (size - 1) + 1);
@@ -91,7 +92,8 @@ public class FiguresStartPositionRepository {
         crutch = position;
         positions.remove(position);
 
-        while (!positions.contains(position) || (position - crutch) % 2 == 1 ) position = Math.abs(random.nextInt() % size);
+        while (!positions.contains(position) || (position - crutch) % 2 == 1)
+            position = Math.abs(random.nextInt() % size);
         figures[position % size] = 'B';
         positions.remove(position % size);
 

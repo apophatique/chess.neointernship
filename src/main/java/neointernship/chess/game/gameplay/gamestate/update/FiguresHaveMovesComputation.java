@@ -23,10 +23,10 @@ public class FiguresHaveMovesComputation {
 
         for (Figure figure : mediator.getFigures(color)) {
             Collection<IField> collection = possibleActionList.getRealList(figure);
-                if (!collection.isEmpty()) {
-                    return true;
-                }
+            if (!collection.isEmpty()) {
+                return true;
             }
+        }
         return false;
     }
 }

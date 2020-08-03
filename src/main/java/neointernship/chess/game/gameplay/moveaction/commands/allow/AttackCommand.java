@@ -7,7 +7,7 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.communication.message.TurnStatus;
 
-public class AttackCommand extends AbstractCommand implements IAllowCommand{
+public class AttackCommand extends AbstractCommand implements IAllowCommand {
 
     public AttackCommand(final IBoard board, final IMediator mediator) {
         super(board, mediator);
@@ -27,7 +27,7 @@ public class AttackCommand extends AbstractCommand implements IAllowCommand{
     }
 
     @Override
-    public boolean check(final IField startField,final IField finishField) {
+    public boolean check(final IField startField, final IField finishField) {
         Figure finalFigure = mediator.getFigure(finishField);
         return finalFigure != null;
     }

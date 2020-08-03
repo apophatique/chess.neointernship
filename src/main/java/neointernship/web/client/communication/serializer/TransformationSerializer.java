@@ -8,7 +8,8 @@ import neointernship.web.client.communication.data.transformation.Transformation
 public class TransformationSerializer {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private TransformationSerializer(){}
+    private TransformationSerializer() {
+    }
 
     public static String serialize(final ITransformation transformation) throws JsonProcessingException {
         return objectMapper.writeValueAsString(transformation);

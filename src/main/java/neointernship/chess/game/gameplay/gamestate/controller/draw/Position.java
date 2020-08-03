@@ -15,7 +15,7 @@ public class Position {
 
     public Position(IMediator mediator) {
         this.mediator = new Mediator(mediator);
-        this.possibleActionList = new PossibleActionList(new Board(),this.mediator,new StoryGame(this.mediator));
+        this.possibleActionList = new PossibleActionList(new Board(), this.mediator, new StoryGame(this.mediator));
     }
 
     @Override
@@ -29,6 +29,6 @@ public class Position {
 
     @Override
     public int hashCode() {
-        return Objects.hash(mediator,possibleActionList);
+        return Objects.hash(mediator, possibleActionList);
     }
 }

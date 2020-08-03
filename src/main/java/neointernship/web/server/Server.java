@@ -132,10 +132,10 @@ public class Server implements IServer {
     }
 
     public void setColorInQueue(final UserConnection connection) {
-        switch (connection.getColor()){
+        switch (connection.getColor()) {
             case WHITE:
                 whiteSideWaitingConnectionList.add(connection);
-                if(universalColorConnection != null){
+                if (universalColorConnection != null) {
                     universalColorConnection.setColor(BLACK);
                     blackSideWaitingConnectionList.add(universalColorConnection);
                     universalColorConnection = null;
@@ -143,7 +143,7 @@ public class Server implements IServer {
                 break;
             case BLACK:
                 blackSideWaitingConnectionList.add(connection);
-                if(universalColorConnection != null){
+                if (universalColorConnection != null) {
                     universalColorConnection.setColor(WHITE);
                     whiteSideWaitingConnectionList.add(universalColorConnection);
                     universalColorConnection = null;
@@ -153,7 +153,7 @@ public class Server implements IServer {
                 final boolean whiteIsEmpty = whiteSideWaitingConnectionList.isEmpty();
                 final boolean blackIsEmpty = blackSideWaitingConnectionList.isEmpty();
                 if (whiteIsEmpty && blackIsEmpty) {
-                    if (universalColorConnection == null){
+                    if (universalColorConnection == null) {
                         universalColorConnection = connection;
                     } else {
                         universalColorConnection.setColor(WHITE);

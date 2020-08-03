@@ -8,7 +8,8 @@ import neointernship.web.client.communication.data.initinfo.InitInfoDto;
 public class InfoSerializer {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private InfoSerializer(){}
+    private InfoSerializer() {
+    }
 
     public static String serialize(final IInitInfo name) throws JsonProcessingException {
         return objectMapper.writeValueAsString(name);

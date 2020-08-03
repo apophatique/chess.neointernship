@@ -1,14 +1,13 @@
 package neointernship.chess.game.gameplay.moveaction.movesrepository;
 
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
-import neointernship.chess.game.gameplay.moveaction.commands.allow.AllowMoveCommand;
 import neointernship.chess.game.gameplay.moveaction.commands.IMoveCommand;
 import neointernship.chess.game.gameplay.moveaction.commands.RestrictMoveCommand;
+import neointernship.chess.game.gameplay.moveaction.commands.allow.AllowMoveCommand;
 import neointernship.chess.game.model.enums.MoveState;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.story.IStoryGame;
-import neointernship.chess.logger.IGameLogger;
 
 import java.util.HashMap;
 
@@ -22,7 +21,7 @@ public class MovesRepository {
                            final IBoard board,
                            final IStoryGame storyGame) {
 
-        allowMoveCommand = new AllowMoveCommand(mediator, possibleActionList, board,storyGame);
+        allowMoveCommand = new AllowMoveCommand(mediator, possibleActionList, board, storyGame);
         restrictCommand = new RestrictMoveCommand(mediator, possibleActionList, board);
 
         actionCommandMap = new HashMap<MoveState, IMoveCommand>() {

@@ -10,7 +10,7 @@ import java.io.IOException;
 public class ErrorLoggerServer {
     private static Logger logger;
 
-    private ErrorLoggerServer(){
+    private ErrorLoggerServer() {
         logger = Logger.getLogger(ErrorLoggerServer.class);
 
         try {

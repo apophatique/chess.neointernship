@@ -25,7 +25,7 @@ public class ChessCodesReaction {
         chessCodesReaction.put(TurnStatus.TRANSFORMATION_BEFORE, new TransformationBeforeCommand(board, mediator));
     }
 
-    public IAllowCommand get(final TurnStatus turnStatus){
+    public IAllowCommand get(final TurnStatus turnStatus) {
         return chessCodesReaction.get(turnStatus);
     }
 }

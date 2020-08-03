@@ -24,7 +24,7 @@ public class GameProcessController implements IGameProcessController {
                                  final IBoard board,
                                  final IStoryGame storyGame) {
 
-        movesRepository = new MovesRepository(mediator, possibleActionList, board,storyGame);
+        movesRepository = new MovesRepository(mediator, possibleActionList, board, storyGame);
         moveCorrectnessValidator = new MoveCorrectnessValidator(mediator, possibleActionList, board);
     }
 

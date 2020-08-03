@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestFactoty {
     @Test
-    public void testCreateBishop(){
+    public void testCreateBishop() {
 
         IFactory factory = new Factory();
         Figure figure = factory.createFigure('B', Color.WHITE);
@@ -20,23 +20,24 @@ public class TestFactoty {
         assertEquals(figure.getClass(), Bishop.class);
         Bishop bishop = (Bishop) figure;
 
-        assertEquals(bishop.getName(),"Bishop");
-        assertEquals(bishop.getGameSymbol(),'B');
-        assertEquals(bishop.getColor(),Color.WHITE);
-        assertEquals(bishop.getPrice(),(short) 3);
+        assertEquals(bishop.getName(), "Bishop");
+        assertEquals(bishop.getGameSymbol(), 'B');
+        assertEquals(bishop.getColor(), Color.WHITE);
+        assertEquals(bishop.getPrice(), (short) 3);
 
     }
+
     @Test
-    public void testCreateKing(){
+    public void testCreateKing() {
 
         IFactory factory = new Factory();
         Figure figure = factory.createFigure('K', Color.BLACK);
 
         assertEquals(figure.getClass(), King.class);
 
-        assertEquals(figure.getName(),"King");
-        assertEquals(figure.getGameSymbol(),'K');
-        assertEquals(figure.getColor(),Color.BLACK);
-        assertEquals(figure.getPrice(),Short.MAX_VALUE);
+        assertEquals(figure.getName(), "King");
+        assertEquals(figure.getGameSymbol(), 'K');
+        assertEquals(figure.getColor(), Color.BLACK);
+        assertEquals(figure.getPrice(), Short.MAX_VALUE);
     }
 }

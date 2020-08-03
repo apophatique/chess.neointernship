@@ -1,7 +1,6 @@
 package neointernship.chess.game.story;
 
 import neointernship.chess.game.model.figure.piece.Figure;
-import neointernship.chess.game.model.figure.piece.Pawn;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.field.IField;
 
@@ -23,6 +22,7 @@ public class StoryGame implements IStoryGame {
         this.hoIsMove = new HashSet<>();
 
     }
+
     public StoryGame(StoryGame storyGame) {
         this.mediator = storyGame.mediator;
         this.hoIsMove = new HashSet<>();

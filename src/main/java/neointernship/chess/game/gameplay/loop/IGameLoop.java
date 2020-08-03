@@ -6,6 +6,8 @@ import neointernship.web.client.communication.message.TurnStatus;
 
 public interface IGameLoop {
     TurnStatus doIteration(final IAnswer answer);
+
     boolean isAlive();
+
     IGameState getMatchResult();
 }

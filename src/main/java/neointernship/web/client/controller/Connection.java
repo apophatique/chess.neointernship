@@ -25,7 +25,7 @@ public class Connection {
         do {
             try {
                 socket = new Socket(ip, port);
-               // System.out.println(String.format("Client started, ip: %s, port: %d", ip, port));
+                // System.out.println(String.format("Client started, ip: %s, port: %d", ip, port));
             } catch (final IOException e) {
 //                System.err.println("Socket failed");
             }

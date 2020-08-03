@@ -8,7 +8,8 @@ import neointernship.web.client.communication.data.turn.TurnDto;
 public class AnswerSerializer {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    private AnswerSerializer(){}
+    private AnswerSerializer() {
+    }
 
     public static String serialize(final ITurn turn) throws JsonProcessingException {
         return objectMapper.writeValueAsString(turn);

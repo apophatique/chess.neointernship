@@ -13,6 +13,8 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 })
 public interface IInitGame {
     IMediator getMediator();
+
     IBoard getBoard();
+
     Color getColor();
 }

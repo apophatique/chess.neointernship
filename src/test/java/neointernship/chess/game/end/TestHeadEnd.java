@@ -52,7 +52,8 @@ public class TestHeadEnd {
         printer = new ConsoleBoardWriter(mediator, board);
         activeColorController.update();
     }
-    public void updateList(){
+
+    public void updateList() {
         possibleActionList.updateRealLists();
     }
 
@@ -88,7 +89,7 @@ public class TestHeadEnd {
         }
     }
 
-    public IStoryGame getStoryGame(){
+    public IStoryGame getStoryGame() {
         return storyGame;
     }
 

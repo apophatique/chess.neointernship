@@ -16,10 +16,10 @@ public abstract class Figure {
     /**
      * Конструктор фигуры
      *
-     * @param name название фигуры
+     * @param name       название фигуры
      * @param gameSymbol символ фигуры в игре
-     * @param color цвет
-     * @param price ценность
+     * @param color      цвет
+     * @param price      ценность
      */
     public Figure(final String name, final Character gameSymbol, final Color color, final short price) {
         this.name = name;

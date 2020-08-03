@@ -14,7 +14,7 @@ public class TurnDto implements ITurn {
     private IAnswer answer;
 
     public boolean validate() throws Exception {
-        if (answer == null){
+        if (answer == null) {
             throw new DataException(DataErrorCode.NOT_ANSWER);
         }
         return true;

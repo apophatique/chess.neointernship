@@ -61,7 +61,7 @@ public class Controller {
             player = new Player(color, name, input);
         } else {
             name = "random bot";
-            player = new Bot(Color.BOTH, name,input);
+            player = new Bot(Color.BOTH, name, input);
         }
 
         ErrorLoggerClient.addLogger(name);
