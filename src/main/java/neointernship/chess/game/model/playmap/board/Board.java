@@ -1,12 +1,22 @@
 package neointernship.chess.game.model.playmap.board;
 
-import neointernship.chess.game.model.playmap.field.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import neointernship.chess.game.model.playmap.field.Field;
+import neointernship.chess.game.model.playmap.field.IField;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public class Board implements IBoard {
 
+    @JsonProperty
     private static final short BOARD_SIZE = 8;
+    @JsonProperty
     private IField[][] fieldMatrix;
 
+    @JsonCreator
     public Board() {
         initializeBoard();
     }

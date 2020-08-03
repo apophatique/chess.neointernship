@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class TestFactoty {
     @Test
     public void testCreateBishop(){
@@ -39,6 +38,5 @@ public class TestFactoty {
         assertEquals(figure.getGameSymbol(),'K');
         assertEquals(figure.getColor(),Color.BLACK);
         assertEquals(figure.getPrice(),Short.MAX_VALUE);
-
     }
 }

@@ -1,9 +1,9 @@
 package neointernship.chess.game.gameplay.moveaction.commands;
 
 import neointernship.chess.game.model.answer.IAnswer;
-import neointernship.chess.game.model.player.IPlayer;
-import neointernship.chess.logger.IGameLogger;
+import neointernship.chess.game.model.enums.Color;
+import neointernship.web.client.communication.message.TurnStatus;
 
 public interface IMoveCommand {
-    boolean execute(IPlayer player, IAnswer answer, IGameLogger gameLogger);
+    TurnStatus execute(final IAnswer answer);
 }

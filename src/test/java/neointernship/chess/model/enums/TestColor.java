@@ -3,6 +3,9 @@ package neointernship.chess.model.enums;
 import neointernship.chess.game.model.enums.Color;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.Assert.assertEquals;
 
 public class TestColor {
@@ -20,4 +23,13 @@ public class TestColor {
         Color expected = Color.WHITE;
         assertEquals(expected,result);
     }
+    @Test
+    public void equals(){
+        Set<Color> colorSet = new HashSet<>();
+        colorSet.add(Color.WHITE);
+        colorSet.add(Color.BLACK);
+
+        assertEquals(2,colorSet.size());
+    }
+
 }

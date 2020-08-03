@@ -1,9 +1,16 @@
 package neointernship.chess.game.model.mediator;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import neointernship.chess.game.model.enums.Color;
+import neointernship.chess.game.model.figure.factory.Factory;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.figure.piece.King;
+import neointernship.chess.game.model.playmap.field.Field;
 import neointernship.chess.game.model.playmap.field.IField;
+import neointernship.web.client.communication.serializer.field.FieldDeserializer;
+import neointernship.web.client.communication.serializer.field.FieldSerializer;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -11,22 +18,45 @@ import java.util.stream.Collectors;
 /**
  * Связка клетка-фигура.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeName("Mediator")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 public class Mediator implements IMediator, Cloneable {
 
-    private HashMap<IField, Figure> mediator;
+    @JsonProperty
+    @JsonSerialize(keyUsing = FieldSerializer.class)
+    @JsonDeserialize(keyUsing = FieldDeserializer.class)
+    private final HashMap<IField, Figure> mediator;
 
+    @JsonCreator
     public Mediator() {
         mediator = new HashMap<>();
     }
 
-    public Mediator(IMediator mediator) {
+    public Mediator(final IMediator mediator) {
         this();
-        for (Figure figure : mediator.getFigures()){
-            IField field = mediator.getField(figure);
+        for (final Figure figure : mediator.getFigures()){
+            final IField field = mediator.getField(figure);
             addNewConnection(field,figure);
         }
     }
 
+    @JsonCreator
+    public Mediator(final String string) {
+        this();
+        final Factory factory = new Factory();
+        for (final String maps1 : string.split("<")){
+            for (final String maps2: maps1.split(">")) {
+                final String[] maps3 = maps2.split(";");
+                if (maps3.length == 2){
+                    final IField field = new Field(maps3[0]);
+                    final String[] maps4 = maps3[1].split(":");
+                    final Figure figure = factory.createFigure(maps4[1].trim().charAt(0), Color.parseColor(maps4[2].trim()));
+                    this.addNewConnection(field, figure);
+                }
+            }
+        }
+    }
 
     /**
      * Добавление новой связи
@@ -45,18 +75,13 @@ public class Mediator implements IMediator, Cloneable {
     }
 
     @Override
-    public void updateConnection(IField field, Figure figure) {
-        mediator.replace(field, figure);
-    }
-
-    @Override
     public void clear() {
         mediator.clear();
     }
 
     @Override
-    public Figure getKing(Color color) {
-        for (Figure figure : mediator.values()) {
+    public Figure getKing(final Color color) {
+        for (final Figure figure : mediator.values()) {
             if (figure.getClass().equals(King.class) && figure.getColor() == color) {
                 return figure;
             }
@@ -75,7 +100,7 @@ public class Mediator implements IMediator, Cloneable {
     }
 
     @Override
-    public Collection<Figure> getFigures(Color color) {
+    public Collection<Figure> getFigures(final Color color) {
         return getFigures()
                 .stream()
                 .filter(f -> f.getColor() == color)
@@ -96,9 +121,9 @@ public class Mediator implements IMediator, Cloneable {
      * @return поле.
      */
     public IField getField(final Figure figure) {
-        Set<Map.Entry<IField, Figure>> entrySet = mediator.entrySet();
+        final Set<Map.Entry<IField, Figure>> entrySet = mediator.entrySet();
 
-        for (Map.Entry<IField, Figure> pair : entrySet) {
+        for (final Map.Entry<IField, Figure> pair : entrySet) {
             if (Objects.equals(figure, pair.getValue())) {
                 return pair.getKey();
             }
@@ -107,7 +132,25 @@ public class Mediator implements IMediator, Cloneable {
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Mediator mediator1 = (Mediator) o;
+        return Objects.equals(mediator, mediator1.mediator);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mediator);
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        String string = "";
+        for (final IField field: mediator.keySet()) {
+            string += "<" + field.toString() + ";" + mediator.get(field).toString() + ">";
+        }
+        return string;
     }
 }

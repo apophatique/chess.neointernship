@@ -6,5 +6,4 @@ public class Queen extends Figure {
     public Queen(Color color) {
         super("Queen", 'Q', color, (short) 8);
     }
-
 }

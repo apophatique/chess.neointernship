@@ -1,7 +1,5 @@
 package neointernship.chess.game.console;
 
-import neointernship.chess.game.gameplay.gamestate.state.GameState;
-import neointernship.chess.game.model.enums.EnumGameState;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
@@ -22,10 +20,14 @@ public class ConsoleBoardWriter implements IConsoleBoardWriter {
         final String ANSI_BLACK = "\u001B[30m";
         final String ANSI_WHITE = "\u001B[37m";
 
-        System.out.format("%6d%5d%5d%5d%5d%5d%5d%5d\n\n", 0, 1, 2, 3, 4, 5, 6, 7);
+        System.out.format("%7c%5c%5c%5c%5c%5c%5c%5c\n", 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
+        for (int i = 0; i < 46; i++) {
+            System.out.print('-');
+        }
+        System.out.println();
 
         for (int i = 0; i < boardSize; i++) {
-            System.out.format("%d", i);
+            System.out.format("%d|", boardSize - i);
             for (int j = 0; j < boardSize; j++) {
                 final IField currentField = board.getField(i, j);
                 if (mediator.getFigure(currentField) == null) {
@@ -45,11 +47,13 @@ public class ConsoleBoardWriter implements IConsoleBoardWriter {
                     }
                 }
             }
+            System.out.format("   |%d", boardSize - i);
             System.out.print("\n\n");
         }
-    }
-
-    @Override
-    public void printMatchResult(final GameState gameState) {
+        for (int i = 0; i < 46; i++) {
+            System.out.print('-');
+        }
+        System.out.println();
+        System.out.format("%7c%5c%5c%5c%5c%5c%5c%5c\n", 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
     }
 }

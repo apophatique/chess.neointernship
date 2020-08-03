@@ -36,15 +36,9 @@ public class FiguresStartPositionRepository {
         final Character[][] startPosition = new Character[size][size];
 
         String board = "";
-        final String firstLine;
+        final String firstLine = chessType == ChessType.CLASSIC ? figuresForClassicChess() : figuresForFischerChess();
 
-        if (chessType == ChessType.CLASSIC) {
-            firstLine = figuresForClassicChess();
-            board = firstLine + pawns() + voids() + pawns() + firstLine;
-        } else if (chessType == ChessType.FISCHER){
-            firstLine = figuresForFischerChess();
-            board = firstLine + pawns() + voids() + pawns() + firstLine;
-        }
+        board = firstLine + pawns() + voids() + pawns() + firstLine;
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
@@ -52,7 +46,7 @@ public class FiguresStartPositionRepository {
             }
         }
 
-        return startPosition; // todo
+        return startPosition;
     }
 
     private String pawns(){

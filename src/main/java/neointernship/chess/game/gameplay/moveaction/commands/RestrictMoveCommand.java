@@ -2,10 +2,10 @@ package neointernship.chess.game.gameplay.moveaction.commands;
 
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.model.answer.IAnswer;
+import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.mediator.IMediator;
-import neointernship.chess.game.model.player.IPlayer;
 import neointernship.chess.game.model.playmap.board.IBoard;
-import neointernship.chess.logger.IGameLogger;
+import neointernship.web.client.communication.message.TurnStatus;
 
 public class RestrictMoveCommand implements IMoveCommand {
     private final IMediator mediator;
@@ -18,12 +18,11 @@ public class RestrictMoveCommand implements IMoveCommand {
         this.mediator = mediator;
         this.possibleActionList = possibleActionList;
         this.board = board;
+
     }
 
     @Override
-    public boolean execute(IPlayer player, IAnswer answer, IGameLogger gameLogger) {
-        System.out.println("Move is not Valid (?!)");
-
-        return false;
+    public TurnStatus execute(final IAnswer answer) {
+        return TurnStatus.ERROR;
     }
 }

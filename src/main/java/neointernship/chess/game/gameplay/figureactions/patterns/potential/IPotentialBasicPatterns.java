@@ -10,9 +10,9 @@ public interface IPotentialBasicPatterns {
 
     ArrayList<IField> getHorizonVerticalFields(final Figure figure);
 
-    ArrayList<IField> getKnightFields(final Figure figure);
+    ArrayList<IField> getKnightFields(final Figure knight);
 
-    ArrayList<IField> getPawnFields(final Figure figure);
+    ArrayList<IField> getPawnFields(final Figure pawn);
 
-    ArrayList<IField> getKingFields(final Figure figure);
+    ArrayList<IField> getKingFields(final Figure king);
 }

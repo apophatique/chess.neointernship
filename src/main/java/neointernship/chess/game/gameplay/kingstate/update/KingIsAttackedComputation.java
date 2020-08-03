@@ -31,7 +31,17 @@ public final class KingIsAttackedComputation {
                 return true;
             }
         }
+        return false;
+    }
 
+    public boolean fieldIsAttacked(IField field,Color color) {
+        Color opponentColor = Color.swapColor(color);
+        for (Figure figure : mediator.getFigures(opponentColor)) {
+            Collection<IField> collection = possibleActionList.getPotentialList(figure);
+            if (collection.contains(field)) {
+                return true;
+            }
+        }
         return false;
     }
 }

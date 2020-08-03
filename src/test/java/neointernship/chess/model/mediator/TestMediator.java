@@ -1,5 +1,6 @@
 package neointernship.chess.model.mediator;
 
+import neointernship.chess.game.gameplay.gamestate.controller.draw.Position;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Bishop;
 import neointernship.chess.game.model.figure.piece.Figure;
@@ -8,15 +9,12 @@ import neointernship.chess.game.model.figure.piece.Queen;
 import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.field.Field;
 import neointernship.chess.game.model.playmap.field.IField;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Collection;
+import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestMediator {
 
@@ -26,8 +24,8 @@ public class TestMediator {
     private static Figure figureB;
     private static Figure figureQ;
 
-    @BeforeClass
-    public static void init(){
+    @Before
+    public void init(){
         mediator = new Mediator();
 
         fieldB = new Field(0,0);
@@ -40,8 +38,8 @@ public class TestMediator {
         mediator.addNewConnection(fieldQ,figureQ);
     }
 
-    @AfterClass
-    public static void clear(){
+    @After
+    public void clear(){
         mediator.clear();
     }
 
@@ -90,6 +88,45 @@ public class TestMediator {
         assertEquals(1,mediator.getFigures().size());
         assertEquals(1,mediator.getFigures(Color.WHITE).size());
         assertEquals(0,mediator.getFigures(Color.BLACK).size());
+    }
+
+    @Test
+    public void testEqualsMediator(){
+
+        HashMap<Position,Integer> map = new HashMap<>();
+
+
+        Mediator newMediator = new Mediator(mediator);
+        assertEquals(mediator, newMediator);
+
+        Position position = new Position(mediator);
+
+        assertNull(map.get(position));
+        map.put(position,1);
+
+        Position newPosition = new Position(newMediator);
+        assertNotNull(map.get(newPosition));
+        map.put(newPosition,2);
+
+        assertEquals(position,newPosition);
+
+        newMediator.deleteConnection(fieldQ);
+        newMediator.addNewConnection(fieldQ,figureQ);
+
+        Position copyPosition = new Position(newMediator);
+
+
+        assertEquals(mediator, newMediator);
+        assertEquals(position,copyPosition);
+
+        assertNotNull(map.get(copyPosition));
+
+        assertEquals(1,map.size());
+
+    }
+    @Test
+    public void testEqualsPosition(){
+
     }
 }
 
