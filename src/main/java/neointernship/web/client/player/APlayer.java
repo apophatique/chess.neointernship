@@ -15,7 +15,7 @@ import neointernship.web.client.communication.message.TurnStatus;
 
 public abstract class APlayer {
     protected IMediator mediator;
-    private IBoard board;
+    protected IBoard board;
     private Color color;
     protected IStoryGame storyGame;
     private final String name;

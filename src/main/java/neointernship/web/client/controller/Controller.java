@@ -8,8 +8,9 @@ import neointernship.web.client.communication.message.MessageDto;
 import neointernship.web.client.communication.message.ModelMessageReaction;
 import neointernship.web.client.communication.serializer.MessageSerializer;
 import neointernship.web.client.player.APlayer;
-import neointernship.web.client.player.RandomBot;
-import neointernship.web.client.player.Player;
+import neointernship.web.client.player.bot.ai.ArtificialIntelligenceBot;
+import neointernship.web.client.player.bot.random.RandomBot;
+import neointernship.web.client.player.human.Player;
 import neointernship.web.client.player.PlayerType;
 
 import java.io.*;
@@ -59,9 +60,12 @@ public class Controller {
             name = input.getUserName().trim();
             final Color color = input.getColor();
             player = new Player(color, name, input);
+        } else if (playerType == PlayerType.AI_BOT) {
+            name = "AI-Bot";
+            player = new ArtificialIntelligenceBot(Color.BLACK, name, 2, input);
         } else {
-            name = "random bot";
-            player = new RandomBot(Color.BOTH, name, input);
+            name = "Random bot";
+            player = new RandomBot(Color.WHITE, name, input);
         }
 
         ErrorLoggerClient.addLogger(name);

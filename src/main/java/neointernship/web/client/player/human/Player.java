@@ -1,4 +1,4 @@
-package neointernship.web.client.player;
+package neointernship.web.client.player.human;
 
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
@@ -10,6 +10,7 @@ import neointernship.web.client.GUI.Input.Input;
 import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;
+import neointernship.web.client.player.APlayer;
 
 import java.util.Arrays;
 import java.util.List;
