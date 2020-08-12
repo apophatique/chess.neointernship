@@ -1,7 +1,8 @@
-package neointernship.web.client.player;
+package neointernship.web.client.player.bot.random;
 
 import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
+import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.enums.EnumGameState;
 import neointernship.chess.game.model.figure.piece.Figure;
@@ -9,34 +10,47 @@ import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.GUI.Input.IInput;
+import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
+import neointernship.web.client.communication.message.TurnStatus;
+import neointernship.web.client.player.APlayer;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class SimpleBot extends APlayer {
-    private final IBoard board;
-    private final IMediator mediator;
-    private final IPossibleActionList possibleActionList;
-
+public class RandomBot extends APlayer {
+    private BoardView boardView;
+    private IPossibleActionList possibleActionList;
     private final Random random;
-
     private final IInput input;
 
-    public SimpleBot(IBoard board, IMediator mediator, PossibleActionList list, Color color, String name,final IInput input) {
+    public RandomBot(final Color color, final String name, final IInput input) {
         super(color, name);
-        this.board = board;
-        this.mediator = mediator;
-        this.possibleActionList = list;
-
         this.random = new Random();
-
         this.input = input;
+    }
+
+    public void init(final IMediator mediator, final IBoard board, final Color color) {
+        super.init(mediator, board, color);
+        this.possibleActionList = new PossibleActionList(board, mediator, storyGame);
+
+        this.boardView = new BoardView(mediator, board);
+        if (!input.isVoid()) boardView.display();
+    }
+
+    @Override
+    public void updateMediator(final IAnswer answer, final TurnStatus turnStatus) throws InterruptedException {
+        super.updateMediator(answer, turnStatus);
+        if (!input.isVoid()) {
+            boardView.update();
+            boardView.display();
+        }
     }
 
     @Override
     public String getAnswer() {
+
         final List<Figure> figures = (List<Figure>) mediator.getFigures(getColor());
         List<IField> fields;
         Figure figure;
@@ -46,6 +60,8 @@ public class SimpleBot extends APlayer {
         final List<Character> integers = Arrays.asList('8', '7', '6', '5', '4', '3', '2', '1');
         final List<Character> chars = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
 
+        possibleActionList.updateRealLists();
+
         do {
             index = random.nextInt(figures.size());
             figure = figures.get(index);
@@ -53,32 +69,30 @@ public class SimpleBot extends APlayer {
         } while (fields.isEmpty());
 
         index = random.nextInt(fields.size());
-        final IField finishField = fields.get(index);
+        final IField finalField = fields.get(index);
 
         final IField startField = mediator.getField(figure);
 
         turn += turn + chars.get(startField.getYCoord()) + integers.get(startField.getXCoord()) + "-" +
-                chars.get(finishField.getYCoord()) + integers.get(finishField.getXCoord());
+                chars.get(finalField.getYCoord()) + integers.get(finalField.getXCoord());
 
         return turn;
     }
 
     @Override
-    public char getTransformation() throws InterruptedException {
+    public char getTransformation() {
         return 'Q';
     }
 
     @Override
     public ClientCodes getHandShakeAnswer() throws InterruptedException {
+        input.getHandShakeAnswer();
         return ClientCodes.YES;
     }
 
     @Override
-    public void endGame(EnumGameState enumGameState, Color color) {
-        try {
-            input.endGame(enumGameState,color);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void endGame(final EnumGameState enumGameState, final Color color) throws InterruptedException {
+        input.endGame(enumGameState, color);
+        boardView.dispose();
     }
 }

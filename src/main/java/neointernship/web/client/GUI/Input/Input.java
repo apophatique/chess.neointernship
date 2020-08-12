@@ -85,7 +85,7 @@ public class Input implements IInput {
     }
 
     public String getHandShakeAnswer() throws InterruptedException {
-        if (type == PlayerType.BOT) {
+        if (type != PlayerType.HUMAN) {
             askLabel.setText("я играю не мешайте)");
         } else {
             askLabel.setText("Оппонент найден. Вы готовы?");
@@ -112,8 +112,9 @@ public class Input implements IInput {
 
     public PlayerType getPlayerType() throws InterruptedException {
         Map<String, PlayerType> typeMap = new HashMap<>();
-        typeMap.put("человек", PlayerType.HUMAN);
-        typeMap.put("бот", PlayerType.BOT);
+        typeMap.put("Human", PlayerType.HUMAN);
+        typeMap.put("AI", PlayerType.AI_BOT);
+        typeMap.put("Random", PlayerType.RANDOM_BOT);
         askLabel.setText("Кто ты?");
         String answerType = getAnswer();
 
@@ -124,7 +125,7 @@ public class Input implements IInput {
 
         type = typeMap.get(answerType);
 
-        if (type == PlayerType.BOT) {
+        if (type == PlayerType.AI_BOT || type == PlayerType.RANDOM_BOT) {
             askLabel.setText("Я жду противника...");
         }
 

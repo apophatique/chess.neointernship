@@ -32,10 +32,10 @@ public class ErrorLoggerClient {
     }
 
     public void logException(final Exception exception) {
-        logger.warn(exception, exception.fillInStackTrace());
+       // logger.warn(exception, exception.fillInStackTrace());
     }
 
     public void logError(final Error error) {
-        logger.error(error, error.fillInStackTrace());
+      //  logger.error(error, error.fillInStackTrace());
     }
 }
