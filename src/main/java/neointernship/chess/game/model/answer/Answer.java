@@ -57,4 +57,15 @@ public class Answer implements IAnswer {
     public char getSimbol() {
         return simbol;
     }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "startX=" + startX +
+                ", startY=" + startY +
+                ", finalX=" + finalX +
+                ", finalY=" + finalY +
+                ", simbol=" + simbol +
+                '}';
+    }
 }

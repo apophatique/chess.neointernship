@@ -9,7 +9,7 @@ import neointernship.web.client.communication.message.ModelMessageReaction;
 import neointernship.web.client.communication.serializer.MessageSerializer;
 import neointernship.web.client.controller.Connection;
 import neointernship.web.client.player.APlayer;
-import neointernship.web.client.player.RandomBot;
+import neointernship.web.client.player.bot.random.RandomBot;
 
 import java.io.*;
 import java.net.Socket;
