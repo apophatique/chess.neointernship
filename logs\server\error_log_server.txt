@@ -1,0 +1,3 @@
+2020-08-19 05:16:58  WARN  ErrorLoggerServer:java.lang.NullPointerException
+	at neointernship.chess.logger.ErrorLoggerServer.logException(ErrorLoggerServer.java:27)
+	at neointernship.web.server.lobby.Lobby.run(Lobby.java:222)

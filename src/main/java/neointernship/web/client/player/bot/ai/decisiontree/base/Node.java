@@ -1,10 +1,12 @@
 package neointernship.web.client.player.bot.ai.decisiontree.base;
 
+import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.story.IStoryGame;
+import neointernship.web.client.player.bot.ai.possibleactionlist.IAIPossibleActionList;
 
 public class Node {
     private final IMediator mediator;
@@ -58,4 +60,5 @@ public class Node {
     public Color getActiveColor() {
         return activeColor;
     }
+
 }

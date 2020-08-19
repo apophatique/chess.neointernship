@@ -8,6 +8,9 @@ import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.playmap.field.IField;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes({
@@ -30,6 +33,4 @@ public interface IMediator {
     void deleteConnection(final IField field);
 
     void clear();
-
-
 }

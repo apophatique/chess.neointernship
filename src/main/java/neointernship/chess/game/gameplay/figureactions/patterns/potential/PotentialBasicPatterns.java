@@ -9,6 +9,7 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.Field;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
+import neointernship.web.client.player.bot.ai.possibleactionlist.barier.FigureMoveBarrier;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,7 +20,9 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
     private final IBoard board;
     private final IStoryGame storyGame;
 
-    public PotentialBasicPatterns(final IMediator mediator, final IBoard board, final IStoryGame storyGame) {
+    public PotentialBasicPatterns(final IMediator mediator,
+                                  final IBoard board,
+                                  final IStoryGame storyGame) {
         this.mediator = mediator;
         this.board = board;
         boardSize = board.getSize();

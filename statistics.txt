@@ -1,0 +1,12 @@
+#name: s
+#white: /0/1/0/
+#black: /0/0/0/
+
+#name: Random bot
+#white: /1/1/1/
+#black: /0/0/0/
+
+#name: AI-Bot
+#white: /0/0/0/
+#black: /1/2/1/
+
