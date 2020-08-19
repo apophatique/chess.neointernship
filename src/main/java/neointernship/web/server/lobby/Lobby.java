@@ -192,12 +192,6 @@ public class Lobby extends Thread {
 
             do {
                 try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                try {
                     final BufferedWriter out = connection.getOut();
                     final IMessage message = new Message(ClientCodes.TURN);
                     send(out, MessageSerializer.serialize(message));

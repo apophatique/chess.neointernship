@@ -5,19 +5,19 @@ import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.enums.EnumGameState;
+import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
+import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.GUI.Input.IInput;
 import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;
 import neointernship.web.client.player.APlayer;
 import neointernship.web.client.player.bot.ai.decisiontree.DecisionTreeCreator;
-import neointernship.web.client.player.bot.ai.decisiontree.base.Node;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class ArtificialIntelligenceBot extends APlayer {
     private BoardView boardView;
@@ -27,12 +27,11 @@ public class ArtificialIntelligenceBot extends APlayer {
     private final String name;
     private final int recursionDepth;
     private final DecisionTreeCreator decisionTreeCreator;
-    private IPossibleActionList possibleActionList;
-
 
     public ArtificialIntelligenceBot(final Color color,
                                      final String name,
-                                     final int recursionDepth, final IInput input) {
+                                     final int recursionDepth,
+                                     final IInput input) {
         super(color, name);
         this.input = input;
 
@@ -46,7 +45,7 @@ public class ArtificialIntelligenceBot extends APlayer {
     @Override
     public void init(final IMediator mediator, final IBoard board, final Color color) {
         super.init(mediator, board, color);
-        this.possibleActionList = new PossibleActionList(board, mediator, storyGame);
+
 
         this.boardView = new BoardView(mediator, board);
         if (!input.isVoid()) boardView.display();
@@ -80,13 +79,15 @@ public class ArtificialIntelligenceBot extends APlayer {
 
     @Override
     public String getAnswer() {
-        System.out.println("Get Answer");
         final List<Character> integers = Arrays.asList('8', '7', '6', '5', '4', '3', '2', '1');
         final List<Character> chars = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
 
-        decisionTreeCreator.createNewTree(mediator, board, storyGame, recursionDepth);
-        final Node node = decisionTreeCreator.getTree().getRoot().getChild();
-        final IAnswer answer = node.getAnswerToGet();
+        final IAnswer answer = decisionTreeCreator.getDecision(
+                mediator,
+                board,
+                storyGame,
+                recursionDepth
+        );
 
         String turn = "";
         turn += turn + chars.get(answer.getStartY()) + integers.get(answer.getStartX()) + "-" +

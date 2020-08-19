@@ -1,0 +1,2489 @@
+Index: src/main/java/neointernship/chess/game/gameplay/loop/GameLoop.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.loop;\n\nimport neointernship.chess.game.console.ConsoleBoardWriter;\nimport neointernship.chess.game.console.IConsoleBoardWriter;\nimport neointernship.chess.game.gameplay.activecolorcontroller.IActiveColorController;\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.gameplay.gameprocesscontroller.GameProcessController;\nimport neointernship.chess.game.gameplay.gameprocesscontroller.IGameProcessController;\nimport neointernship.chess.game.gameplay.gamestate.controller.GameStateController;\nimport neointernship.chess.game.gameplay.gamestate.controller.IGameStateController;\nimport neointernship.chess.game.gameplay.gamestate.controller.draw.DrawController;\nimport neointernship.chess.game.gameplay.gamestate.state.IGameState;\nimport neointernship.chess.game.gameplay.kingstate.controller.IKingStateController;\nimport neointernship.chess.game.gameplay.kingstate.controller.KingsStateController;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.subscriber.ISubscriber;\nimport neointernship.chess.game.story.IStoryGame;\nimport neointernship.web.client.communication.message.ChessCodes;\n\n/**\n * Класс, реализующий основное ядро игры (игровой цикл)\n */\npublic class GameLoop implements IGameLoop {\n    private final IActiveColorController activeColorController;\n    private final IGameStateController gameStateController;\n    private final IGameProcessController gameProcessController;\n    private final IKingStateController kingStateController;\n    private final IConsoleBoardWriter consoleBoardWriter;\n    private final DrawController drawController; // todo сделать его gameStateController\n\n    private Color activeColor;\n\n    public GameLoop(final IMediator mediator,\n                    final IPossibleActionList possibleActionList,\n                    final IBoard board,\n                    final IActiveColorController activeColorController,\n                    final IStoryGame storyGame) {\n\n        this.activeColorController = activeColorController;\n        gameStateController = new GameStateController(possibleActionList, mediator);\n        gameProcessController = new GameProcessController(mediator, possibleActionList, board,storyGame);\n        kingStateController = new KingsStateController(possibleActionList, mediator, Color.WHITE);\n        drawController = new DrawController(mediator,   storyGame);\n\n        consoleBoardWriter = new ConsoleBoardWriter(mediator, board);\n        kingStateController.addToSubscriber((ISubscriber) gameStateController);\n    }\n\n    /**\n     * Активация главного игрового цикла.\n     */\n    @Override\n    public ChessCodes doIteration(final IAnswer answer) {\n\n        activeColor = activeColorController.getCurrentColor();\n        gameProcessController.makeTurn(activeColor, answer);\n\n        final ChessCodes chessCodes = gameProcessController.getChessCode();\n\n        if (chessCodes != ChessCodes.ERROR) {\n            activeColorController.update();\n            activeColor = activeColorController.getCurrentColor();\n\n            kingStateController.setActiveColor(activeColor);\n            kingStateController.updateState();\n\n\n            consoleBoardWriter.printBoard();\n        }\n        return chessCodes;\n    }\n\n    @Override\n    public boolean isAlive()     {\n        return gameStateController.isMatchAlive() && !drawController.isDraw();\n    }\n\n    @Override\n    public IGameState getMatchResult() {\n        return gameStateController.getState();\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/loop/GameLoop.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/loop/GameLoop.java	(date 1595848252607)
+@@ -1,24 +1,21 @@
+ package neointernship.chess.game.gameplay.loop;
+ 
+-import neointernship.chess.game.console.ConsoleBoardWriter;
+-import neointernship.chess.game.console.IConsoleBoardWriter;
+ import neointernship.chess.game.gameplay.activecolorcontroller.IActiveColorController;
+ import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
+ import neointernship.chess.game.gameplay.gameprocesscontroller.GameProcessController;
+ import neointernship.chess.game.gameplay.gameprocesscontroller.IGameProcessController;
+ import neointernship.chess.game.gameplay.gamestate.controller.GameStateController;
+ import neointernship.chess.game.gameplay.gamestate.controller.IGameStateController;
+-import neointernship.chess.game.gameplay.gamestate.controller.draw.DrawController;
+ import neointernship.chess.game.gameplay.gamestate.state.IGameState;
+-import neointernship.chess.game.gameplay.kingstate.controller.IKingStateController;
+-import neointernship.chess.game.gameplay.kingstate.controller.KingsStateController;
+ import neointernship.chess.game.model.answer.IAnswer;
+ import neointernship.chess.game.model.enums.Color;
+ import neointernship.chess.game.model.mediator.IMediator;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+-import neointernship.chess.game.model.subscriber.ISubscriber;
+ import neointernship.chess.game.story.IStoryGame;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
++
++import java.util.Collection;
++import java.util.HashSet;
+ 
+ /**
+  * Класс, реализующий основное ядро игры (игровой цикл)
+@@ -27,11 +24,6 @@
+     private final IActiveColorController activeColorController;
+     private final IGameStateController gameStateController;
+     private final IGameProcessController gameProcessController;
+-    private final IKingStateController kingStateController;
+-    private final IConsoleBoardWriter consoleBoardWriter;
+-    private final DrawController drawController; // todo сделать его gameStateController
+-
+-    private Color activeColor;
+ 
+     public GameLoop(final IMediator mediator,
+                     final IPossibleActionList possibleActionList,
+@@ -40,42 +32,31 @@
+                     final IStoryGame storyGame) {
+ 
+         this.activeColorController = activeColorController;
+-        gameStateController = new GameStateController(possibleActionList, mediator);
+-        gameProcessController = new GameProcessController(mediator, possibleActionList, board,storyGame);
+-        kingStateController = new KingsStateController(possibleActionList, mediator, Color.WHITE);
+-        drawController = new DrawController(mediator,   storyGame);
+ 
+-        consoleBoardWriter = new ConsoleBoardWriter(mediator, board);
+-        kingStateController.addToSubscriber((ISubscriber) gameStateController);
++        this.gameStateController = new GameStateController(possibleActionList, mediator, storyGame);
++        this.gameProcessController = new GameProcessController(mediator, possibleActionList, board, storyGame);
+     }
+ 
+     /**
+      * Активация главного игрового цикла.
+      */
+     @Override
+-    public ChessCodes doIteration(final IAnswer answer) {
++    public TurnStatus doIteration(final IAnswer answer) {
++        final Color activeColor = activeColorController.getCurrentColor();
+ 
+-        activeColor = activeColorController.getCurrentColor();
+         gameProcessController.makeTurn(activeColor, answer);
+-
+-        final ChessCodes chessCodes = gameProcessController.getChessCode();
++        final TurnStatus turnStatus = gameProcessController.getTurnStatus();
+ 
+-        if (chessCodes != ChessCodes.ERROR) {
+-            activeColorController.update();
+-            activeColor = activeColorController.getCurrentColor();
++        if (turnStatus != TurnStatus.ERROR) {
++            gameStateController.update(Color.swapColor(activeColor));
++        }
+ 
+-            kingStateController.setActiveColor(activeColor);
+-            kingStateController.updateState();
+-
+-
+-            consoleBoardWriter.printBoard();
+-        }
+-        return chessCodes;
++        return turnStatus;
+     }
+ 
+     @Override
+-    public boolean isAlive()     {
+-        return gameStateController.isMatchAlive() && !drawController.isDraw();
++    public boolean isAlive() {
++        return gameStateController.isMatchAlive();
+     }
+ 
+     @Override
+Index: src/main/java/neointernship/chess/game/gameplay/activecolorcontroller/ActiveColorController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.activecolorcontroller;\n\nimport neointernship.chess.game.model.enums.Color;\n\npublic class ActiveColorController implements IActiveColorController {\n    private final Color white;\n    private final Color black;\n\n    private Color activeColor;\n\n    public ActiveColorController() {\n        white = Color.WHITE;\n        black = Color.BLACK;\n\n        activeColor = Color.WHITE;\n    }\n\n\n    @Override\n    public void update() {\n        activeColor = (activeColor != white) ? white : black;\n    }\n\n    @Override\n    public Color getCurrentColor() {\n        return activeColor;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/activecolorcontroller/ActiveColorController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/activecolorcontroller/ActiveColorController.java	(date 1595845883267)
+@@ -2,7 +2,7 @@
+ 
+ import neointernship.chess.game.model.enums.Color;
+ 
+-public class ActiveColorController implements IActiveColorController {
++public class ActiveColorController implements IActiveColorController, IColorControllerSubscriber {
+     private final Color white;
+     private final Color black;
+ 
+@@ -12,9 +12,8 @@
+         white = Color.WHITE;
+         black = Color.BLACK;
+ 
+-        activeColor = Color.WHITE;
++        activeColor = white;
+     }
+-
+ 
+     @Override
+     public void update() {
+Index: src/main/java/neointernship/web/server/Server.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.web.server;\n\nimport neointernship.chess.game.gameplay.activecolorcontroller.ActiveColorController;\nimport neointernship.chess.game.gameplay.activecolorcontroller.IActiveColorController;\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.gameplay.figureactions.PossibleActionList;\nimport neointernship.chess.game.gameplay.loop.GameLoop;\nimport neointernship.chess.game.gameplay.loop.IGameLoop;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.ChessType;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.factory.Factory;\nimport neointernship.chess.game.model.figure.factory.IFactory;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.mediator.Mediator;\nimport neointernship.chess.game.model.playmap.board.Board;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.board.figuresstartposition.FiguresStartPositionRepository;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.chess.game.story.IStoryGame;\nimport neointernship.chess.game.story.StoryGame;\nimport neointernship.chess.logger.GameLogger;\nimport neointernship.web.client.communication.data.initinfo.InitInfoDto;\nimport neointernship.web.client.communication.data.initgame.IInitGame;\nimport neointernship.web.client.communication.data.initgame.InitGame;\nimport neointernship.web.client.communication.data.turn.TurnDto;\nimport neointernship.web.client.communication.data.update.IUpdate;\nimport neointernship.web.client.communication.data.update.Update;\nimport neointernship.web.client.communication.message.IMessage;\nimport neointernship.web.client.communication.message.Message;\nimport neointernship.web.client.communication.message.ClientCodes;\nimport neointernship.web.client.communication.message.ChessCodes;\nimport neointernship.web.client.communication.serializer.*;\nimport neointernship.web.server.connection.controller.ActiveConnectionController;\nimport neointernship.web.server.connection.userconnection.UserConnection;\n\nimport java.io.*;\nimport java.net.*;\nimport java.text.SimpleDateFormat;\nimport java.util.Queue;\nimport java.util.concurrent.ConcurrentLinkedQueue;\n\n/**\n * Консольный многопользовательский чат.\n * Сервер\n */\npublic class Server {\n    static final int PORT = 8081;\n    static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(\"HH:mm:ss\");\n    private static final int COUNT_EVENTS_IN_HISTORY = 20;\n\n    private final Queue<UserConnection> blackSideWaitingConnectionList;\n    private final Queue<UserConnection> whiteSideWaitingConnectionList;\n\n    private final Queue<Socket> socketList;\n    private final Queue<Lobby> lobbyList;\n\n    public Server() {\n        blackSideWaitingConnectionList = new ConcurrentLinkedQueue<>();\n        whiteSideWaitingConnectionList = new ConcurrentLinkedQueue<>();\n\n        socketList = new ConcurrentLinkedQueue<>();\n        lobbyList = new ConcurrentLinkedQueue<>();\n    }\n  //  private History history = new History(); // история\n\n    private class Lobby extends Thread {\n        private final IBoard board;\n        private final IFactory figureFactory;\n        private final IMediator mediator;\n        private final IPossibleActionList possibleActionList;\n        private final IStoryGame storyGame;\n\n        private final int lobbyId;\n        private final ChessType chessTypes;\n        private final FiguresStartPositionRepository figuresStartPositionRepository;\n        private final Character FIELD_CHAR_EMPTY = '.';\n\n        private final IGameLoop gameLoop;\n\n        private final Server server;\n        private final ActiveConnectionController connectionController;\n\n        private Lobby(final UserConnection firstUserConnection, final UserConnection secondUserConnection,\n                      final int lobbyId, final Server server, final ChessType chessType) throws IOException {\n            this.lobbyId = lobbyId;\n            this.server = server;\n            IActiveColorController colorController = new ActiveColorController();\n            this.connectionController = new ActiveConnectionController(firstUserConnection, secondUserConnection);\n\n            board = new Board();\n            figureFactory = new Factory();\n            mediator = new Mediator();\n            storyGame = new StoryGame(mediator);\n            possibleActionList = new PossibleActionList(board, mediator,storyGame);\n\n            this.chessTypes = chessType;\n            figuresStartPositionRepository = new FiguresStartPositionRepository();\n\n            //TODO:\n            GameLogger.addLogger(lobbyId);\n\n            gameLoop = new GameLoop(mediator, possibleActionList, board, colorController, storyGame);\n\n            GameLogger.getLogger(lobbyId).logStartGame(firstUserConnection.getName(), secondUserConnection.getName());\n\n            initGameMap();\n            start();\n        }\n\n        private void initGameMap() {\n            final Character[][] figuresRepository = figuresStartPositionRepository.getStartPosition(chessTypes);\n            for (int i = 0; i < board.getSize(); i++) {\n                for (int j = 0; j < board.getSize(); j++) {\n                    final IField field = board.getField(i, j);\n\n                    final Character currentChar = figuresRepository[i][j];\n                    if (currentChar != FIELD_CHAR_EMPTY) {\n                        final Color color = i > 4 ? Color.WHITE : Color.BLACK;\n                        final Figure figure = figureFactory.createFigure(currentChar, color);\n\n                        mediator.addNewConnection(field, figure);\n                    }\n                }\n            }\n            possibleActionList.updateRealLists();\n        }\n\n        private void sendInitInfo() {\n            for (UserConnection userConnection : connectionController.getConnections()) {\n                BufferedWriter out = userConnection.getOut();\n                IMessage msg = new Message(ClientCodes.INIT_INFO);\n                IInitGame initGame = new InitGame(mediator, board, userConnection.getColor());\n\n                try {\n                    send(out, MessageSerializer.serialize(msg));\n                    send(out, InitGameSerializer.serialize(initGame));\n                } catch (IOException e) {\n                    e.printStackTrace();\n                }\n            }\n        }\n\n        private void sendUpdatedMediator() {\n            for (UserConnection userConnection : connectionController.getConnections()) {\n                BufferedWriter out = userConnection.getOut();\n                IMessage msg = new Message(ClientCodes.UPDATE);\n                IUpdate update = new Update(mediator);\n\n                try {\n                    send(out, MessageSerializer.serialize(msg));\n                    send(out, UpdateSerializer.serialize(update));\n                } catch (IOException e) {\n                    e.printStackTrace();\n                }\n            }\n        }\n\n\n       @Override\n        public void run() {\n            sendInitInfo();\n\n            while (gameLoop.isAlive()) {\n                sendUpdatedMediator();\n                connectionController.update();\n                UserConnection connection = connectionController.getCurrentConnection();\n\n                try {\n                    IAnswer answer = null;\n                    do {\n                        BufferedWriter out = connection.getOut();\n                        IMessage message = new Message(ClientCodes.TURN);\n                        send(out, MessageSerializer.serialize(message));\n\n                        BufferedReader in = connection.getIn();\n                        String msg = in.readLine();\n                        TurnDto turnDto = AnswerSerializer.deserialize(msg);\n                        turnDto.validate();\n                        answer = turnDto.getAnswer();\n\n                    } while(makeTurn(answer) == ChessCodes.ERROR);\n\n                } catch (Exception e) {\n                    e.printStackTrace();\n                }\n            }\n            gameLoop.getMatchResult();\n            downService();\n        }\n\n        public ChessCodes makeTurn(final IAnswer answer) {\n            return gameLoop.doIteration(answer);\n        }\n\n        /**\n         * закрытие сервера, удаление себя из списка нитей\n         */\n        private void downService() {\n            for (int i = 0; i < 2; i++) {\n                connectionController.update();\n                try {\n                    UserConnection currentConnection = connectionController.getCurrentConnection();\n                    if (!currentConnection.getSocket().isClosed()) {\n                        currentConnection.getSocket().close();\n                        currentConnection.getOut().close();\n                        currentConnection.getIn().close();\n                        server.lobbyList.remove(this);\n                    }\n                } catch (final IOException ignored) {\n                }\n            }\n        }\n    }\n\n    private void createNewLobby() throws IOException {\n        if (whiteSideWaitingConnectionList.size() > 0 && blackSideWaitingConnectionList.size() > 0) {\n            final UserConnection whiteSideConnection = whiteSideWaitingConnectionList.poll();\n            final UserConnection blackSideConnection = blackSideWaitingConnectionList.poll();\n\n            Lobby lobby = new Lobby(whiteSideConnection, blackSideConnection, lobbyList.size(), this, ChessType.CLASSIC);\n            lobbyList.add(lobby);\n            lobby.start();\n        }\n    }\n\n    private void createNewConnection() throws IOException {\n        final Socket socket = socketList.poll();\n\n        assert socket != null;\n        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));\n        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));\n        String name = \"\";\n        Color color = null;\n\n        /*\n        TODO с Андреем: принятие цвета,\n         приведение цвета к Color\n         */\n        try {\n            IMessage message = new Message(ClientCodes.INIT_INFO);\n            send(out, MessageSerializer.serialize(message));\n\n            String msg = in.readLine();\n            InitInfoDto info = InfoSerializer.deserialize(msg);\n            info.validate();\n\n            color = info.getColor();\n            name = info.getName();\n\n        } catch (Exception e) {\n            e.printStackTrace();\n        }\n        UserConnection connection = new UserConnection(in, out, socket, color, name);\n\n        if (connection.getColor() == Color.WHITE) {\n            whiteSideWaitingConnectionList.add(connection);\n        } else {\n            blackSideWaitingConnectionList.add(connection);\n        }\n    }\n\n\n    @SuppressWarnings(\"InfiniteLoopStatement\")\n    private void startServer() throws IOException {\n        System.out.println(String.format(\"Server started, port: %d\", PORT));\n\n        try (final ServerSocket serverSocket = new ServerSocket(PORT)) {\n            while (true) {\n                final Socket socket = serverSocket.accept();\n                socketList.add(socket);\n\n                createNewConnection();\n                createNewLobby();\n            }\n        } catch (final BindException e) {\n            e.printStackTrace();\n        }\n    }\n\n    /**\n     * отсылка одного сообщения клиенту\n     *\n     * @param msg сообщение\n     */\n    private void send(final BufferedWriter out, final String msg) throws IOException {\n        out.write(msg + \"\\n\");\n        out.flush();\n    }\n\n    public static void main(final String[] args) throws IOException {\n        final Server server = new Server();\n        server.startServer();\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/web/server/Server.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/web/server/Server.java	(date 1595847089099)
+@@ -30,7 +30,7 @@
+ import neointernship.web.client.communication.message.IMessage;
+ import neointernship.web.client.communication.message.Message;
+ import neointernship.web.client.communication.message.ClientCodes;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ import neointernship.web.client.communication.serializer.*;
+ import neointernship.web.server.connection.controller.ActiveConnectionController;
+ import neointernship.web.server.connection.userconnection.UserConnection;
+@@ -63,7 +63,6 @@
+         socketList = new ConcurrentLinkedQueue<>();
+         lobbyList = new ConcurrentLinkedQueue<>();
+     }
+-  //  private History history = new History(); // история
+ 
+     private class Lobby extends Thread {
+         private final IBoard board;
+@@ -83,11 +82,12 @@
+         private final ActiveConnectionController connectionController;
+ 
+         private Lobby(final UserConnection firstUserConnection, final UserConnection secondUserConnection,
+-                      final int lobbyId, final Server server, final ChessType chessType) throws IOException {
++                      final int lobbyId, final Server server, final ChessType chessType) {
+             this.lobbyId = lobbyId;
+             this.server = server;
+-            IActiveColorController colorController = new ActiveColorController();
+-            this.connectionController = new ActiveConnectionController(firstUserConnection, secondUserConnection);
++            this.connectionController = new ActiveConnectionController(firstUserConnection,
++                    secondUserConnection,
++                    new ActiveColorController());
+ 
+             board = new Board();
+             figureFactory = new Factory();
+@@ -106,7 +106,6 @@
+             GameLogger.getLogger(lobbyId).logStartGame(firstUserConnection.getName(), secondUserConnection.getName());
+ 
+             initGameMap();
+-            start();
+         }
+ 
+         private void initGameMap() {
+@@ -157,7 +156,6 @@
+             }
+         }
+ 
+-
+        @Override
+         public void run() {
+             sendInitInfo();
+@@ -180,7 +178,7 @@
+                         turnDto.validate();
+                         answer = turnDto.getAnswer();
+ 
+-                    } while(makeTurn(answer) == ChessCodes.ERROR);
++                    } while(makeTurn(answer) == TurnStatus.ERROR);
+ 
+                 } catch (Exception e) {
+                     e.printStackTrace();
+@@ -190,7 +188,7 @@
+             downService();
+         }
+ 
+-        public ChessCodes makeTurn(final IAnswer answer) {
++        public TurnStatus makeTurn(final IAnswer answer) {
+             return gameLoop.doIteration(answer);
+         }
+ 
+@@ -214,7 +212,7 @@
+         }
+     }
+ 
+-    private void createNewLobby() throws IOException {
++    private void createNewLobby(){
+         if (whiteSideWaitingConnectionList.size() > 0 && blackSideWaitingConnectionList.size() > 0) {
+             final UserConnection whiteSideConnection = whiteSideWaitingConnectionList.poll();
+             final UserConnection blackSideConnection = blackSideWaitingConnectionList.poll();
+@@ -261,7 +259,6 @@
+         }
+     }
+ 
+-
+     @SuppressWarnings("InfiniteLoopStatement")
+     private void startServer() throws IOException {
+         System.out.println(String.format("Server started, port: %d", PORT));
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/RestrictMoveCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.player.IPlayer;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.chess.logger.IGameLogger;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic class RestrictMoveCommand implements IMoveCommand {\n    private final IMediator mediator;\n    private final IPossibleActionList possibleActionList;\n    private final IBoard board;\n\n    public RestrictMoveCommand(final IMediator mediator,\n                               final IPossibleActionList possibleActionList,\n                               final IBoard board) {\n        this.mediator = mediator;\n        this.possibleActionList = possibleActionList;\n        this.board = board;\n\n    }\n\n    @Override\n    public ChessCodes execute(final Color color, final IAnswer answer) {\n        return ChessCodes.ERROR;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/RestrictMoveCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/RestrictMoveCommand.java	(date 1595845493018)
+@@ -3,13 +3,9 @@
+ import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
+ import neointernship.chess.game.model.answer.IAnswer;
+ import neointernship.chess.game.model.enums.Color;
+-import neointernship.chess.game.model.figure.piece.Figure;
+ import neointernship.chess.game.model.mediator.IMediator;
+-import neointernship.chess.game.model.player.IPlayer;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+-import neointernship.chess.game.model.playmap.field.IField;
+-import neointernship.chess.logger.IGameLogger;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public class RestrictMoveCommand implements IMoveCommand {
+     private final IMediator mediator;
+@@ -26,7 +22,7 @@
+     }
+ 
+     @Override
+-    public ChessCodes execute(final Color color, final IAnswer answer) {
+-        return ChessCodes.ERROR;
++    public TurnStatus execute(final Color color, final IAnswer answer) {
++        return TurnStatus.ERROR;
+     }
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/IMoveCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands;\n\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.player.IPlayer;\nimport neointernship.chess.logger.IGameLogger;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic interface IMoveCommand {\n    ChessCodes execute(final Color color, final IAnswer answer);\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/IMoveCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/IMoveCommand.java	(date 1595845493018)
+@@ -2,10 +2,8 @@
+ 
+ import neointernship.chess.game.model.answer.IAnswer;
+ import neointernship.chess.game.model.enums.Color;
+-import neointernship.chess.game.model.player.IPlayer;
+-import neointernship.chess.logger.IGameLogger;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public interface IMoveCommand {
+-    ChessCodes execute(final Color color, final IAnswer answer);
++    TurnStatus execute(final Color color, final IAnswer answer);
+ }
+Index: src/test/java/neointernship/chess/game/actions/TestStaticMethod.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.actions;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.gameplay.figureactions.PossibleActionList;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.mediator.Mediator;\nimport neointernship.chess.game.model.playmap.board.Board;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.chess.game.story.StoryGame;\n\nimport java.util.Arrays;\nimport java.util.Collection;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.stream.Collectors;\n\nimport static org.junit.Assert.assertEquals;\nimport static org.junit.Assert.assertTrue;\n\npublic class TestStaticMethod {\n\n    static void checkPosition(Figure figure, IField field, IField[] expected){\n\n        Board board = new Board();\n        Mediator mediator = new Mediator();\n\n        mediator.addNewConnection(field,figure);\n\n        IPossibleActionList possibleActionList = new PossibleActionList(board,mediator,new StoryGame(mediator));\n\n        possibleActionList.updateRealLists();\n\n        List<IField> resultList = (List<IField>) possibleActionList.getRealList(figure);\n\n        List<IField> expectedList = Arrays.stream(expected).collect(Collectors.toList());\n\n        assertEquals(expectedList.size(),resultList.size());\n\n        assertTrue(resultList.containsAll(expectedList));\n\n    }\n\n    static void checkPosition(Map<Figure,IField> map, final Figure mainFigure,IField[] expected){\n\n        final Board board = new Board();\n        final IMediator mediator = new Mediator();\n\n        for(Figure figure : map.keySet()){\n            mediator.addNewConnection(map.get(figure),figure);\n        }\n\n        IPossibleActionList possibleActionList = new PossibleActionList(board,mediator,new StoryGame(mediator));\n\n        possibleActionList.updateRealLists();\n\n        List<IField> resultList = (List<IField>) possibleActionList.getRealList(mainFigure);\n\n        List<IField> expectedList = Arrays.stream(expected).collect(Collectors.toList());\n\n        assertEquals(expectedList.size(),resultList.size());\n\n        assertTrue(resultList.containsAll(expectedList));\n        assertTrue(expectedList.containsAll(resultList));\n\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/neointernship/chess/game/actions/TestStaticMethod.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/test/java/neointernship/chess/game/actions/TestStaticMethod.java	(date 1595845493018)
+@@ -10,7 +10,6 @@
+ import neointernship.chess.game.story.StoryGame;
+ 
+ import java.util.Arrays;
+-import java.util.Collection;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.stream.Collectors;
+@@ -19,28 +18,12 @@
+ import static org.junit.Assert.assertTrue;
+ 
+ public class TestStaticMethod {
+-
+-    static void checkPosition(Figure figure, IField field, IField[] expected){
+-
+-        Board board = new Board();
+-        Mediator mediator = new Mediator();
+-
+-        mediator.addNewConnection(field,figure);
+-
+-        IPossibleActionList possibleActionList = new PossibleActionList(board,mediator,new StoryGame(mediator));
+-
+-        possibleActionList.updateRealLists();
+-
+-        List<IField> resultList = (List<IField>) possibleActionList.getRealList(figure);
+-
+-        List<IField> expectedList = Arrays.stream(expected).collect(Collectors.toList());
+-
+-        assertEquals(expectedList.size(),resultList.size());
+-
+-        assertTrue(resultList.containsAll(expectedList));
+-
+-    }
+-
++    /**
++     * Проверяет список реальных ходов для mainFigure в текущей ситуации.
++     * @param map связки фигура-клетка
++     * @param mainFigure фигура, для которой проверяем список её возможных ходов
++     * @param expected массив её ожидаемых ходов
++     */
+     static void checkPosition(Map<Figure,IField> map, final Figure mainFigure,IField[] expected){
+ 
+         final Board board = new Board();
+Index: src/test/java/neointernship/chess/game/actions/TestActionsFreePath.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.actions;\n\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.*;\n\nimport neointernship.chess.game.model.playmap.field.Field;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport org.junit.After;\n\nimport org.junit.BeforeClass;\nimport org.junit.Test;\n\nimport java.util.Arrays;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\nimport java.util.stream.Collectors;\n\nimport static neointernship.chess.game.actions.TestStaticMethod.checkPosition;\n\n\npublic class TestActionsFreePath {\n    private static Map<Figure,IField> map;\n\n    @BeforeClass\n    public static void before(){\n        map = new HashMap<>();\n    }\n    @After\n    public void clear(){\n        map.clear();\n    }\n\n    private void put(Figure figure,IField field){\n        map.put(figure,field);\n    }\n\n    @Test\n    public void testKingCenter(){\n        Figure figure = new King(Color.BLACK);\n        IField field = new Field(2,2);\n\n\n        Field[] expected = {\n                new Field(1,1),new Field(1,2),new Field(1,3),\n                new Field(2,1),                     new Field(2,3),\n                new Field(3,1),new Field(3,2),new Field(3,3)\n        };\n        put(figure,field);\n        checkPosition(map,figure,expected);\n\n    }\n    @Test\n    public void testBishop(){\n        Figure figure = new Bishop(Color.BLACK);\n        IField field = new Field(0,0);\n\n        Field[] expected = {\n                new Field(1,1),new Field(2,2),new Field(3,3),\n                new Field(4,4),new Field(5,5),new Field(6,6),\n                new Field(7,7)\n        };\n\n        put(figure,field);\n        checkPosition(map,figure,expected);\n\n    }\n    @Test\n    public void testRook(){\n        Figure figure = new Rook(Color.BLACK);\n        IField field = new Field(4,4);\n\n        Field[] expected = {\n                new Field(4,0), new Field(4,1),new Field(4,2),new Field(4,3),\n                new Field(4,5), new Field(4,6),new Field(4,7),\n\n                new Field(0,4),new Field(1,4),new Field(2,4),\n                new Field(3,4),new Field(5,4), new Field(6,4), new Field(7,4)\n        };\n\n        put(figure,field);\n        checkPosition(map,figure,expected);\n    }\n    @Test\n    public void testPawnWhiteBegin(){\n        Figure figure = new Pawn(Color.WHITE);\n        IField field = new Field(6,4);\n\n        Field[] expected = {\n                new Field(5,4),new Field(4,4)\n        };\n\n        put(figure,field);\n        checkPosition(map,figure,expected);\n    }\n    @Test\n    public void testPawnBlackBegin(){\n        Figure figure = new Pawn(Color.BLACK);\n        IField field = new Field(1,4);\n\n        Field[] expected = {\n                new Field(2,4),new Field(3,4)\n        };\n\n        put(figure,field);\n        checkPosition(map,figure,expected);\n    }\n    @Test\n    public void testPawnBlackEnd(){\n        Figure figure = new Pawn(Color.BLACK);\n        IField field = new Field(3,4);\n\n        Field[] expected = {\n                new Field(4,4)\n        };\n\n        put(figure,field);\n        checkPosition(map,figure,expected);\n    }\n    @Test\n    public void testPawnWhiteEnd(){\n        Figure figure = new Pawn(Color.WHITE);\n        IField field = new Field(4,4);\n\n        Field[] expected = {\n                new Field(3,4)\n        };\n\n        put(figure,field);\n        checkPosition(map,figure,expected);\n    }\n    @Test\n    public void testKnight(){\n        Figure figure = new Knight(Color.WHITE);\n        IField field = new Field(0,2);\n\n        Field[] expected = {\n                new Field(1,0),new Field(1,4),new Field(2,1),new Field(2,3)\n        };\n\n        put(figure,field);\n        checkPosition(map,figure,expected);\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/neointernship/chess/game/actions/TestActionsFreePath.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/test/java/neointernship/chess/game/actions/TestActionsFreePath.java	(date 1595845493018)
+@@ -107,7 +107,7 @@
+         checkPosition(map,figure,expected);
+     }
+     @Test
+-    public void testPawnBlackEnd(){
++    public void testPawnBlackCenter(){
+         Figure figure = new Pawn(Color.BLACK);
+         IField field = new Field(3,4);
+ 
+@@ -119,7 +119,7 @@
+         checkPosition(map,figure,expected);
+     }
+     @Test
+-    public void testPawnWhiteEnd(){
++    public void testPawnWhiteCenter(){
+         Figure figure = new Pawn(Color.WHITE);
+         IField field = new Field(4,4);
+ 
+@@ -127,6 +127,30 @@
+                 new Field(3,4)
+         };
+ 
++        put(figure,field);
++        checkPosition(map,figure,expected);
++    }
++    @Test
++    public void testPawnWhiteEnd(){
++        Figure figure = new Pawn(Color.WHITE);
++        IField field = new Field(1,4);
++
++        Field[] expected = {
++                new Field(0,4)
++        };
++
++        put(figure,field);
++        checkPosition(map,figure,expected);
++    }
++    @Test
++    public void testPawnBlackEnd(){
++        Figure figure = new Pawn(Color.BLACK);
++        IField field = new Field(6,4);
++
++        Field[] expected = {
++                new Field(7,4)
++        };
++
+         put(figure,field);
+         checkPosition(map,figure,expected);
+     }
+Index: src/test/java/neointernship/chess/game/end/TestMate.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.end;\n\npublic class TestMate {\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/neointernship/chess/game/end/TestMate.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/test/java/neointernship/chess/game/end/TestMate.java	(date 1595845493018)
+@@ -1,4 +1,120 @@
+ package neointernship.chess.game.end;
+ 
++import neointernship.chess.game.gameplay.activecolorcontroller.ActiveColorController;
++import neointernship.chess.game.gameplay.activecolorcontroller.IActiveColorController;
++import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
++import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
++import neointernship.chess.game.gameplay.loop.GameLoop;
++import neointernship.chess.game.gameplay.loop.IGameLoop;
++import neointernship.chess.game.model.answer.Answer;
++import neointernship.chess.game.model.answer.IAnswer;
++import neointernship.chess.game.model.enums.Color;
++import neointernship.chess.game.model.enums.EnumGameState;
++import neointernship.chess.game.model.figure.piece.Figure;
++import neointernship.chess.game.model.figure.piece.King;
++import neointernship.chess.game.model.figure.piece.Queen;
++import neointernship.chess.game.model.figure.piece.Rook;
++import neointernship.chess.game.model.mediator.IMediator;
++import neointernship.chess.game.model.mediator.Mediator;
++import neointernship.chess.game.model.playmap.board.Board;
++import neointernship.chess.game.model.playmap.board.IBoard;
++import neointernship.chess.game.model.playmap.field.Field;
++import neointernship.chess.game.model.playmap.field.IField;
++import neointernship.chess.game.story.IStoryGame;
++import neointernship.chess.game.story.StoryGame;
++import neointernship.web.client.communication.message.TurnStatus;
++import org.junit.Test;
++
++import static org.junit.Assert.*;
++
+ public class TestMate {
++
++    @Test
++    public void testLinerMate(){
++        IBoard board = new Board();
++        IMediator mediator = new Mediator();
++        IStoryGame storyGame = new StoryGame(mediator);
++
++        IPossibleActionList possibleActionList = new PossibleActionList(board,mediator,storyGame);
++        IActiveColorController activeColorController = new ActiveColorController();
++
++        final Figure kingW = new King(Color.BLACK);
++        final IField fieldKingW = new Field(7,4);
++
++        final Figure kingB = new King(Color.WHITE);
++        final IField fieldKingB = new Field(0,4);
++
++        final Figure rook1 = new Rook(Color.WHITE);
++        final IField fieldRook1 = new Field(6,7);
++
++        final Figure rook2 = new Rook(Color.WHITE);
++        final IField fieldRook2 = new Field(6,0);
++
++        mediator.addNewConnection(fieldKingW,kingW);
++        mediator.addNewConnection(fieldKingB,kingB);
++        mediator.addNewConnection(fieldRook1,rook1);
++        mediator.addNewConnection(fieldRook2,rook2);
++
++        IAnswer answer = new Answer(6,0,7,0,'Q');
++
++        IGameLoop gameLoop = new GameLoop(mediator,possibleActionList,board,activeColorController,storyGame);
++
++        possibleActionList.updateRealLists();
++
++        assertTrue(gameLoop.isAlive());
++
++        TurnStatus result = gameLoop.doIteration(answer);
++
++        assertEquals(result, TurnStatus.MOVE);
++
++        System.out.println(gameLoop.getMatchResult().getValue());
++        assertFalse(gameLoop.isAlive());
++    }
++
++    @Test
++    public void testQueenMate() {
++        IBoard board = new Board();
++        IMediator mediator = new Mediator();
++        IStoryGame storyGame = new StoryGame(mediator);
++
++        IPossibleActionList possibleActionList = new PossibleActionList(board, mediator, storyGame);
++        IActiveColorController activeColorController = new ActiveColorController();
++
++        final Figure kingW = new King(Color.BLACK);
++        final IField fieldKingW = new Field(7, 4);
++
++        final Figure kingB = new King(Color.WHITE);
++        final IField fieldKingB = new Field(5, 4);
++
++        final Figure queen = new Queen(Color.WHITE);
++        final IField fieldQ = new Field(6, 0);
++
++        mediator.addNewConnection(fieldKingW, kingW);
++        mediator.addNewConnection(fieldKingB, kingB);
++        mediator.addNewConnection(fieldQ, queen);
++
++
++        IAnswer answer = new Answer(6, 0, 6, 4, 'Q');
++
++        IGameLoop gameLoop = new GameLoop(mediator, possibleActionList, board, activeColorController, storyGame);
++
++        possibleActionList.updateRealLists();
++
++        assertTrue(gameLoop.isAlive());
++
++        assertEquals(Color.WHITE, activeColorController.getCurrentColor());
++
++        TurnStatus result = gameLoop.doIteration(answer);
++
++        assertEquals(Color.BLACK, activeColorController.getCurrentColor());
++
++        assertEquals(result, TurnStatus.MOVE);
++
++        System.out.println(gameLoop.getMatchResult().getValue());
++        assertFalse(gameLoop.isAlive());
++        assertEquals(EnumGameState.MATE, gameLoop.getMatchResult().getValue());
++
++        assertEquals(queen,storyGame.getLastFigureMove());
++    }
++
+ }
+Index: src/test/java/neointernship/chess/game/actions/TestKing.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.actions;\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.*;\nimport neointernship.chess.game.model.playmap.field.Field;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport org.junit.After;\nimport org.junit.BeforeClass;\nimport org.junit.Test;\n\nimport java.util.HashMap;\nimport java.util.Map;\n\nimport static neointernship.chess.game.actions.TestStaticMethod.checkPosition;\n\npublic class TestKing {\n    private static Map<Figure,IField> map;\n\n    @BeforeClass\n    public static void before(){\n        map = new HashMap<>();\n    }\n    @After\n    public void clear(){\n        map.clear();\n    }\n\n    private void put(Figure figure,IField field){\n        map.put(figure,field);\n    }\n\n    /**\n     * корректная рокровка\n     */\n    @Test\n    public void testFreeCastling(){\n        final Figure king = new King(Color.WHITE);\n        final IField fieldKing = new Field(7,4);\n\n        final Figure rook = new Rook(Color.WHITE);\n        final IField fieldRook = new Field(7,7);\n\n        Field[] expected = {\n                new Field(7,3),new Field(6,3),new Field(6,4),\n                new Field(6,5),new Field(7,5),new Field(7,6)};\n\n        put(king,fieldKing);\n        put(rook,fieldRook);\n\n        checkPosition(map,king,expected);\n\n    }\n\n    /**\n     * запрет рокировки в связи с тем, что на пути короля к ладье есть помеха\n     */\n    @Test\n    public void testCloseCastling(){\n        final Figure king = new King(Color.WHITE);\n        final IField fieldKing = new Field(7,4);\n\n        final Figure rook = new Rook(Color.WHITE);\n        final IField fieldRook = new Field(7,7);\n\n\n        final Figure bishop = new Bishop(Color.BLACK);\n        final IField fieldBishop = new Field(7,5);\n\n\n\n        Field[] expected = {\n                new Field(7,3),new Field(6,3),new Field(6,5),new Field(7,5)};\n\n        put(king,fieldKing);\n        put(rook,fieldRook);\n        put(bishop,fieldBishop);\n\n        checkPosition(map,king,expected);\n\n    }\n\n    /**\n     * запрет рокировки в связи с атакой поля перемещения короля\n     */\n    @Test\n    public void testAttackPathCastling(){\n        final Figure king = new King(Color.WHITE);\n        final IField fieldKing = new Field(7,4);\n\n        final Figure rook = new Rook(Color.WHITE);\n        final IField fieldRook = new Field(7,7);\n\n\n        final Figure bishop = new Bishop(Color.BLACK);\n        final IField fieldBishop = new Field(5,7);\n\n\n\n        Field[] expected = {\n                new Field(7,3),new Field(6,3),new Field(6,4),new Field(6,5)};\n\n        put(king,fieldKing);\n        put(rook,fieldRook);\n        put(bishop,fieldBishop);\n\n        checkPosition(map,king,expected);\n    }\n\n    /**\n     * проверка ситуации, когда у королю нет ходов\n     */\n    @Test\n    public void testNothingMove(){\n        final Figure king = new King(Color.WHITE);\n        final IField fieldKing = new Field(7,4);\n\n        final Figure rook1 = new Rook(Color.BLACK);\n        final IField fieldRook1 = new Field(7,7);\n\n        final Figure rook2 = new Rook(Color.BLACK);\n        final IField fieldRook2 = new Field(6,0);\n\n        Field[] expected = {};\n\n        put(king,fieldKing);\n        put(rook1,fieldRook1);\n        put(rook2,fieldRook2);\n\n        checkPosition(map,king,expected);\n    }\n\n    /**\n     * тест на то, что короли не могут быть близко (\n     */\n    @Test\n    public void testTwoKing(){\n        final Figure kingW = new King(Color.WHITE);\n        final IField fieldKingW = new Field(7,4);\n\n        final Figure kingB = new King(Color.BLACK);\n        final IField fieldKingB = new Field(5,4);\n\n        Field[] expected = {\n                new Field(7,3),new Field(7,5)};\n\n        put(kingW,fieldKingW);\n        put(kingB,fieldKingB);\n\n        checkPosition(map,kingW,expected);\n    }\n\n    /**\n     * связка короля\n     */\n    @Test\n    public void testTieUp(){\n        final Figure king = new King(Color.WHITE);\n        final IField fieldKing = new Field(6,7);\n\n        final Figure pawn = new Pawn(Color.WHITE);\n        final IField fieldPawn = new Field(6,6);\n\n        final Figure rookB = new Rook(Color.BLACK);\n        final IField fieldRookB = new Field(6,0);\n\n        Field[] expected = {};\n\n        put(king,fieldKing);\n        put(pawn,fieldPawn);\n        put(rookB,fieldRookB);\n\n        checkPosition(map,pawn,expected);\n    }\n\n\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/neointernship/chess/game/actions/TestKing.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/test/java/neointernship/chess/game/actions/TestKing.java	(date 1595845493018)
+@@ -25,12 +25,12 @@
+         map.clear();
+     }
+ 
+-    private void put(Figure figure,IField field){
++    private void put(final Figure figure,final IField field){
+         map.put(figure,field);
+     }
+ 
+     /**
+-     * корректная рокровка
++     * корректная рокировка
+      */
+     @Test
+     public void testFreeCastling(){
+@@ -48,7 +48,6 @@
+         put(rook,fieldRook);
+ 
+         checkPosition(map,king,expected);
+-
+     }
+ 
+     /**
+@@ -66,8 +65,6 @@
+         final Figure bishop = new Bishop(Color.BLACK);
+         final IField fieldBishop = new Field(7,5);
+ 
+-
+-
+         Field[] expected = {
+                 new Field(7,3),new Field(6,3),new Field(6,5),new Field(7,5)};
+ 
+@@ -76,7 +73,6 @@
+         put(bishop,fieldBishop);
+ 
+         checkPosition(map,king,expected);
+-
+     }
+ 
+     /**
+@@ -94,8 +90,6 @@
+         final Figure bishop = new Bishop(Color.BLACK);
+         final IField fieldBishop = new Field(5,7);
+ 
+-
+-
+         Field[] expected = {
+                 new Field(7,3),new Field(6,3),new Field(6,4),new Field(6,5)};
+ 
+@@ -171,8 +165,4 @@
+ 
+         checkPosition(map,pawn,expected);
+     }
+-
+-
+-
+-
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawOnlyKing.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.controller.draw;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.story.IStoryGame;\nimport neointernship.chess.logger.IGameLogger;\n\npublic class DrawOnlyKing implements IDrawController {\n    private static final String MESSAGE = \"только 2 короля на поле\";\n\n    @Override\n    public boolean isDraw(IMediator mediator) {\n        return mediator.getFigures().size() == 2;\n    }\n\n    @Override\n    public String getMessage() {\n        return MESSAGE;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawOnlyKing.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawOnlyKing.java	(date 1595845493014)
+@@ -1,12 +1,9 @@
+ package neointernship.chess.game.gameplay.gamestate.controller.draw;
+ 
+-import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
++import neointernship.chess.game.model.enums.EnumGameState;
+ import neointernship.chess.game.model.mediator.IMediator;
+-import neointernship.chess.game.story.IStoryGame;
+-import neointernship.chess.logger.IGameLogger;
+ 
+ public class DrawOnlyKing implements IDrawController {
+-    private static final String MESSAGE = "только 2 короля на поле";
+ 
+     @Override
+     public boolean isDraw(IMediator mediator) {
+@@ -14,7 +11,7 @@
+     }
+ 
+     @Override
+-    public String getMessage() {
+-        return MESSAGE;
++    public EnumGameState getState() {
++        return EnumGameState.DRAW_ONLY_KING;
+     }
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawRepetitionPosition.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.controller.draw;\n\nimport neointernship.chess.game.model.mediator.IMediator;\n\nimport java.util.HashMap;\nimport java.util.Map;\n\npublic class DrawRepetitionPosition implements IDrawController {\n\n    private static final String MESSAGE = \"трехкратное повторение позиции\";\n\n    private static final Integer MAX_REPETITION = 3;\n    private static final Integer START_REPETITION = 1;\n    private Map<Position,Integer> mapPosition;\n    private int currentSizeMediator;\n\n    public DrawRepetitionPosition() {\n        mapPosition = new HashMap<>();\n    }\n    /**\n     * проверка на 3х кратное повторении позиции\n     * @param mediator\n     * @return\n     */\n    @Override\n    public boolean isDraw(IMediator mediator) {\n        final int newSize = mediator.getFigures().size();\n        if(currentSizeMediator != newSize){\n            currentSizeMediator = newSize;\n            mapPosition.clear();\n        }\n        Position newPosition = new Position(mediator);\n\n        Integer count = mapPosition.get(newPosition);\n\n        if(count == null){\n            mapPosition.put(newPosition,START_REPETITION);\n        }else{\n            count++;\n            mapPosition.replace(newPosition,count);\n        }\n        for(Integer i : mapPosition.values()){\n            if(i >= MAX_REPETITION) return true;\n        }\n        return false;\n    }\n\n    @Override\n    public String getMessage() {\n        return MESSAGE;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawRepetitionPosition.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawRepetitionPosition.java	(date 1595845493014)
+@@ -1,5 +1,6 @@
+ package neointernship.chess.game.gameplay.gamestate.controller.draw;
+ 
++import neointernship.chess.game.model.enums.EnumGameState;
+ import neointernship.chess.game.model.mediator.IMediator;
+ 
+ import java.util.HashMap;
+@@ -7,8 +8,6 @@
+ 
+ public class DrawRepetitionPosition implements IDrawController {
+ 
+-    private static final String MESSAGE = "трехкратное повторение позиции";
+-
+     private static final Integer MAX_REPETITION = 3;
+     private static final Integer START_REPETITION = 1;
+     private Map<Position,Integer> mapPosition;
+@@ -46,7 +45,7 @@
+     }
+ 
+     @Override
+-    public String getMessage() {
+-        return MESSAGE;
++    public EnumGameState getState() {
++        return EnumGameState.DRAW_REPETITION_POSITION;
+     }
+ }
+Index: src/main/java/neointernship/chess/logger/GameLogger.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.logger;\n\n\nimport neointernship.chess.game.gameplay.gamestate.controller.draw.IDrawController;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.web.client.communication.message.ChessCodes;\nimport org.apache.log4j.FileAppender;\nimport org.apache.log4j.Logger;\nimport org.apache.log4j.PatternLayout;\n\nimport java.io.IOException;\nimport java.util.HashMap;\n\n\npublic class GameLogger implements IGameLogger{\n    private static final HashMap<Integer, IGameLogger> mapLogger = new HashMap<>();\n    private final Logger logger;\n\n\n    private GameLogger(final int lobbyId) {\n        logger = Logger.getLogger(Integer.toString(lobbyId));\n\n        try {\n            final PatternLayout patternLayout = new PatternLayout();\n            patternLayout.setConversionPattern(\"%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n\");\n            logger.addAppender(new FileAppender(patternLayout, \"logs\\\\gameLog\" + lobbyId + \".txt\", false));\n            //mapLogger.put(lobbyId, logger);\n        } catch (final IOException e) {\n            e.printStackTrace();\n        }\n    }\n\n    public static void addLogger(final int lobbuId) {\n        mapLogger.put(lobbuId, new GameLogger(lobbuId));\n    }\n\n    public static IGameLogger getLogger(final int lobbyId) {\n        if (!mapLogger.containsKey(lobbyId)) {\n            mapLogger.put(lobbyId, new GameLogger(lobbyId));\n        }\n        return mapLogger.get(lobbyId);\n    }\n\n    @Override\n    public void logStartGame(final String firstPlayerName, final String secondPlayerName) {\n        logger.info(\"Игра между игроком \" + firstPlayerName + \" и игроком \" + secondPlayerName + \" началась!\");\n    }\n\n    @Override\n    public void logPlayerMoveAction(final Color color, final Figure figure,\n                                    final IField startField, final IField finalField, final ChessCodes chessCodes) {\n        logger.info(chessCodes.name() + \"- Игрок \" + color + \" сделал ход фигурой \" + figure.getName() + \" из клетки \" +\n                startField.showField() + \" в клетку \" + finalField.showField());\n    }\n\n    @Override\n    public void logMap(final String string) {\n        logger.info(string);\n    }\n\n    @Override\n    public void logPlayerWrongAction(final Color color, final IField field) {\n        logger.warn(\"Игрок \" + color + \" попыталя сделать ход из клетки \" + field.showField() + \", но он невозможен\");\n    }\n\n    @Override\n    public void logPlayerWin(final Color color) {\n        logger.info(color + \" игрок победил!\");\n    }\n\n    @Override\n    public void logStalemate() {\n        logger.info(\"Пат!\");\n    }\n\n    @Override\n    public void logDraw(final IDrawController drawController ) {\n        logger.info(\"Ничья : \" + drawController.getMessage());\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/logger/GameLogger.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/logger/GameLogger.java	(date 1595845493062)
+@@ -18,7 +18,6 @@
+     private static final HashMap<Integer, IGameLogger> mapLogger = new HashMap<>();
+     private final Logger logger;
+ 
+-
+     private GameLogger(final int lobbyId) {
+         logger = Logger.getLogger(Integer.toString(lobbyId));
+ 
+@@ -77,7 +76,7 @@
+ 
+     @Override
+     public void logDraw(final IDrawController drawController ) {
+-        logger.info("Ничья : " + drawController.getMessage());
++        logger.info("Ничья : " + drawController.getState());
+     }
+ 
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawFewFigure.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.controller.draw;\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.Bishop;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.figure.piece.King;\nimport neointernship.chess.game.model.figure.piece.Knight;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.field.IField;\n\nimport java.util.Collection;\nimport java.util.HashSet;\nimport java.util.Set;\n\npublic class DrawFewFigure implements IDrawController {\n\n    private static final String MESSAGE = \"мало фигу для мата!\";\n    // Невозможно поставить мат, если на доске остались только короли, либо,\n    // кроме двух королей, один конь или произвольное количество однопольных слонов\n    @Override\n    public boolean isDraw(final IMediator mediator) {\n        final Collection<Figure> figures = mediator.getFigures();\n        if(figures.size() == 3) {\n            for (final Figure figure : figures) {\n                if (figure.getClass() == Knight.class) return true;\n            }\n        }\n        return isBishops(figures, mediator);\n    }\n\n    @Override\n    public String getMessage() {\n        return MESSAGE;\n    }\n\n    private boolean isBishops(final Collection<Figure> figures,final IMediator mediator){\n        final Set<Color> colors = new HashSet<>();\n        for(final Figure figure : figures) {\n            if (figure.getClass() != King.class) {\n                final IField field = mediator.getField(figure);\n                colors.add(field.getColor());\n                if (figure.getClass() != Bishop.class) return false;\n            }\n        }\n        return colors.size() == 1;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawFewFigure.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawFewFigure.java	(date 1595845493014)
+@@ -1,6 +1,7 @@
+ package neointernship.chess.game.gameplay.gamestate.controller.draw;
+ 
+ import neointernship.chess.game.model.enums.Color;
++import neointernship.chess.game.model.enums.EnumGameState;
+ import neointernship.chess.game.model.figure.piece.Bishop;
+ import neointernship.chess.game.model.figure.piece.Figure;
+ import neointernship.chess.game.model.figure.piece.King;
+@@ -14,7 +15,6 @@
+ 
+ public class DrawFewFigure implements IDrawController {
+ 
+-    private static final String MESSAGE = "мало фигу для мата!";
+     // Невозможно поставить мат, если на доске остались только короли, либо,
+     // кроме двух королей, один конь или произвольное количество однопольных слонов
+     @Override
+@@ -29,8 +29,8 @@
+     }
+ 
+     @Override
+-    public String getMessage() {
+-        return MESSAGE;
++    public EnumGameState getState() {
++        return EnumGameState.DRAW_FEW_FIGURE;
+     }
+ 
+     private boolean isBishops(final Collection<Figure> figures,final IMediator mediator){
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/IDrawController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.controller.draw;\n\nimport neointernship.chess.game.model.mediator.IMediator;\n\npublic interface IDrawController {\n    boolean isDraw(IMediator mediator);\n    String getMessage();\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/IDrawController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/IDrawController.java	(date 1595845493014)
+@@ -1,8 +1,9 @@
+ package neointernship.chess.game.gameplay.gamestate.controller.draw;
+ 
++import neointernship.chess.game.model.enums.EnumGameState;
+ import neointernship.chess.game.model.mediator.IMediator;
+ 
+ public interface IDrawController {
+     boolean isDraw(IMediator mediator);
+-    String getMessage();
++    EnumGameState getState();
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawFiftyStep.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.controller.draw;\n\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.figure.piece.Pawn;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.story.IStoryGame;\n\npublic class DrawFiftyStep implements IDrawController {\n\n    private static final String MESSAGE = \"50 ходов без взятия фигуры и движения пешки\";\n\n    private final static Integer MAX_COUNT_STEP = 50;\n    private final IStoryGame storyGame;\n    private int countStep;\n    private int lastSizeMediator;\n\n    public DrawFiftyStep(final IStoryGame storyGame){\n        this.storyGame = storyGame;\n        countStep = 0;\n        lastSizeMediator = 32;\n    }\n    /**\n     * Правило 50 ходов. Прошло 50 ходов подряд, без вязтия фигуры или хода першки.\n     * @param mediator\n     * @return\n     */\n    @Override\n    public boolean isDraw(final IMediator mediator) {\n        final int newSizeMediator = mediator.getFigures().size();\n\n        final Figure figure = storyGame.getLastFigureMove();\n        if (figure == null) return false;\n\n        if(lastSizeMediator == newSizeMediator\n                && storyGame.getLastFigureMove().getClass() != Pawn.class) {\n            countStep++;\n        }else{\n            countStep = 0;\n            lastSizeMediator = newSizeMediator;\n        }\n        return countStep >= MAX_COUNT_STEP;\n    }\n\n    @Override\n    public String getMessage() {\n        return MESSAGE;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawFiftyStep.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawFiftyStep.java	(date 1595845660120)
+@@ -1,5 +1,6 @@
+ package neointernship.chess.game.gameplay.gamestate.controller.draw;
+ 
++import neointernship.chess.game.model.enums.EnumGameState;
+ import neointernship.chess.game.model.figure.piece.Figure;
+ import neointernship.chess.game.model.figure.piece.Pawn;
+ import neointernship.chess.game.model.mediator.IMediator;
+@@ -7,14 +8,12 @@
+ 
+ public class DrawFiftyStep implements IDrawController {
+ 
+-    private static final String MESSAGE = "50 ходов без взятия фигуры и движения пешки";
+-
+     private final static Integer MAX_COUNT_STEP = 50;
+     private final IStoryGame storyGame;
+     private int countStep;
+     private int lastSizeMediator;
+ 
+-    public DrawFiftyStep(final IStoryGame storyGame){
++    public DrawFiftyStep(IStoryGame storyGame){
+         this.storyGame = storyGame;
+         countStep = 0;
+         lastSizeMediator = 32;
+@@ -25,14 +24,14 @@
+      * @return
+      */
+     @Override
+-    public boolean isDraw(final IMediator mediator) {
++    public boolean isDraw(IMediator mediator) {
+         final int newSizeMediator = mediator.getFigures().size();
+ 
+         final Figure figure = storyGame.getLastFigureMove();
+-        if (figure == null) return false;
++        if(figure == null) return false;
+ 
+         if(lastSizeMediator == newSizeMediator
+-                && storyGame.getLastFigureMove().getClass() != Pawn.class) {
++                && figure.getClass() != Pawn.class) {
+             countStep++;
+         }else{
+             countStep = 0;
+@@ -42,7 +41,7 @@
+     }
+ 
+     @Override
+-    public String getMessage() {
+-        return MESSAGE;
++    public EnumGameState getState() {
++        return EnumGameState.DRAW_FIFTY_STEP;
+     }
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AisleTakeCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands.allow;\n\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.web.client.communication.message.ChessCodes;\n\n/**\n * Класс реализующий команду взятие на проходе\n */\npublic class AisleTakeCommand extends AbstractCommand implements IAllowCommand {\n\n    public AisleTakeCommand(IBoard board, IMediator mediator) {\n        super(board, mediator);\n    }\n\n    @Override\n    public void execute(IAnswer answer) {\n        final IField startField = board.getField(answer.getStartX(), answer.getStartY());\n        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());\n\n        final IField fieldAttackPawn = board.getField(answer.getStartX(),answer.getFinalY());\n\n        final Figure startFigure = mediator.getFigure(startField);\n\n        mediator.deleteConnection(startField);\n        mediator.addNewConnection(finalField,startFigure);\n        mediator.deleteConnection(fieldAttackPawn);\n\n    }\n\n    @Override\n    public ChessCodes getChessCode() {\n        return ChessCodes.AISLE_TAKE;\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AisleTakeCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AisleTakeCommand.java	(date 1595845493018)
+@@ -5,7 +5,7 @@
+ import neointernship.chess.game.model.mediator.IMediator;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+ import neointernship.chess.game.model.playmap.field.IField;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ /**
+  * Класс реализующий команду взятие на проходе
+@@ -32,8 +32,8 @@
+     }
+ 
+     @Override
+-    public ChessCodes getChessCode() {
+-        return ChessCodes.AISLE_TAKE;
++    public TurnStatus getChessCode() {
++        return TurnStatus.AISLE_TAKE;
+     }
+ 
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/IAllowCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands.allow;\n\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic interface IAllowCommand {\n    void execute(final IAnswer answer);\n    ChessCodes getChessCode();\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/IAllowCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/IAllowCommand.java	(date 1595845493018)
+@@ -1,9 +1,9 @@
+ package neointernship.chess.game.gameplay.moveaction.commands.allow;
+ 
+ import neointernship.chess.game.model.answer.IAnswer;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public interface IAllowCommand {
+     void execute(final IAnswer answer);
+-    ChessCodes getChessCode();
++    TurnStatus getChessCode();
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/TransformationCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands.allow;\n\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.factory.Factory;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic class TransformationCommand extends AbstractCommand implements IAllowCommand {\n\n    public TransformationCommand(IBoard board, IMediator mediator) {\n        super(board, mediator);\n    }\n\n    @Override\n    public void execute(IAnswer answer) {\n        final IField startField = board.getField(answer.getStartX(), answer.getStartY());\n        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());\n\n        Color color = Color.WHITE;\n        if(finalField.getXCoord() == board.getSize() - 1){\n            color = Color.BLACK;\n        }\n\n        final Figure finalFigure = mediator.getFigure(finalField);\n\n        Figure newFigure = new Factory().createFigure(answer.getSimbol(),color);\n\n        mediator.deleteConnection(startField);\n        if(finalFigure != null){\n            mediator.deleteConnection(finalField);\n        }\n        mediator.addNewConnection(finalField,newFigure);\n    }\n\n    @Override\n    public ChessCodes getChessCode() {\n        return ChessCodes.TRANSFORMATION;\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/TransformationCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/TransformationCommand.java	(date 1595845883427)
+@@ -7,7 +7,7 @@
+ import neointernship.chess.game.model.mediator.IMediator;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+ import neointernship.chess.game.model.playmap.field.IField;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public class TransformationCommand extends AbstractCommand implements IAllowCommand {
+ 
+@@ -27,7 +27,7 @@
+ 
+         final Figure finalFigure = mediator.getFigure(finalField);
+ 
+-        Figure newFigure = new Factory().createFigure(answer.getSimbol(),color);
++        Figure newFigure = new Factory().createFigure(answer.getSymbol(),color);
+ 
+         mediator.deleteConnection(startField);
+         if(finalFigure != null){
+@@ -37,8 +37,8 @@
+     }
+ 
+     @Override
+-    public ChessCodes getChessCode() {
+-        return ChessCodes.TRANSFORMATION;
++    public TurnStatus getChessCode() {
++        return TurnStatus.TRANSFORMATION;
+     }
+ 
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/MoveCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands.allow;\n\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic class MoveCommand extends AbstractCommand implements IAllowCommand{\n\n\n    public MoveCommand(IBoard board, IMediator mediator) {\n        super(board, mediator);\n    }\n\n    @Override\n    public void execute(IAnswer answer) {\n        final IField startField = board.getField(answer.getStartX(), answer.getStartY());\n        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());\n\n        final Figure startFigure = mediator.getFigure(startField);\n\n        mediator.deleteConnection(startField);\n        mediator.addNewConnection(finalField, startFigure);\n    }\n\n    @Override\n    public ChessCodes getChessCode() {\n        return ChessCodes.MOVE;\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/MoveCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/MoveCommand.java	(date 1595845493018)
+@@ -5,7 +5,7 @@
+ import neointernship.chess.game.model.mediator.IMediator;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+ import neointernship.chess.game.model.playmap.field.IField;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public class MoveCommand extends AbstractCommand implements IAllowCommand{
+ 
+@@ -26,8 +26,8 @@
+     }
+ 
+     @Override
+-    public ChessCodes getChessCode() {
+-        return ChessCodes.MOVE;
++    public TurnStatus getChessCode() {
++        return TurnStatus.MOVE;
+     }
+ 
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AllowMoveCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands.allow;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.gameplay.moveaction.commands.IMoveCommand;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.figure.piece.King;\nimport neointernship.chess.game.model.figure.piece.Pawn;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.chess.game.story.IStoryGame;\nimport neointernship.web.client.communication.message.ChessCodes;\n\n/**\n * Реализация хода в нормальной ситуации\n */\npublic class AllowMoveCommand implements IMoveCommand {\n\n    private final IMediator mediator;\n    private final IPossibleActionList possibleActionList;\n    private final IBoard board;\n\n    private final IStoryGame storyGame;\n\n    private final IAllowCommand attackComand;\n    private final IAllowCommand moveCommand;\n    private final IAllowCommand aisleTakeCommand;\n    private final IAllowCommand castlingCommand;\n    private final IAllowCommand transformationCommand;\n\n\n    public AllowMoveCommand(final IMediator mediator,\n                            final IPossibleActionList possibleActionList,\n                            final IBoard board,\n                            final IStoryGame storyGame) {\n        this.mediator = mediator;\n        this.possibleActionList = possibleActionList;\n        this.board = board;\n\n        this.storyGame = storyGame;\n\n        attackComand = new AttackCommand(board, mediator);\n        moveCommand = new MoveCommand(board, mediator);\n        aisleTakeCommand = new AisleTakeCommand(board, mediator);\n        castlingCommand = new CastlingCommand(board,mediator);\n        transformationCommand = new TransformationCommand(board, mediator);\n\n    }\n\n\n    @Override\n    public ChessCodes execute(final Color color, final IAnswer answer) {\n        final IField startField = board.getField(answer.getStartX(), answer.getStartY());\n        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());\n\n        final Figure startFigure = mediator.getFigure(startField);\n        final Figure finalFigure = mediator.getFigure(finalField);\n\n        storyGame.update(startFigure);\n\n        final IAllowCommand currentCommand = getCommand(startFigure,startField,finalFigure,finalField);\n        currentCommand.execute(answer); // делаю ход\n\n        possibleActionList.updateRealLists();\n\n        return currentCommand.getChessCode();\n    }\n\n    private IAllowCommand getCommand(final Figure startFigure,final IField startField,final Figure finalFigure,final IField finalField){\n        if(     startFigure.getClass() == Pawn.class &&\n                (\n                        finalField.getXCoord() == board.getSize() - 1 ||\n                                finalField.getXCoord() == 0\n                )\n        ){\n            return transformationCommand;\n        }\n\n        if(finalFigure != null) {\n            return attackComand;\n        }\n        if(startFigure.getClass() == King.class &&\n                Math.abs(startField.getYCoord() - finalField.getYCoord()) > 1){\n            return castlingCommand;\n        }\n        if(startFigure.getClass() == Pawn.class &&\n                Math.abs(startField.getYCoord() - finalField.getYCoord()) == 1){\n            return aisleTakeCommand;\n        }\n        return moveCommand;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AllowMoveCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AllowMoveCommand.java	(date 1595845660124)
+@@ -11,7 +11,7 @@
+ import neointernship.chess.game.model.playmap.board.IBoard;
+ import neointernship.chess.game.model.playmap.field.IField;
+ import neointernship.chess.game.story.IStoryGame;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ /**
+  * Реализация хода в нормальной ситуации
+@@ -41,17 +41,17 @@
+ 
+         this.storyGame = storyGame;
+ 
+-        attackComand = new AttackCommand(board, mediator);
++        attackComand = new AttackComand(board, mediator);
+         moveCommand = new MoveCommand(board, mediator);
+         aisleTakeCommand = new AisleTakeCommand(board, mediator);
+-        castlingCommand = new CastlingCommand(board,mediator);
++        castlingCommand = new CastlingCommand(board, mediator);
+         transformationCommand = new TransformationCommand(board, mediator);
+ 
+     }
+ 
+ 
+     @Override
+-    public ChessCodes execute(final Color color, final IAnswer answer) {
++    public TurnStatus execute(final Color color, final IAnswer answer) {
+         final IField startField = board.getField(answer.getStartX(), answer.getStartY());
+         final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());
+ 
+@@ -60,7 +60,7 @@
+ 
+         storyGame.update(startFigure);
+ 
+-        final IAllowCommand currentCommand = getCommand(startFigure,startField,finalFigure,finalField);
++        IAllowCommand currentCommand = getCommand(startFigure, startField, finalFigure, finalField);
+         currentCommand.execute(answer); // делаю ход
+ 
+         possibleActionList.updateRealLists();
+@@ -68,25 +68,25 @@
+         return currentCommand.getChessCode();
+     }
+ 
+-    private IAllowCommand getCommand(final Figure startFigure,final IField startField,final Figure finalFigure,final IField finalField){
+-        if(     startFigure.getClass() == Pawn.class &&
++    private IAllowCommand getCommand(final Figure startFigure, final IField startField, final Figure finalFigure, final IField finalField) {
++        if (startFigure.getClass() == Pawn.class &&
+                 (
+                         finalField.getXCoord() == board.getSize() - 1 ||
+                                 finalField.getXCoord() == 0
+                 )
+-        ){
++        ) {
+             return transformationCommand;
+         }
+ 
+-        if(finalFigure != null) {
++        if (finalFigure != null) {
+             return attackComand;
+         }
+-        if(startFigure.getClass() == King.class &&
+-                Math.abs(startField.getYCoord() - finalField.getYCoord()) > 1){
++        if (startFigure.getClass() == King.class &&
++                Math.abs(startField.getYCoord() - finalField.getYCoord()) > 1) {
+             return castlingCommand;
+         }
+-        if(startFigure.getClass() == Pawn.class &&
+-                Math.abs(startField.getYCoord() - finalField.getYCoord()) == 1){
++        if (startFigure.getClass() == Pawn.class &&
++                Math.abs(startField.getYCoord() - finalField.getYCoord()) == 1) {
+             return aisleTakeCommand;
+         }
+         return moveCommand;
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AbstractCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands.allow;\n\n\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic class AbstractCommand{\n\n    protected final IMediator mediator;\n    protected final IBoard board;\n    private ChessCodes chessCodes;\n\n    public AbstractCommand(IBoard board,IMediator mediator) {\n        this.mediator = mediator;\n        this.board = board;\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AbstractCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AbstractCommand.java	(date 1595845493018)
+@@ -3,13 +3,13 @@
+ 
+ import neointernship.chess.game.model.mediator.IMediator;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public class AbstractCommand{
+ 
+     protected final IMediator mediator;
+     protected final IBoard board;
+-    private ChessCodes chessCodes;
++    private TurnStatus turnStatus;
+ 
+     public AbstractCommand(IBoard board,IMediator mediator) {
+         this.mediator = mediator;
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/CastlingCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands.allow;\n\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.web.client.communication.message.ChessCodes;\n\n/**\n * Класс реализующий команду рокировки\n */\npublic class CastlingCommand extends AbstractCommand implements IAllowCommand {\n\n    public CastlingCommand(IBoard board, IMediator mediator) {\n        super(board, mediator);\n    }\n\n    @Override\n    public void execute(IAnswer answer) {\n        IField startFieldKing = board.getField(answer.getStartX(),answer.getStartY());\n        IField finalFieldKing = board.getField(answer.getFinalX(),answer.getFinalY());\n\n        Figure king = mediator.getFigure(startFieldKing);\n\n        int yStartCoordRook = 0; // todo корректно только для класических шахмат !!!\n        int difCoordRook = 1;\n\n        // если двигаемся вправо\n        if(startFieldKing.getYCoord() < finalFieldKing.getYCoord()){\n            yStartCoordRook = 7;\n            difCoordRook = -1;\n        }\n        IField startFieldRook = board.getField(startFieldKing.getXCoord(),yStartCoordRook);\n\n        IField finalFieldRook = board.getField(\n                finalFieldKing.getXCoord(),\n                finalFieldKing.getYCoord() + difCoordRook);\n\n        Figure rook = mediator.getFigure(startFieldRook);\n\n        mediator.deleteConnection(startFieldKing);\n        mediator.deleteConnection(startFieldRook);\n        mediator.addNewConnection(finalFieldKing,king);\n        mediator.addNewConnection(finalFieldRook,rook);\n\n    }\n\n    @Override\n    public ChessCodes getChessCode() {\n        return ChessCodes.CASTLING;\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/CastlingCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/CastlingCommand.java	(date 1595845493018)
+@@ -5,7 +5,7 @@
+ import neointernship.chess.game.model.mediator.IMediator;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+ import neointernship.chess.game.model.playmap.field.IField;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ /**
+  * Класс реализующий команду рокировки
+@@ -43,12 +43,11 @@
+         mediator.deleteConnection(startFieldRook);
+         mediator.addNewConnection(finalFieldKing,king);
+         mediator.addNewConnection(finalFieldRook,rook);
+-
+     }
+ 
+     @Override
+-    public ChessCodes getChessCode() {
+-        return ChessCodes.CASTLING;
++    public TurnStatus getChessCode() {
++        return TurnStatus.CASTLING;
+     }
+ 
+ }
+Index: src/main/java/neointernship/chess/game/story/StoryGame.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.story;\n\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.figure.piece.Pawn;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.field.IField;\n\nimport java.util.HashSet;\nimport java.util.Set;\n\npublic class StoryGame implements IStoryGame {\n\n    private final Set<Figure> hoIsMove;\n\n    private final IMediator mediator;\n\n    private Figure lastFigure;\n    private IField lastField;\n\n    public StoryGame(final IMediator mediator) {\n        this.mediator = mediator;\n        this.hoIsMove = new HashSet<>();\n\n    }\n    public StoryGame(StoryGame storyGame) {\n        this.mediator = storyGame.mediator;\n        this.hoIsMove = new HashSet<>();\n\n        this.hoIsMove.addAll(storyGame.hoIsMove);\n    }\n\n    @Override\n    public boolean isMove(final Figure figure) {\n        return hoIsMove.contains(figure);\n    }\n\n    @Override\n    public Figure getLastFigureMove() {\n        return lastFigure;\n    }\n\n    @Override\n    public IField getLastFieldFigure(final Figure figure) {\n        return lastField;\n    }\n\n    @Override\n    public void update(final Figure figure) {\n        if(figure.getClass() == Pawn.class){\n\n        }\n        hoIsMove.add(figure);\n        this.lastFigure = figure;\n        lastField = mediator.getField(figure);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/story/StoryGame.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/story/StoryGame.java	(date 1595845493018)
+@@ -17,6 +17,7 @@
+     private Figure lastFigure;
+     private IField lastField;
+ 
++    // todo можешь существовать без Mediator ?
+     public StoryGame(final IMediator mediator) {
+         this.mediator = mediator;
+         this.hoIsMove = new HashSet<>();
+@@ -40,15 +41,12 @@
+     }
+ 
+     @Override
+-    public IField getLastFieldFigure(final Figure figure) {
++    public IField getLastField() {
+         return lastField;
+     }
+ 
+     @Override
+     public void update(final Figure figure) {
+-        if(figure.getClass() == Pawn.class){
+-
+-        }
+         hoIsMove.add(figure);
+         this.lastFigure = figure;
+         lastField = mediator.getField(figure);
+Index: src/main/java/neointernship/chess/game/model/answer/AnswerSimbol.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.model.answer;\n\nimport com.fasterxml.jackson.annotation.JsonCreator;\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.annotation.JsonTypeInfo;\n\n@JsonIgnoreProperties(ignoreUnknown = true)\n@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)\npublic class AnswerSimbol implements IAnswer {\n    @JsonProperty\n    final int startX;\n    @JsonProperty\n    final int startY;\n    @JsonProperty\n    final int finalX;\n    @JsonProperty\n    final int finalY;\n    @JsonProperty\n    char simbol;\n\n    private static final RepositiryChar repositiryChar = new RepositiryChar();\n\n    @JsonCreator\n    public AnswerSimbol(@JsonProperty(\"startC\") final char startC,\n                        @JsonProperty(\"startI\") final char startI,\n                        @JsonProperty(\"finishC\") final char finishC,\n                        @JsonProperty(\"finishI\") final char finishI,\n                        @JsonProperty(\"simbol\") final char simbol) {\n        this.startX  = repositiryChar.getX(startI);\n        this.startY = repositiryChar.getY(startC);\n\n        this.finalX = repositiryChar.getX(finishI);\n        this.finalY = repositiryChar.getY(finishC);\n\n        this.simbol = simbol;\n    }\n\n    public AnswerSimbol(final char startC, final char startI, final char finishC, final char finishI) {\n        this.startX  = repositiryChar.getX(startI);\n        this.startY = repositiryChar.getY(startC);\n\n        this.finalX = repositiryChar.getX(finishI);\n        this.finalY = repositiryChar.getY(finishC);\n\n        this.simbol = 'Q';\n    }\n\n    @Override\n    public int getStartX() {\n        return startX;\n    }\n\n    @Override\n    public int getStartY() {\n        return startY;\n    }\n\n    @Override\n    public int getFinalX() {\n        return finalX;\n    }\n\n    @Override\n    public int getFinalY() {\n        return finalY;\n    }\n\n    @Override\n    public char getSimbol() {\n        return simbol;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/model/answer/AnswerSimbol.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/model/answer/AnswerSymbol.java	(date 1595845883163)
+@@ -7,7 +7,7 @@
+ 
+ @JsonIgnoreProperties(ignoreUnknown = true)
+ @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+-public class AnswerSimbol implements IAnswer {
++public class AnswerSymbol implements IAnswer {
+     @JsonProperty
+     final int startX;
+     @JsonProperty
+@@ -17,33 +17,33 @@
+     @JsonProperty
+     final int finalY;
+     @JsonProperty
+-    char simbol;
++    char symbol;
+ 
+     private static final RepositiryChar repositiryChar = new RepositiryChar();
+ 
+     @JsonCreator
+-    public AnswerSimbol(@JsonProperty("startC") final char startC,
++    public AnswerSymbol(@JsonProperty("startC") final char startC,
+                         @JsonProperty("startI") final char startI,
+                         @JsonProperty("finishC") final char finishC,
+                         @JsonProperty("finishI") final char finishI,
+-                        @JsonProperty("simbol") final char simbol) {
++                        @JsonProperty("symbol") final char symbol) {
+         this.startX  = repositiryChar.getX(startI);
+         this.startY = repositiryChar.getY(startC);
+ 
+         this.finalX = repositiryChar.getX(finishI);
+         this.finalY = repositiryChar.getY(finishC);
+ 
+-        this.simbol = simbol;
++        this.symbol = symbol;
+     }
+ 
+-    public AnswerSimbol(final char startC, final char startI, final char finishC, final char finishI) {
++    public AnswerSymbol(final char startC, final char startI, final char finishC, final char finishI) {
+         this.startX  = repositiryChar.getX(startI);
+         this.startY = repositiryChar.getY(startC);
+ 
+         this.finalX = repositiryChar.getX(finishI);
+         this.finalY = repositiryChar.getY(finishC);
+ 
+-        this.simbol = 'Q';
++        this.symbol = 'Q';
+     }
+ 
+     @Override
+@@ -67,7 +67,7 @@
+     }
+ 
+     @Override
+-    public char getSimbol() {
+-        return simbol;
++    public char getSymbol() {
++        return symbol;
+     }
+ }
+Index: src/main/java/neointernship/chess/game/story/IStoryGame.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.story;\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.playmap.field.IField;\n\npublic interface IStoryGame {\n    /**\n     * Возвращает true если данной фигурой совершали ход\n     * @param figure\n     * @return\n     */\n    boolean isMove(final Figure figure);\n\n    /**\n     * Возвращает фигуру, которой последний раз был совершён ход\n     * @return\n     */\n    Figure getLastFigureMove();\n\n    /**\n     * Возвращает поле, на котором стояла фигура перед последним её ходом.\n     * Если она не ходила, то её текущее положение\n     * @param figure\n     * @return\n     */\n    IField getLastFieldFigure(final Figure figure);\n\n    /**\n     *\n     */\n    void update(final Figure figure);\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/story/IStoryGame.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/story/IStoryGame.java	(date 1595845493018)
+@@ -20,11 +20,9 @@
+ 
+     /**
+      * Возвращает поле, на котором стояла фигура перед последним её ходом.
+-     * Если она не ходила, то её текущее положение
+-     * @param figure
+      * @return
+      */
+-    IField getLastFieldFigure(final Figure figure);
++    IField getLastField();
+ 
+     /**
+      *
+Index: src/test/java/neointernship/chess/model/mediator/TestMediator.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.model.mediator;\n\nimport neointernship.chess.game.gameplay.gamestate.controller.draw.Position;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.Bishop;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.figure.piece.King;\nimport neointernship.chess.game.model.figure.piece.Queen;\nimport neointernship.chess.game.model.mediator.Mediator;\nimport neointernship.chess.game.model.playmap.field.Field;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport org.junit.*;\n\nimport java.util.Collection;\nimport java.util.HashMap;\nimport java.util.HashSet;\n\nimport static org.junit.jupiter.api.Assertions.*;\n\n\npublic class TestMediator {\n\n    private static Mediator mediator;\n    private static IField fieldB;\n    private static IField fieldQ;\n    private static Figure figureB;\n    private static Figure figureQ;\n\n    @Before\n    public void init(){\n        mediator = new Mediator();\n\n        fieldB = new Field(0,0);\n        fieldQ = new Field(5,5);\n\n        figureB = new Bishop(Color.BLACK);\n        figureQ = new Queen(Color.WHITE);\n\n        mediator.addNewConnection(fieldB,figureB);\n        mediator.addNewConnection(fieldQ,figureQ);\n    }\n\n    @After\n    public void clear(){\n        mediator.clear();\n    }\n\n    @Test\n    public void testGetFigure(){\n        Figure result = mediator.getFigure(fieldB);\n\n        assertEquals(figureB,result);\n    }\n    @Test\n    public void testGetFigures(){\n        Collection<Figure> figures = mediator.getFigures();\n\n        assertEquals(figures.size(),2);\n        assertTrue(figures.contains(figureB));\n        assertTrue(figures.contains(figureQ));\n    }\n    @Test\n    public void testGetField(){\n        IField result = mediator.getField(figureQ);\n\n        assertEquals(fieldQ,result);\n    }\n    @Test\n    public void testGetKing(){\n        Color color = Color.WHITE;\n        King king = new King(color);\n        IField fieldK = new Field(1,1);\n\n        mediator.addNewConnection(fieldK,king);\n\n        Figure resultFigure = mediator.getKing(color);\n        IField resultField = mediator.getField(resultFigure);\n\n        assertEquals(resultFigure,king);\n        assertEquals(resultField,fieldK);\n\n    }\n    @Test\n    public void testConnections(){\n        // срубаю ферзем слона\n        mediator.deleteConnection(fieldB);\n        mediator.addNewConnection(fieldB,figureQ);\n        mediator.deleteConnection(fieldQ);\n\n        assertEquals(1,mediator.getFigures().size());\n        assertEquals(1,mediator.getFigures(Color.WHITE).size());\n        assertEquals(0,mediator.getFigures(Color.BLACK).size());\n    }\n\n    @Test\n    public void testEqualsMediator(){\n\n        HashMap<Position,Integer> map = new HashMap<>();\n\n\n        Mediator newMediator = new Mediator(mediator);\n        assertEquals(mediator, newMediator);\n\n        Position position = new Position(mediator);\n\n        assertNull(map.get(position));\n        map.put(position,1);\n\n        Position newPosition = new Position(newMediator);\n        assertNotNull(map.get(newPosition));\n        map.put(newPosition,2);\n\n        assertEquals(position,newPosition);\n\n        newMediator.deleteConnection(fieldQ);\n        newMediator.addNewConnection(fieldQ,figureQ);\n\n        Position copyPosition = new Position(newMediator);\n\n\n        assertEquals(mediator, newMediator);\n        assertEquals(position,copyPosition);\n\n        assertNotNull(map.get(copyPosition));\n\n        assertEquals(1,map.size());\n\n    }\n    @Test\n    public void testEqualsPosition(){\n\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/neointernship/chess/model/mediator/TestMediator.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/test/java/neointernship/chess/model/mediator/TestMediator.java	(date 1595845493022)
+@@ -13,11 +13,9 @@
+ 
+ import java.util.Collection;
+ import java.util.HashMap;
+-import java.util.HashSet;
+ 
+ import static org.junit.jupiter.api.Assertions.*;
+ 
+-
+ public class TestMediator {
+ 
+     private static Mediator mediator;
+Index: src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.figureactions.patterns.potential;\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.figure.piece.Pawn;\nimport neointernship.chess.game.model.figure.piece.Rook;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.Field;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.chess.game.story.IStoryGame;\n\nimport java.util.ArrayList;\nimport java.util.Collection;\n\npublic final class PotentialBasicPatterns implements IPotentialBasicPatterns {\n    private final int boardSize;\n    private final IMediator mediator;\n    private final IBoard board;\n    private final IStoryGame storyGame;\n\n    public PotentialBasicPatterns(final IMediator mediator,final IBoard board,final IStoryGame storyGame) {\n        this.mediator = mediator;\n        this.board = board;\n        boardSize = board.getSize();\n        this.storyGame = storyGame;\n    }\n\n    public ArrayList<IField> getDiagonalFields(final Figure figure) {\n        final ArrayList<IField> possibleAttackFields = new ArrayList<>();\n        final IField currentField = mediator.getField(figure);\n        boolean keepRightDownMove = true;\n        boolean keepLeftUpMove = true;\n        for (int i = 1; i < boardSize; i++) {\n            if (keepRightDownMove && currentField.getXCoord() < boardSize && currentField.getYCoord() < boardSize) {\n                keepRightDownMove = actionToAdd(figure.getColor(),currentField.getXCoord() + i, currentField.getYCoord() + i, possibleAttackFields);\n            }\n\n            if (keepLeftUpMove && currentField.getXCoord() > 0 && currentField.getYCoord() > 0) {\n                keepLeftUpMove = actionToAdd(figure.getColor(),currentField.getXCoord() - i, currentField.getYCoord() - i, possibleAttackFields);\n            }\n        }\n\n        boolean keepRightUpMove = true;\n        boolean keepLeftDownMove = true;\n        for (int i = 1; i < boardSize; i++) {\n            if (keepRightUpMove && currentField.getXCoord() > 0 && currentField.getYCoord() < boardSize) {\n                keepRightUpMove = actionToAdd(figure.getColor(),currentField.getXCoord() - i, currentField.getYCoord() + i, possibleAttackFields);\n            }\n\n            if (keepLeftDownMove && currentField.getXCoord() < boardSize && currentField.getYCoord() > 0) {\n                keepLeftDownMove = actionToAdd(figure.getColor(),currentField.getXCoord() + i, currentField.getYCoord() - i, possibleAttackFields);\n            }\n        }\n\n        return possibleAttackFields;\n    }\n\n    public ArrayList<IField> getHorizonVerticalFields(final Figure figure) {\n        final ArrayList<IField> possibleAttackFields = new ArrayList<>();\n\n        final IField currentField = mediator.getField(figure);\n\n        boolean keepRightMove = true;\n        boolean keepLeftMove = true;\n        for (int i = 1; i < boardSize; i++) {\n            if (keepRightMove) {\n                keepRightMove = actionToAdd(figure.getColor(),currentField.getXCoord(), currentField.getYCoord() + i, possibleAttackFields);\n            }\n            if (keepLeftMove) {\n                keepLeftMove = actionToAdd(figure.getColor(),currentField.getXCoord(), currentField.getYCoord() - i, possibleAttackFields);\n            }\n        }\n\n        boolean keepUpMove = true;\n        boolean keepDownMove = true;\n        for (int i = 1; i < boardSize; i++) {\n            if (keepUpMove) {\n                keepUpMove = actionToAdd(figure.getColor(),currentField.getXCoord() - i, currentField.getYCoord(), possibleAttackFields);\n            }\n            if (keepDownMove) {\n                keepDownMove = actionToAdd(figure.getColor(),currentField.getXCoord() + i, currentField.getYCoord(), possibleAttackFields);\n            }\n        }\n        return possibleAttackFields;\n    }\n\n    public ArrayList<IField> getKnightFields(final Figure figure) {\n        final ArrayList<IField> possibleAttackFields = new ArrayList<>();\n\n        final IField currentField = mediator.getField(figure);\n\n        final int[] onesList = new int[] {1, -1};\n        final int[] twosList = new int[] {2, -2};\n\n        for (final int one : onesList) {\n            for (final int two : twosList) {\n                actionToAdd(figure.getColor(),\n                        currentField.getXCoord() + one,\n                        currentField.getYCoord() + two,\n                        possibleAttackFields);\n                actionToAdd(figure.getColor(),\n                        currentField.getXCoord() + two,\n                        currentField.getYCoord() + one,\n                        possibleAttackFields);\n            }\n        }\n\n        return possibleAttackFields;\n    }\n\n    public ArrayList<IField> getPawnFields(final Figure figure) {\n        final ArrayList<IField> possibleAttackFields = new ArrayList<>();\n        final IField currentField = mediator.getField(figure);\n\n        int offset = (figure.getColor() == Color.BLACK) ? 1 : -1 ;\n\n        final int[] onesList = new int[] {1, -1};\n        for (final int one : onesList) {\n            addAttackField(figure.getColor(), currentField.getXCoord() + offset, currentField.getYCoord() + one, possibleAttackFields);\n        }\n        addMoveField(currentField.getXCoord() + offset, currentField.getYCoord(), possibleAttackFields);\n\n        addIfAisleTake(figure,possibleAttackFields);\n\n        if (currentField.getXCoord() == 6 && figure.getColor() == Color.WHITE) {\n            offset = -  2;\n            addMoveField(currentField.getXCoord() + offset, currentField.getYCoord(), possibleAttackFields);\n        }\n        if (currentField.getXCoord() == 1 && figure.getColor() == Color.BLACK) {\n            offset = 2;\n            addMoveField(currentField.getXCoord() + offset, currentField.getYCoord(), possibleAttackFields);\n        }\n\n        return possibleAttackFields;\n    }\n\n    private void addIfAisleTake(final Figure pawn, final Collection<IField> possibleAttackFields){\n        final IField currentField = mediator.getField(pawn);\n        final Color color = pawn.getColor();\n        final Figure lastFigure = storyGame.getLastFigureMove();\n\n        int startXCoord = 3;\n        int move = -1;\n        if(color == Color.BLACK){\n            startXCoord = 4;\n            move = 1;\n        }\n\n        final IField lastFieldLastFigure = storyGame.getLastFieldFigure(lastFigure);\n        final IField realFieldLastFigure = mediator.getField(lastFigure);\n\n        if(realFieldLastFigure != null && lastFieldLastFigure != null) { // может быть null если было превращение\n            if (currentField.getXCoord() == startXCoord && lastFigure.getColor() == Color.swapColor(color)) {\n                if (lastFigure.getClass() == Pawn.class) {\n                    if (Math.abs(realFieldLastFigure.getXCoord() - lastFieldLastFigure.getXCoord()) == 2) {\n                        if (Math.abs(lastFieldLastFigure.getYCoord() - currentField.getYCoord()) == 1) {\n                            possibleAttackFields.add(new Field(startXCoord + move, lastFieldLastFigure.getYCoord()));\n                        }\n                    }\n                }\n            }\n        }\n    }\n\n    @Override\n    public ArrayList<IField> getKingFields(final Figure king) {\n        final ArrayList<IField> possibleAttackFields = new ArrayList<>();\n\n        final IField fieldKing = mediator.getField(king);\n\n        final int[] onesList = new int[] {1, -1};\n\n        for (final int one : onesList) {\n            for (final int two : onesList) {\n\n                actionToAdd(king.getColor(),\n                        fieldKing.getXCoord() + one,\n                        fieldKing.getYCoord() + two,\n                        possibleAttackFields);\n\n            }\n        }\n\n        for (final int one : onesList) {\n            actionToAdd(king.getColor(),\n                    fieldKing.getXCoord() + one,\n                    fieldKing.getYCoord(),\n                    possibleAttackFields);\n\n            actionToAdd(king.getColor(),\n                    fieldKing.getXCoord(),\n                    fieldKing.getYCoord() + one,\n                    possibleAttackFields);\n        }\n\n        addIfCastling(king,fieldKing,possibleAttackFields);\n\n        return possibleAttackFields;\n    }\n\n    private void addIfCastling(final Figure king,final IField fieldKing,final Collection<IField> possibleAttackFields){\n        // если король не ходил\n        if(!storyGame.isMove(king)){\n\n            for (final Figure rook : mediator.getFigures(king.getColor())){\n                // если есть ладья которой не ходил\n                if(rook.getClass() == Rook.class && !storyGame.isMove(rook)){\n                    // если между ними нет других фигур\n                    boolean haveFigure = false;\n                    final IField fieldRook = mediator.getField(rook);\n                    final int dif = fieldKing.getYCoord() < fieldRook.getYCoord() ? 1 : -1;\n\n                    IField fieldTemp = board.getField(fieldKing.getXCoord(),fieldKing.getYCoord() + dif);\n\n                    while (fieldTemp.getYCoord() != fieldRook.getYCoord()){\n                        if(mediator.getFigure(fieldTemp) != null){\n                            haveFigure = true;\n                        }\n                        fieldTemp = board.getField(fieldKing.getXCoord(),fieldTemp.getYCoord() + dif);\n                    }\n                    //если фигур нет\n                    if(!haveFigure){\n                        final IField finalField = board.getField(fieldKing.getXCoord(),fieldKing.getYCoord() + (2 * dif));\n                        possibleAttackFields.add(finalField);\n                    }\n                }\n            }\n        }\n    }\n\n    /**\n     * This method checks if it needed to add a field to the piece's attack list.\n     * It checks if the field coordinates are within the dimensions of the Board.\n     * If the fields contains some piece that has opposite color, the field added to the list.\n     *\n     * @param newFieldYCoord {@link Integer} column coordinate of the field being checked\n     * @param possibleMoveList a list where we add the field if it needed.\n     * @return boolean value if moving through direction is possible (not covered with another piece).\n     */\n    private boolean actionToAdd(final Color color, final int newFieldXCoord,\n                                final int newFieldYCoord, final ArrayList<IField> possibleMoveList) {\n        if (!validCoordinates(newFieldXCoord, newFieldYCoord)) {\n            return false;\n        }\n        final IField field = board.getField(newFieldXCoord, newFieldYCoord);\n        final Figure figure = mediator.getFigure(field);\n\n        addMoveField(newFieldXCoord, newFieldYCoord, possibleMoveList);\n        addAttackField(color, newFieldXCoord, newFieldYCoord, possibleMoveList);\n\n        return figure == null;\n    }\n\n    private void addMoveField(final int newFieldXCoord, final int newFieldYCoord,\n                              final ArrayList<IField> possibleMoveList) {\n        if (!validCoordinates(newFieldXCoord, newFieldYCoord)) {\n            return;\n        }\n\n        final IField field = board.getField(newFieldXCoord, newFieldYCoord);\n        final Figure figure = mediator.getFigure(field);\n\n        if (figure == null) {\n            possibleMoveList.add(field);\n        }\n    }\n\n    private void addAttackField(final Color color, final int newFieldXCoord, final int newFieldYCoord,\n                                final ArrayList<IField> possibleMoveList) {\n        if (!validCoordinates(newFieldXCoord, newFieldYCoord)) {\n            return;\n        }\n\n        final IField field = board.getField(newFieldXCoord, newFieldYCoord);\n        final Figure figure = mediator.getFigure(field);\n\n        if (figure != null && figure.getColor() != color) {\n            possibleMoveList.add(field);\n        }\n    }\n\n    private boolean validCoordinates(final int newFieldXCoord, final int newFieldYCoord) {\n        return newFieldXCoord >= 0\n                && newFieldXCoord < boardSize\n                && newFieldYCoord >= 0\n                && newFieldYCoord < boardSize;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java	(date 1595845660120)
+@@ -13,7 +13,7 @@
+ import java.util.ArrayList;
+ import java.util.Collection;
+ 
+-public final class PotentialBasicPatterns implements IPotentialBasicPatterns {
++public class PotentialBasicPatterns implements IPotentialBasicPatterns {
+     private final int boardSize;
+     private final IMediator mediator;
+     private final IBoard board;
+@@ -27,8 +27,8 @@
+     }
+ 
+     public ArrayList<IField> getDiagonalFields(final Figure figure) {
+-        final ArrayList<IField> possibleAttackFields = new ArrayList<>();
+-        final IField currentField = mediator.getField(figure);
++        ArrayList<IField> possibleAttackFields = new ArrayList<>();
++        IField currentField = mediator.getField(figure);
+         boolean keepRightDownMove = true;
+         boolean keepLeftUpMove = true;
+         for (int i = 1; i < boardSize; i++) {
+@@ -57,9 +57,9 @@
+     }
+ 
+     public ArrayList<IField> getHorizonVerticalFields(final Figure figure) {
+-        final ArrayList<IField> possibleAttackFields = new ArrayList<>();
++        ArrayList<IField> possibleAttackFields = new ArrayList<>();
+ 
+-        final IField currentField = mediator.getField(figure);
++        IField currentField = mediator.getField(figure);
+ 
+         boolean keepRightMove = true;
+         boolean keepLeftMove = true;
+@@ -86,15 +86,15 @@
+     }
+ 
+     public ArrayList<IField> getKnightFields(final Figure figure) {
+-        final ArrayList<IField> possibleAttackFields = new ArrayList<>();
++        ArrayList<IField> possibleAttackFields = new ArrayList<>();
+ 
+-        final IField currentField = mediator.getField(figure);
++        IField currentField = mediator.getField(figure);
+ 
+-        final int[] onesList = new int[] {1, -1};
+-        final int[] twosList = new int[] {2, -2};
++        int[] onesList = new int[] {1, -1};
++        int[] twosList = new int[] {2, -2};
+ 
+-        for (final int one : onesList) {
+-            for (final int two : twosList) {
++        for (int one : onesList) {
++            for (int two : twosList) {
+                 actionToAdd(figure.getColor(),
+                         currentField.getXCoord() + one,
+                         currentField.getYCoord() + two,
+@@ -110,26 +110,27 @@
+     }
+ 
+     public ArrayList<IField> getPawnFields(final Figure figure) {
+-        final ArrayList<IField> possibleAttackFields = new ArrayList<>();
+-        final IField currentField = mediator.getField(figure);
++        ArrayList<IField> possibleAttackFields = new ArrayList<>();
++        IField currentField = mediator.getField(figure);
+ 
+         int offset = (figure.getColor() == Color.BLACK) ? 1 : -1 ;
+ 
+-        final int[] onesList = new int[] {1, -1};
+-        for (final int one : onesList) {
++        int[] onesList = new int[] {1, -1};
++        for (int one : onesList) {
+             addAttackField(figure.getColor(), currentField.getXCoord() + offset, currentField.getYCoord() + one, possibleAttackFields);
+         }
+-        addMoveField(currentField.getXCoord() + offset, currentField.getYCoord(), possibleAttackFields);
++
++        boolean isFreePAth = addMoveField(currentField.getXCoord() + offset,
++                        currentField.getYCoord(),
++                        possibleAttackFields);
+ 
+         addIfAisleTake(figure,possibleAttackFields);
+ 
+-        if (currentField.getXCoord() == 6 && figure.getColor() == Color.WHITE) {
+-            offset = -  2;
+-            addMoveField(currentField.getXCoord() + offset, currentField.getYCoord(), possibleAttackFields);
+-        }
+-        if (currentField.getXCoord() == 1 && figure.getColor() == Color.BLACK) {
+-            offset = 2;
+-            addMoveField(currentField.getXCoord() + offset, currentField.getYCoord(), possibleAttackFields);
++        if(isFreePAth) {
++            if (currentField.getXCoord() == 1 || currentField.getXCoord() == 6) {
++                offset *= 2;
++                addMoveField(currentField.getXCoord() + offset, currentField.getYCoord(), possibleAttackFields);
++            }
+         }
+ 
+         return possibleAttackFields;
+@@ -147,10 +148,10 @@
+             move = 1;
+         }
+ 
+-        final IField lastFieldLastFigure = storyGame.getLastFieldFigure(lastFigure);
++        final IField lastFieldLastFigure = storyGame.getLastField();
+         final IField realFieldLastFigure = mediator.getField(lastFigure);
+ 
+-        if(realFieldLastFigure != null && lastFieldLastFigure != null) { // может быть null если было превращение
++        if(realFieldLastFigure != null) { // может быть null если было превращение
+             if (currentField.getXCoord() == startXCoord && lastFigure.getColor() == Color.swapColor(color)) {
+                 if (lastFigure.getClass() == Pawn.class) {
+                     if (Math.abs(realFieldLastFigure.getXCoord() - lastFieldLastFigure.getXCoord()) == 2) {
+@@ -164,15 +165,15 @@
+     }
+ 
+     @Override
+-    public ArrayList<IField> getKingFields(final Figure king) {
+-        final ArrayList<IField> possibleAttackFields = new ArrayList<>();
++    public ArrayList<IField> getKingFields(Figure king) {
++        ArrayList<IField> possibleAttackFields = new ArrayList<>();
+ 
+-        final IField fieldKing = mediator.getField(king);
++        IField fieldKing = mediator.getField(king);
+ 
+-        final int[] onesList = new int[] {1, -1};
++        int[] onesList = new int[] {1, -1};
+ 
+-        for (final int one : onesList) {
+-            for (final int two : onesList) {
++        for (int one : onesList) {
++            for (int two : onesList) {
+ 
+                 actionToAdd(king.getColor(),
+                         fieldKing.getXCoord() + one,
+@@ -182,7 +183,7 @@
+             }
+         }
+ 
+-        for (final int one : onesList) {
++        for (int one : onesList) {
+             actionToAdd(king.getColor(),
+                     fieldKing.getXCoord() + one,
+                     fieldKing.getYCoord(),
+@@ -203,13 +204,13 @@
+         // если король не ходил
+         if(!storyGame.isMove(king)){
+ 
+-            for (final Figure rook : mediator.getFigures(king.getColor())){
++            for (Figure rook : mediator.getFigures(king.getColor())){
+                 // если есть ладья которой не ходил
+                 if(rook.getClass() == Rook.class && !storyGame.isMove(rook)){
+                     // если между ними нет других фигур
+                     boolean haveFigure = false;
+-                    final IField fieldRook = mediator.getField(rook);
+-                    final int dif = fieldKing.getYCoord() < fieldRook.getYCoord() ? 1 : -1;
++                    IField fieldRook = mediator.getField(rook);
++                    int dif = fieldKing.getYCoord() < fieldRook.getYCoord() ? 1 : -1;
+ 
+                     IField fieldTemp = board.getField(fieldKing.getXCoord(),fieldKing.getYCoord() + dif);
+ 
+@@ -221,7 +222,7 @@
+                     }
+                     //если фигур нет
+                     if(!haveFigure){
+-                        final IField finalField = board.getField(fieldKing.getXCoord(),fieldKing.getYCoord() + (2 * dif));
++                        IField finalField = board.getField(fieldKing.getXCoord(),fieldKing.getYCoord() + (2 * dif));
+                         possibleAttackFields.add(finalField);
+                     }
+                 }
+@@ -238,13 +239,12 @@
+      * @param possibleMoveList a list where we add the field if it needed.
+      * @return boolean value if moving through direction is possible (not covered with another piece).
+      */
+-    private boolean actionToAdd(final Color color, final int newFieldXCoord,
+-                                final int newFieldYCoord, final ArrayList<IField> possibleMoveList) {
+-        if (!validCoordinates(newFieldXCoord, newFieldYCoord)) {
++    private boolean actionToAdd(final Color color, final int newFieldXCoord, final int newFieldYCoord, ArrayList<IField> possibleMoveList) {
++        if (validCoordinates(newFieldXCoord, newFieldYCoord)) {
+             return false;
+         }
+-        final IField field = board.getField(newFieldXCoord, newFieldYCoord);
+-        final Figure figure = mediator.getFigure(field);
++        IField field = board.getField(newFieldXCoord, newFieldYCoord);
++        Figure figure = mediator.getFigure(field);
+ 
+         addMoveField(newFieldXCoord, newFieldYCoord, possibleMoveList);
+         addAttackField(color, newFieldXCoord, newFieldYCoord, possibleMoveList);
+@@ -252,28 +252,28 @@
+         return figure == null;
+     }
+ 
+-    private void addMoveField(final int newFieldXCoord, final int newFieldYCoord,
+-                              final ArrayList<IField> possibleMoveList) {
+-        if (!validCoordinates(newFieldXCoord, newFieldYCoord)) {
+-            return;
++    private boolean addMoveField(final int newFieldXCoord, final int newFieldYCoord, ArrayList<IField> possibleMoveList) {
++        if (validCoordinates(newFieldXCoord, newFieldYCoord)) {
++            return false;
+         }
+ 
+-        final IField field = board.getField(newFieldXCoord, newFieldYCoord);
+-        final Figure figure = mediator.getFigure(field);
++        IField field = board.getField(newFieldXCoord, newFieldYCoord);
++        Figure figure = mediator.getFigure(field);
+ 
+         if (figure == null) {
+             possibleMoveList.add(field);
++            return true;
+         }
++        return false;
+     }
+ 
+-    private void addAttackField(final Color color, final int newFieldXCoord, final int newFieldYCoord,
+-                                final ArrayList<IField> possibleMoveList) {
+-        if (!validCoordinates(newFieldXCoord, newFieldYCoord)) {
++    private void addAttackField(final Color color, final int newFieldXCoord, final int newFieldYCoord, ArrayList<IField> possibleMoveList) {
++        if (validCoordinates(newFieldXCoord, newFieldYCoord)) {
+             return;
+         }
+ 
+-        final IField field = board.getField(newFieldXCoord, newFieldYCoord);
+-        final Figure figure = mediator.getFigure(field);
++        IField field = board.getField(newFieldXCoord, newFieldYCoord);
++        Figure figure = mediator.getFigure(field);
+ 
+         if (figure != null && figure.getColor() != color) {
+             possibleMoveList.add(field);
+@@ -281,9 +281,9 @@
+     }
+ 
+     private boolean validCoordinates(final int newFieldXCoord, final int newFieldYCoord) {
+-        return newFieldXCoord >= 0
+-                && newFieldXCoord < boardSize
+-                && newFieldYCoord >= 0
+-                && newFieldYCoord < boardSize;
++        return newFieldXCoord < 0
++                || newFieldXCoord >= boardSize
++                || newFieldYCoord < 0
++                || newFieldYCoord >= boardSize;
+     }
+ }
+Index: src/main/java/neointernship/chess/game/model/enums/EnumGameState.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.model.enums;\n\npublic enum EnumGameState {\n    MATE,\n    STALEMATE,\n    ALIVE\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/model/enums/EnumGameState.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/model/enums/EnumGameState.java	(date 1595845493018)
+@@ -3,5 +3,9 @@
+ public enum EnumGameState {
+     MATE,
+     STALEMATE,
+-    ALIVE
++    ALIVE,
++    DRAW_FIFTY_STEP,
++    DRAW_ONLY_KING,
++    DRAW_FEW_FIGURE,
++    DRAW_REPETITION_POSITION,
+ }
+Index: src/test/java/neointernship/chess/model/enums/TestColor.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.model.enums;\n\nimport neointernship.chess.game.model.enums.Color;\nimport org.junit.Test;\n\nimport java.util.HashSet;\nimport java.util.Set;\n\nimport static org.junit.Assert.assertEquals;\n\npublic class TestColor {\n    @Test\n    public void testWSwapB(){\n        Color color = Color.WHITE;\n        Color result = Color.swapColor(color);\n        Color expected = Color.BLACK;\n        assertEquals(expected,result);\n    }\n    @Test\n    public void testBSwapW(){\n        Color color = Color.BLACK;\n        Color result = Color.swapColor(color);\n        Color expected = Color.WHITE;\n        assertEquals(expected,result);\n    }\n\n    @Test\n    public void equals(){\n        Set<Color> colorSet = new HashSet<>();\n        colorSet.add(Color.WHITE);\n        colorSet.add(Color.BLACK);\n\n        assertEquals(2,colorSet.size());\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/neointernship/chess/model/enums/TestColor.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/test/java/neointernship/chess/model/enums/TestColor.java	(date 1595845493022)
+@@ -23,7 +23,6 @@
+         Color expected = Color.WHITE;
+         assertEquals(expected,result);
+     }
+-
+     @Test
+     public void equals(){
+         Set<Color> colorSet = new HashSet<>();
+@@ -32,4 +31,5 @@
+ 
+         assertEquals(2,colorSet.size());
+     }
++
+ }
+Index: src/main/java/neointernship/chess/game/model/subscriber/ISubscriber.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.model.subscriber;\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.enums.KingState;\n\npublic interface ISubscriber {\n    void update(final Color color, final KingState kingState);\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/model/subscriber/ISubscriber.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/kingstate/subscriber/IKingStateSubscriber.java	(date 1595845493070)
+@@ -1,8 +1,8 @@
+-package neointernship.chess.game.model.subscriber;
++package neointernship.chess.game.gameplay.kingstate.subscriber;
+ 
+ import neointernship.chess.game.model.enums.Color;
+ import neointernship.chess.game.model.enums.KingState;
+ 
+-public interface ISubscriber {
++public interface IKingStateSubscriber {
+     void update(final Color color, final KingState kingState);
+ }
+Index: src/main/java/neointernship/chess/game/model/answer/Answer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.model.answer;\n\nimport com.fasterxml.jackson.annotation.JsonCreator;\nimport com.fasterxml.jackson.annotation.JsonIgnoreProperties;\nimport com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.annotation.JsonTypeInfo;\n\n@JsonIgnoreProperties(ignoreUnknown = true)\n@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)\npublic class Answer implements IAnswer {\n    @JsonProperty\n    final int startX;\n    @JsonProperty\n    final int startY;\n    @JsonProperty\n    final int finalX;\n    @JsonProperty\n    final int finalY;\n    @JsonProperty\n    char simbol;\n\n    @JsonCreator\n    public Answer(@JsonProperty(\"startX\") final int startX,\n                  @JsonProperty(\"startY\") final int startY,\n                  @JsonProperty(\"finalX\") final int finalX,\n                  @JsonProperty(\"finalY\") final int finalY,\n                  @JsonProperty(\"simbol\") final char simbol) {\n        this.startX = startX;\n        this.startY = startY;\n        this.finalX = finalX;\n        this.finalY = finalY;\n\n        this.simbol = simbol;\n    }\n\n    @Override\n    public int getStartX() {\n        return startX;\n    }\n\n    @Override\n    public int getStartY() {\n        return startY;\n    }\n\n    @Override\n    public int getFinalX() {\n        return finalX;\n    }\n\n    @Override\n    public int getFinalY() {\n        return finalY;\n    }\n\n    @Override\n    public char getSimbol() {\n        return simbol;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/model/answer/Answer.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/model/answer/Answer.java	(date 1595845883543)
+@@ -54,7 +54,7 @@
+     }
+ 
+     @Override
+-    public char getSimbol() {
++    public char getSymbol() {
+         return simbol;
+     }
+ }
+Index: src/main/java/neointernship/chess/game/model/answer/IAnswer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.model.answer;\n\nimport com.fasterxml.jackson.annotation.JsonSubTypes;\nimport com.fasterxml.jackson.annotation.JsonTypeInfo;\n\n@JsonSubTypes({\n        @JsonSubTypes.Type(value = Answer.class, name = \"Answer\"),\n        @JsonSubTypes.Type(value = AnswerSimbol.class, name = \"AnswerSimbol\"),\n})\n@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)\npublic interface IAnswer {\n    int getStartX();\n    int getStartY();\n    int getFinalX();\n    int getFinalY();\n    char getSimbol();\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/model/answer/IAnswer.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/model/answer/IAnswer.java	(date 1595845883339)
+@@ -5,7 +5,7 @@
+ 
+ @JsonSubTypes({
+         @JsonSubTypes.Type(value = Answer.class, name = "Answer"),
+-        @JsonSubTypes.Type(value = AnswerSimbol.class, name = "AnswerSimbol"),
++        @JsonSubTypes.Type(value = AnswerSymbol.class, name = "AnswerSimbol"),
+ })
+ @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+ public interface IAnswer {
+@@ -13,5 +13,5 @@
+     int getStartY();
+     int getFinalX();
+     int getFinalY();
+-    char getSimbol();
++    char getSymbol();
+ }
+\ No newline at end of file
+Index: src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AttackCommand.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.moveaction.commands.allow;\n\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic class AttackCommand extends AbstractCommand implements IAllowCommand{\n\n    public AttackCommand(final IBoard board, final IMediator mediator) {\n        super(board, mediator);\n    }\n\n    @Override\n    public void execute(final IAnswer answer) {\n        final IField startField = board.getField(answer.getStartX(), answer.getStartY());\n        final IField finalField = board.getField(answer.getFinalX(), answer.getFinalY());\n\n        final Figure startFigure = mediator.getFigure(startField);\n\n        mediator.deleteConnection(startField);\n        mediator.deleteConnection(finalField);\n        mediator.addNewConnection(finalField, startFigure);\n    }\n\n    @Override\n    public ChessCodes getChessCode() {\n        return ChessCodes.ATTACK;\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AttackCommand.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AttackCommand.java	(date 1595845493070)
+@@ -5,7 +5,7 @@
+ import neointernship.chess.game.model.mediator.IMediator;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+ import neointernship.chess.game.model.playmap.field.IField;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public class AttackCommand extends AbstractCommand implements IAllowCommand{
+ 
+@@ -26,8 +26,8 @@
+     }
+ 
+     @Override
+-    public ChessCodes getChessCode() {
+-        return ChessCodes.ATTACK;
++    public TurnStatus getChessCode() {
++        return TurnStatus.ATTACK;
+     }
+ 
+ }
+Index: src/main/java/neointernship/chess/game/model/player/Player.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.model.player;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.model.answer.Answer;\nimport neointernship.chess.game.model.answer.AnswerSimbol;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.Field;\nimport neointernship.chess.game.model.playmap.field.IField;\n\nimport java.io.*;\nimport java.net.Socket;\nimport java.util.Scanner;\n\npublic class Player implements IPlayer {\n    private final Color color;\n    private final String name;\n\n    public Player(final String name, final Color color) {\n        this.color = color;\n        this.name = name;\n    }\n\n    @Override\n    public IAnswer getAnswer( IMediator mediator, IPossibleActionList list) {\n        Scanner scanner = new Scanner(System.in);\n        System.out.format(\"%s player turn to move: \", getName());\n        String input = scanner.nextLine();\n        String[] strArr = input.split(\"-\");\n\n        return new AnswerSimbol( strArr[0].charAt(0), strArr[0].charAt(1), strArr[1].charAt(0), strArr[1].charAt(1));\n    }\n\n    public Color getColor() {\n        return color;\n    }\n\n    public String getName() {\n        return name + \" \" + color;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/model/player/Player.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/model/player/Player.java	(date 1595845883223)
+@@ -1,17 +1,11 @@
+ package neointernship.chess.game.model.player;
+ 
+ import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
+-import neointernship.chess.game.model.answer.Answer;
+-import neointernship.chess.game.model.answer.AnswerSimbol;
++import neointernship.chess.game.model.answer.AnswerSymbol;
+ import neointernship.chess.game.model.answer.IAnswer;
+ import neointernship.chess.game.model.enums.Color;
+ import neointernship.chess.game.model.mediator.IMediator;
+-import neointernship.chess.game.model.playmap.board.IBoard;
+-import neointernship.chess.game.model.playmap.field.Field;
+-import neointernship.chess.game.model.playmap.field.IField;
+ 
+-import java.io.*;
+-import java.net.Socket;
+ import java.util.Scanner;
+ 
+ public class Player implements IPlayer {
+@@ -30,7 +24,7 @@
+         String input = scanner.nextLine();
+         String[] strArr = input.split("-");
+ 
+-        return new AnswerSimbol( strArr[0].charAt(0), strArr[0].charAt(1), strArr[1].charAt(0), strArr[1].charAt(1));
++        return new AnswerSymbol( strArr[0].charAt(0), strArr[0].charAt(1), strArr[1].charAt(0), strArr[1].charAt(1));
+     }
+ 
+     public Color getColor() {
+Index: src/main/java/neointernship/web/client/communication/data/update/Update.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.web.client.communication.data.update;\n\nimport com.fasterxml.jackson.annotation.JsonAutoDetect;\nimport com.fasterxml.jackson.annotation.JsonProperty;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.web.client.communication.message.ChessCodes;\n\n@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)\npublic class Update implements IUpdate {\n    private final IAnswer answer;\n    private final ChessCodes chessCode;\n\n    public Update(@JsonProperty(\"answer\") final IAnswer answer, final ChessCodes chessCode) {\n        this.answer = answer;\n        this.chessCode = chessCode;\n    }\n\n    @Override\n    public IAnswer getAnswer() {\n        return answer;\n    }\n\n    @Override\n    public ChessCodes getChessCode() {\n        return chessCode;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/web/client/communication/data/update/Update.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/web/client/communication/data/update/Update.java	(date 1595845697216)
+@@ -3,14 +3,14 @@
+ import com.fasterxml.jackson.annotation.JsonAutoDetect;
+ import com.fasterxml.jackson.annotation.JsonProperty;
+ import neointernship.chess.game.model.answer.IAnswer;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+ public class Update implements IUpdate {
+     private final IAnswer answer;
+-    private final ChessCodes chessCode;
++    private final TurnStatus chessCode;
+ 
+-    public Update(@JsonProperty("answer") final IAnswer answer, final ChessCodes chessCode) {
++    public Update(@JsonProperty("answer") final IAnswer answer, final TurnStatus chessCode) {
+         this.answer = answer;
+         this.chessCode = chessCode;
+     }
+@@ -21,7 +21,7 @@
+     }
+ 
+     @Override
+-    public ChessCodes getChessCode() {
++    public TurnStatus getChessCode() {
+         return chessCode;
+     }
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/loop/IGameLoop.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.loop;\n\nimport neointernship.chess.game.gameplay.gamestate.state.IGameState;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic interface IGameLoop {\n    ChessCodes doIteration(final IAnswer answer);\n    boolean isAlive();\n    IGameState getMatchResult();\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/loop/IGameLoop.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/loop/IGameLoop.java	(date 1595845493018)
+@@ -2,10 +2,10 @@
+ 
+ import neointernship.chess.game.gameplay.gamestate.state.IGameState;
+ import neointernship.chess.game.model.answer.IAnswer;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public interface IGameLoop {
+-    ChessCodes doIteration(final IAnswer answer);
++    TurnStatus doIteration(final IAnswer answer);
+     boolean isAlive();
+     IGameState getMatchResult();
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/gameprocesscontroller/GameProcessController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gameprocesscontroller;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.gameplay.moveaction.MoveCorrectnessValidator;\nimport neointernship.chess.game.gameplay.moveaction.commands.IMoveCommand;\nimport neointernship.chess.game.gameplay.moveaction.movesrepository.MovesRepository;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.enums.MoveState;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.player.IPlayer;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.story.IStoryGame;\nimport neointernship.chess.logger.IGameLogger;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic class GameProcessController implements IGameProcessController {\n\n    private final MovesRepository movesRepository;\n    private final MoveCorrectnessValidator moveCorrectnessValidator;\n\n    private ChessCodes playerDidMove;\n\n    public GameProcessController(final IMediator mediator,\n                                 final IPossibleActionList possibleActionList,\n                                 final IBoard board,\n                                 final IStoryGame storyGame) {\n\n        movesRepository = new MovesRepository(mediator, possibleActionList, board,storyGame);\n        moveCorrectnessValidator = new MoveCorrectnessValidator(mediator, possibleActionList, board);\n    }\n\n    @Override\n    public void makeTurn(final Color color, final IAnswer answer) {\n        final MoveState moveState = moveCorrectnessValidator.check(color, answer);\n        final IMoveCommand moveCommand = movesRepository.getCommand(moveState);\n        playerDidMove = moveCommand.execute(color, answer);\n    }\n\n    @Override\n    public ChessCodes getChessCode() {\n        return playerDidMove;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gameprocesscontroller/GameProcessController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gameprocesscontroller/GameProcessController.java	(date 1595845493014)
+@@ -8,18 +8,16 @@
+ import neointernship.chess.game.model.enums.Color;
+ import neointernship.chess.game.model.enums.MoveState;
+ import neointernship.chess.game.model.mediator.IMediator;
+-import neointernship.chess.game.model.player.IPlayer;
+ import neointernship.chess.game.model.playmap.board.IBoard;
+ import neointernship.chess.game.story.IStoryGame;
+-import neointernship.chess.logger.IGameLogger;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public class GameProcessController implements IGameProcessController {
+ 
+     private final MovesRepository movesRepository;
+     private final MoveCorrectnessValidator moveCorrectnessValidator;
+ 
+-    private ChessCodes playerDidMove;
++    private TurnStatus turnStatus;
+ 
+     public GameProcessController(final IMediator mediator,
+                                  final IPossibleActionList possibleActionList,
+@@ -34,11 +32,11 @@
+     public void makeTurn(final Color color, final IAnswer answer) {
+         final MoveState moveState = moveCorrectnessValidator.check(color, answer);
+         final IMoveCommand moveCommand = movesRepository.getCommand(moveState);
+-        playerDidMove = moveCommand.execute(color, answer);
++        turnStatus = moveCommand.execute(color, answer);
+     }
+ 
+     @Override
+-    public ChessCodes getChessCode() {
+-        return playerDidMove;
++    public TurnStatus getTurnStatus() {
++        return turnStatus;
+     }
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/gameprocesscontroller/IGameProcessController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gameprocesscontroller;\n\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.player.IPlayer;\nimport neointernship.chess.logger.IGameLogger;\nimport neointernship.web.client.communication.message.ChessCodes;\n\npublic interface IGameProcessController {\n    void makeTurn(final Color color, final IAnswer answer);\n    ChessCodes getChessCode();\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gameprocesscontroller/IGameProcessController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gameprocesscontroller/IGameProcessController.java	(date 1595845493014)
+@@ -2,11 +2,9 @@
+ 
+ import neointernship.chess.game.model.answer.IAnswer;
+ import neointernship.chess.game.model.enums.Color;
+-import neointernship.chess.game.model.player.IPlayer;
+-import neointernship.chess.logger.IGameLogger;
+-import neointernship.web.client.communication.message.ChessCodes;
++import neointernship.web.client.communication.message.TurnStatus;
+ 
+ public interface IGameProcessController {
+     void makeTurn(final Color color, final IAnswer answer);
+-    ChessCodes getChessCode();
++    TurnStatus getTurnStatus();
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/activecolorcontroller/IActiveColorController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.activecolorcontroller;\n\nimport neointernship.chess.game.model.enums.Color;\n\npublic interface IActiveColorController {\n    void update();\n    Color getCurrentColor();\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/activecolorcontroller/IActiveColorController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/activecolorcontroller/IActiveColorController.java	(date 1595845883483)
+@@ -3,6 +3,5 @@
+ import neointernship.chess.game.model.enums.Color;
+ 
+ public interface IActiveColorController {
+-    void update();
+     Color getCurrentColor();
+ }
+Index: src/test/java/neointernship/chess/model/figure/factory/TestFactoty.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.model.figure.factory;\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.factory.Factory;\nimport neointernship.chess.game.model.figure.factory.IFactory;\nimport neointernship.chess.game.model.figure.piece.Bishop;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.figure.piece.King;\nimport org.junit.jupiter.api.Test;\n\nimport static org.junit.jupiter.api.Assertions.assertEquals;\n\n\npublic class TestFactoty {\n    @Test\n    public void testCreateBishop(){\n\n        IFactory factory = new Factory();\n        Figure figure = factory.createFigure('B', Color.WHITE);\n\n        assertEquals(figure.getClass(), Bishop.class);\n        Bishop bishop = (Bishop) figure;\n\n        assertEquals(bishop.getName(),\"Bishop\");\n        assertEquals(bishop.getGameSymbol(),'B');\n        assertEquals(bishop.getColor(),Color.WHITE);\n        assertEquals(bishop.getPrice(),(short) 3);\n\n    }\n    @Test\n    public void testCreateKing(){\n\n        IFactory factory = new Factory();\n        Figure figure = factory.createFigure('K', Color.BLACK);\n\n        assertEquals(figure.getClass(), King.class);\n\n        assertEquals(figure.getName(),\"King\");\n        assertEquals(figure.getGameSymbol(),'K');\n        assertEquals(figure.getColor(),Color.BLACK);\n        assertEquals(figure.getPrice(),Short.MAX_VALUE);\n\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/test/java/neointernship/chess/model/figure/factory/TestFactoty.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/test/java/neointernship/chess/model/figure/factory/TestFactoty.java	(date 1595845493022)
+@@ -10,7 +10,6 @@
+ 
+ import static org.junit.jupiter.api.Assertions.assertEquals;
+ 
+-
+ public class TestFactoty {
+     @Test
+     public void testCreateBishop(){
+@@ -39,6 +38,5 @@
+         assertEquals(figure.getGameSymbol(),'K');
+         assertEquals(figure.getColor(),Color.BLACK);
+         assertEquals(figure.getPrice(),Short.MAX_VALUE);
+-
+     }
+ }
+Index: src/main/java/neointernship/web/client/communication/message/ChessCodes.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.web.client.communication.message;\n\npublic enum ChessCodes {\n    ATTACK,\n    AISLE_TAKE,\n    MOVE,\n    CASTLING,\n    TRANSFORMATION,\n    ERROR\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/web/client/communication/message/ChessCodes.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/web/client/communication/message/TurnStatus.java	(date 1595845493062)
+@@ -1,6 +1,6 @@
+ package neointernship.web.client.communication.message;
+ 
+-public enum ChessCodes {
++public enum TurnStatus {
+     ATTACK,
+     AISLE_TAKE,
+     MOVE,
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.controller.draw;\n\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.story.IStoryGame;\n\nimport java.util.Collection;\nimport java.util.HashSet;\n\npublic class DrawController {\n\n    private final IMediator mediator;\n\n    private final Collection<IDrawController> drawControllers;\n\n    public DrawController(final IMediator mediator,\n                          final IStoryGame storyGame) {\n        this.mediator = mediator;\n\n        this.drawControllers = new HashSet<>();\n        drawControllers.add(new DrawOnlyKing());\n        drawControllers.add(new DrawFewFigure());\n        drawControllers.add(new DrawRepetitionPosition());\n        drawControllers.add(new DrawFiftyStep(storyGame));\n    }\n\n    public boolean isDraw() {\n        for(final IDrawController drawController : drawControllers){\n            if(drawController.isDraw(mediator)){\n                // todo возвращать что за ничья !\n                return true;\n            }\n        }\n        return false;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/controller/draw/DrawStateController.java	(date 1595845493070)
+@@ -1,19 +1,25 @@
+ package neointernship.chess.game.gameplay.gamestate.controller.draw;
+ 
++import neointernship.chess.game.gameplay.gamestate.controller.IGameStateController;
++import neointernship.chess.game.gameplay.gamestate.state.GameState;
++import neointernship.chess.game.gameplay.gamestate.state.IGameState;
++import neointernship.chess.game.model.enums.Color;
++import neointernship.chess.game.model.enums.EnumGameState;
+ import neointernship.chess.game.model.mediator.IMediator;
+ import neointernship.chess.game.story.IStoryGame;
+ 
+ import java.util.Collection;
+ import java.util.HashSet;
+ 
+-public class DrawController {
++public class DrawStateController {
+ 
+     private final IMediator mediator;
+ 
+     private final Collection<IDrawController> drawControllers;
++    private EnumGameState actualState;
+ 
+-    public DrawController(final IMediator mediator,
+-                          final IStoryGame storyGame) {
++    public DrawStateController(final IMediator mediator,
++                               final IStoryGame storyGame) {
+         this.mediator = mediator;
+ 
+         this.drawControllers = new HashSet<>();
+@@ -21,15 +27,21 @@
+         drawControllers.add(new DrawFewFigure());
+         drawControllers.add(new DrawRepetitionPosition());
+         drawControllers.add(new DrawFiftyStep(storyGame));
++
++        actualState = EnumGameState.ALIVE;
+     }
+ 
+-    public boolean isDraw() {
++
++    public void update() {
+         for(final IDrawController drawController : drawControllers){
+             if(drawController.isDraw(mediator)){
+-                // todo возвращать что за ничья !
+-                return true;
++                actualState = drawController.getState();
+             }
+         }
+-        return false;
++    }
++
++
++    public IGameState getState() {
++        return new GameState(actualState, Color.BOTH);
+     }
+ }
+Index: src/main/java/neointernship/web/client/player/Bot.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.web.client.player;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.gameplay.figureactions.PossibleActionList;\nimport neointernship.chess.game.model.answer.Answer;\nimport neointernship.chess.game.model.answer.IAnswer;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.figure.piece.Figure;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.playmap.board.IBoard;\nimport neointernship.chess.game.model.playmap.field.IField;\nimport neointernship.chess.game.story.IStoryGame;\nimport neointernship.chess.game.story.StoryGame;\nimport neointernship.web.client.communication.message.ChessCodes;\nimport neointernship.web.client.communication.message.ChessCodesReaction;\n\nimport java.util.List;\nimport java.util.Random;\n\npublic class Bot implements IPlayer {\n    private IMediator mediator;\n    private IBoard board;\n    private Color color;\n    private IStoryGame storyGame;\n    private IPossibleActionList possibleActionList;\n    private final String name;\n    private final Random random;\n    private ChessCodesReaction chessCodesReaction;\n\n\n    public Bot(final Color color, final String name){\n        this.random = new Random();\n        this.color = color;\n        this.name = name;\n    }\n\n    public void init(final IMediator mediator, final IBoard board, final Color color) {\n        this.mediator = mediator;\n        this.board = board;\n        this.color = color;\n        this.storyGame = new StoryGame(mediator);\n        this.possibleActionList = new PossibleActionList(board, mediator,storyGame);\n        this.chessCodesReaction = new ChessCodesReaction(board, mediator);\n    }\n\n    @Override\n    public IAnswer getAnswer() {\n        final List<Figure> figures = (List<Figure>) mediator.getFigures(getColor());\n        List<IField> fields;\n        Figure figure;\n        int index;\n\n        possibleActionList.updateRealLists();\n\n        do {\n            index = random.nextInt(figures.size());\n            figure = figures.get(index);\n            fields = (List<IField>) possibleActionList.getRealList(figure);\n        } while (fields.isEmpty());\n\n        index = random.nextInt(fields.size());\n        final IField finalField = fields.get(index);\n\n        final IField startField = mediator.getField(figure);\n\n        return new Answer(startField.getXCoord(), startField.getYCoord(),\n                finalField.getXCoord(), finalField.getYCoord(),'Q');\n    }\n\n    @Override\n    public String getName() {\n        return name;\n    }\n\n    @Override\n    public Color getColor() {\n        return color;\n    }\n\n    @Override\n    public void updateMediator(final IAnswer answer, final ChessCodes chessCode) {\n        final IField startField = board.getField(answer.getStartX(), answer.getStartY());\n        final Figure startFigure = mediator.getFigure(startField);\n        storyGame.update(startFigure);\n\n        chessCodesReaction.get(chessCode).execute(answer);\n    }\n\n    @Override\n    public IMediator getMediator() {\n        return mediator;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/web/client/player/Bot.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/web/client/player/Bot.java	(date 1595845660124)
+@@ -11,8 +11,6 @@
+ import neointernship.chess.game.model.playmap.field.IField;
+ import neointernship.chess.game.story.IStoryGame;
+ import neointernship.chess.game.story.StoryGame;
+-import neointernship.web.client.communication.message.ChessCodes;
+-import neointernship.web.client.communication.message.ChessCodesReaction;
+ 
+ import java.util.List;
+ import java.util.Random;
+@@ -25,33 +23,28 @@
+     private IPossibleActionList possibleActionList;
+     private final String name;
+     private final Random random;
+-    private ChessCodesReaction chessCodesReaction;
+ 
+ 
+-    public Bot(final Color color, final String name){
++    public Bot(){
+         this.random = new Random();
+-        this.color = color;
+-        this.name = name;
++        this.name = "Bot";
++        this.color = Color.BLACK;
+     }
+ 
+     public void init(final IMediator mediator, final IBoard board, final Color color) {
+         this.mediator = mediator;
+         this.board = board;
+         this.color = color;
+-        this.storyGame = new StoryGame(mediator);
+         this.possibleActionList = new PossibleActionList(board, mediator,storyGame);
+-        this.chessCodesReaction = new ChessCodesReaction(board, mediator);
++        this.storyGame = new StoryGame(mediator);
+     }
+ 
+     @Override
+     public IAnswer getAnswer() {
+         final List<Figure> figures = (List<Figure>) mediator.getFigures(getColor());
+-        List<IField> fields;
+-        Figure figure;
++        List<IField> fields = null;
++        Figure figure = null;
+         int index;
+-
+-        possibleActionList.updateRealLists();
+-
+         do {
+             index = random.nextInt(figures.size());
+             figure = figures.get(index);
+@@ -78,12 +71,8 @@
+     }
+ 
+     @Override
+-    public void updateMediator(final IAnswer answer, final ChessCodes chessCode) {
+-        final IField startField = board.getField(answer.getStartX(), answer.getStartY());
+-        final Figure startFigure = mediator.getFigure(startField);
+-        storyGame.update(startFigure);
+-
+-        chessCodesReaction.get(chessCode).execute(answer);
++    public void setMediator(final IMediator mediator) {
++        this.mediator = mediator;
+     }
+ 
+     @Override
+Index: src/test/java/neointernship/chess/game/moveactions/TestAttack.java
+===================================================================
+--- src/test/java/neointernship/chess/game/moveactions/TestAttack.java	(date 1595845493018)
++++ src/test/java/neointernship/chess/game/moveactions/TestAttack.java	(date 1595845493018)
+@@ -0,0 +1,41 @@
++package neointernship.chess.game.moveactions;
++
++import neointernship.chess.game.model.answer.Answer;
++import neointernship.chess.game.model.answer.IAnswer;
++import neointernship.chess.game.model.enums.Color;
++import neointernship.chess.game.model.figure.piece.Figure;
++import neointernship.chess.game.model.figure.piece.Rook;
++import neointernship.chess.game.model.playmap.field.Field;
++import neointernship.chess.game.model.playmap.field.IField;
++import neointernship.web.client.communication.message.TurnStatus;
++import org.junit.Test;
++
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertNull;
++
++public class TestAttack extends TestAllowCommand {
++    @Test
++    public void testAttack(){
++        Figure figureW = new Rook(Color.WHITE);
++        IField fieldW = new Field(0,0);
++
++        Figure figureB = new Rook(Color.BLACK);
++        IField fieldB = new Field(0,6);
++
++        addFigure(fieldW,figureW);
++        addFigure(fieldB,figureB);
++
++        IAnswer answer = new Answer(0,0,0,6,'Q');
++
++        TurnStatus result = allowMoveCommand.execute(figureW.getColor(),answer);
++
++        assertEquals(TurnStatus.ATTACK,result);
++
++        assertEquals(1,mediator.getFigures().size());
++
++        IField fieldRookExpected = new Field(0,6);
++        assertEquals(fieldRookExpected,mediator.getField(figureW));
++
++        assertNull(mediator.getField(figureB));
++    }
++}
+Index: src/test/java/neointernship/chess/game/actions/TestActionsClosePath.java
+===================================================================
+--- src/test/java/neointernship/chess/game/actions/TestActionsClosePath.java	(date 1595845493018)
++++ src/test/java/neointernship/chess/game/actions/TestActionsClosePath.java	(date 1595845493018)
+@@ -0,0 +1,80 @@
++package neointernship.chess.game.actions;
++
++import neointernship.chess.game.model.enums.Color;
++import neointernship.chess.game.model.figure.piece.Figure;
++import neointernship.chess.game.model.figure.piece.Pawn;
++import neointernship.chess.game.model.figure.piece.Rook;
++import neointernship.chess.game.model.playmap.field.Field;
++import neointernship.chess.game.model.playmap.field.IField;
++import org.junit.After;
++import org.junit.BeforeClass;
++import org.junit.Test;
++
++import java.util.HashMap;
++import java.util.Map;
++
++import static neointernship.chess.game.actions.TestStaticMethod.checkPosition;
++
++public class TestActionsClosePath {
++    private static Map<Figure, IField> map;
++
++    @BeforeClass
++    public static void before(){
++        map = new HashMap<>();
++    }
++    @After
++    public void clear(){
++        map.clear();
++    }
++
++    private void put(Figure figure,IField field){
++        map.put(figure,field);
++    }
++
++    @Test
++    public void testPawnBeginFriend(){
++        Figure pawn = new Pawn(Color.WHITE);
++        IField fieldPawn = new Field(6,4);
++
++        Figure rook = new Rook(Color.WHITE);
++        IField fieldRook = new Field(5,4);
++
++        Field[] expected = {};
++
++        put(pawn,fieldPawn);
++        put(rook,fieldRook);
++
++        checkPosition(map,pawn,expected);
++    }
++    @Test
++    public void testPawnBeginEntry(){
++        Figure pawn = new Pawn(Color.WHITE);
++        IField fieldPawn = new Field(6,4);
++
++        Figure rook = new Rook(Color.BLACK);
++        IField fieldRook = new Field(5,4);
++
++        Field[] expected = {};
++
++        put(pawn,fieldPawn);
++        put(rook,fieldRook);
++
++        checkPosition(map,pawn,expected);
++    }
++    @Test
++    public void testPawnBegin(){
++        Figure pawn = new Pawn(Color.WHITE);
++        IField fieldPawn = new Field(6,4);
++
++        Figure rook = new Rook(Color.BLACK);
++        IField fieldRook = new Field(4,4);
++
++        Field[] expected = {new Field(5,4)};
++
++        put(pawn,fieldPawn);
++        put(rook,fieldRook);
++
++        checkPosition(map,pawn,expected);
++    }
++
++}
+Index: src/test/java/neointernship/chess/game/moveactions/TestAisleTake.java
+===================================================================
+--- src/test/java/neointernship/chess/game/moveactions/TestAisleTake.java	(date 1595845493018)
++++ src/test/java/neointernship/chess/game/moveactions/TestAisleTake.java	(date 1595845493018)
+@@ -0,0 +1,10 @@
++package neointernship.chess.game.moveactions;
++
++import org.junit.Test;
++
++public class TestAisleTake extends TestHeadCommand {
++    @Test
++    public void testBlack(){
++
++    }
++}
+Index: src/test/java/neointernship/chess/game/moveactions/TestHeadCommand.java
+===================================================================
+--- src/test/java/neointernship/chess/game/moveactions/TestHeadCommand.java	(date 1595845493018)
++++ src/test/java/neointernship/chess/game/moveactions/TestHeadCommand.java	(date 1595845493018)
+@@ -0,0 +1,38 @@
++package neointernship.chess.game.moveactions;
++
++import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
++import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
++import neointernship.chess.game.gameplay.moveaction.MoveCorrectnessValidator;
++import neointernship.chess.game.model.figure.piece.Figure;
++import neointernship.chess.game.model.mediator.IMediator;
++import neointernship.chess.game.model.mediator.Mediator;
++import neointernship.chess.game.model.playmap.board.Board;
++import neointernship.chess.game.model.playmap.board.IBoard;
++import neointernship.chess.game.model.playmap.field.IField;
++import neointernship.chess.game.story.IStoryGame;
++import neointernship.chess.game.story.StoryGame;
++import org.junit.After;
++import org.junit.BeforeClass;
++
++public class TestHeadCommand {
++    protected static IBoard board;
++    protected static IMediator mediator;
++    protected static IStoryGame storyGame;
++    protected static IPossibleActionList possibleActionList;
++
++    protected static void init(){
++        board = new Board();
++        mediator = new Mediator();
++        storyGame = new StoryGame(mediator);
++        possibleActionList = new PossibleActionList(board,mediator,storyGame);
++    }
++
++    protected void clear(){
++        mediator.clear();
++        possibleActionList.updateRealLists();
++    }
++    protected void addFigure(IField field, Figure figure){
++        mediator.addNewConnection(field, figure);
++        possibleActionList.updateRealLists();
++    }
++}
+Index: src/test/java/neointernship/chess/game/moveactions/TestAllowCommand.java
+===================================================================
+--- src/test/java/neointernship/chess/game/moveactions/TestAllowCommand.java	(date 1595845493018)
++++ src/test/java/neointernship/chess/game/moveactions/TestAllowCommand.java	(date 1595845493018)
+@@ -0,0 +1,20 @@
++package neointernship.chess.game.moveactions;
++
++import neointernship.chess.game.gameplay.moveaction.commands.allow.AllowMoveCommand;
++import org.junit.After;
++import org.junit.BeforeClass;
++
++public class TestAllowCommand extends TestHeadCommand{
++
++    protected static AllowMoveCommand allowMoveCommand;
++
++    @BeforeClass
++    public static void init(){
++        TestHeadCommand.init();
++        allowMoveCommand = new AllowMoveCommand(mediator,possibleActionList,board,storyGame);
++    }
++    @After
++    public void clear(){
++        super.clear();
++    }
++}
+Index: src/test/java/neointernship/chess/game/moveactions/TestCastling.java
+===================================================================
+--- src/test/java/neointernship/chess/game/moveactions/TestCastling.java	(date 1595845493018)
++++ src/test/java/neointernship/chess/game/moveactions/TestCastling.java	(date 1595845493018)
+@@ -0,0 +1,77 @@
++package neointernship.chess.game.moveactions;
++
++import neointernship.chess.game.model.answer.Answer;
++import neointernship.chess.game.model.answer.IAnswer;
++import neointernship.chess.game.model.enums.Color;
++import neointernship.chess.game.model.figure.piece.Figure;
++import neointernship.chess.game.model.figure.piece.King;
++import neointernship.chess.game.model.figure.piece.Rook;
++import neointernship.chess.game.model.playmap.field.Field;
++import neointernship.chess.game.model.playmap.field.IField;
++import neointernship.web.client.communication.message.TurnStatus;
++import org.junit.Test;
++
++import static org.junit.Assert.assertEquals;
++
++/**
++ * класс проверяющий правильную реализацию рокировки при классических шахматах.
++ */
++public class TestCastling extends TestAllowCommand {
++    @Test
++    public void testCastlingWhiteRight() {
++        check(false, Color.WHITE);
++    }
++
++    @Test
++    public void testCastlingWhiteLeft() {
++        check(true, Color.WHITE);
++    }
++
++    @Test
++    public void testCastlingBlackRight() {
++        check(false, Color.BLACK);
++    }
++
++    @Test
++    public void testCastlingBlackLeft() {
++        check(true, Color.BLACK);
++    }
++
++    public void check(final boolean isLeft, final Color color) {
++        Figure king = new King(color);
++
++        int startXCoordKing = color == Color.WHITE ? 7 : 0;
++        IField fieldKing = new Field(startXCoordKing, 4);
++
++        int startYCoordRook = 7;
++        int offset = 2;
++        if (isLeft) {
++            startYCoordRook = 0;
++            offset = -2;
++        }
++
++        Figure rook = new Rook(king.getColor());
++        IField fieldRook = new Field(fieldKing.getXCoord(), startYCoordRook);
++
++        addFigure(fieldKing, king);
++        addFigure(fieldRook, rook);
++
++        IAnswer answer = new Answer(
++                fieldKing.getXCoord(),
++                fieldKing.getYCoord(),
++                fieldKing.getXCoord(),
++                fieldKing.getYCoord() + offset,
++                'Q');
++
++        TurnStatus result = allowMoveCommand.execute(king.getColor(), answer);
++
++        assertEquals(TurnStatus.CASTLING, result);
++
++        IField fieldKingExpected = new Field(answer.getFinalX(), answer.getFinalY());
++        offset /= 2;
++        IField fieldRookExpected = new Field(answer.getFinalX(), answer.getStartY() + offset);
++
++        assertEquals(fieldKingExpected, mediator.getField(king));
++        assertEquals(fieldRookExpected, mediator.getField(rook));
++    }
++}
+Index: src/main/java/neointernship/web/client/Client.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.web.client;\n\nimport neointernship.web.client.controller.Controller;\n\npublic class Client {\n    /**\n     * Главная функция, начало работы клиента\n     *\n     * @param args аргументы командной строки\n     */\n    public static void main(final String[] args) {\n        //startView();\n        startController();\n    }\n\n   /* private static void startView() {\n        final Runnable view = new View();\n        new Thread(view).start();\n    }*/\n\n    private static void startController() {\n        final Runnable controller = new Controller();\n        new Thread(controller).start();\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/web/client/Client.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/web/client/Client.java	(date 1595831016049)
+@@ -22,5 +22,4 @@
+         final Runnable controller = new Controller();
+         new Thread(controller).start();
+     }
+-
+-}
+\ No newline at end of file
++}
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/state/IGameState.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.state;\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.enums.EnumGameState;\n\npublic interface IGameState {\n    EnumGameState getValue();\n    Color getColor();\n    void updateValue(EnumGameState gameState, Color color);\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/state/IGameState.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/state/IGameState.java	(date 1595845493014)
+@@ -6,5 +6,5 @@
+ public interface IGameState {
+     EnumGameState getValue();
+     Color getColor();
+-    void updateValue(EnumGameState gameState, Color color);
++    void updateValue(EnumGameState gameState, Color color); // todo нигде не вызывается !!!
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/controller/IGameStateController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.controller;\n\nimport neointernship.chess.game.gameplay.gamestate.state.GameState;\n\npublic interface IGameStateController {\n    boolean isMatchAlive();\n    GameState getState();\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/controller/IGameStateController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/controller/IGameStateController.java	(date 1595845493014)
+@@ -1,8 +1,10 @@
+ package neointernship.chess.game.gameplay.gamestate.controller;
+ 
+-import neointernship.chess.game.gameplay.gamestate.state.GameState;
++import neointernship.chess.game.gameplay.gamestate.state.IGameState;
++import neointernship.chess.game.model.enums.Color;
+ 
+ public interface IGameStateController {
+     boolean isMatchAlive();
+-    GameState getState();
++    IGameState getState();
++    void update(final Color color);
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/gamestate/controller/GameStateController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.gamestate.controller;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.gameplay.gamestate.state.GameState;\nimport neointernship.chess.game.gameplay.gamestate.update.FiguresHaveMovesComputation;\nimport neointernship.chess.game.gameplay.gamestate.update.GameStateDefineLogic;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.enums.EnumGameState;\nimport neointernship.chess.game.model.enums.KingState;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.subscriber.ISubscriber;\nimport neointernship.chess.logger.IGameLogger;\n\npublic class GameStateController implements ISubscriber, IGameStateController {\n    private GameState currentState;\n\n    private final FiguresHaveMovesComputation figuresHaveMovesComputation;\n    private final GameStateDefineLogic gameStateDefineLogic;\n\n    public GameStateController(final IPossibleActionList possibleActionList,\n                               final IMediator mediator) {\n\n        currentState = new GameState(EnumGameState.ALIVE, Color.BOTH);\n        figuresHaveMovesComputation = new FiguresHaveMovesComputation(possibleActionList, mediator);\n        gameStateDefineLogic = new GameStateDefineLogic();\n    }\n\n    @Override\n    public boolean isMatchAlive() {\n        return currentState.getValue() == EnumGameState.ALIVE;\n    }\n\n    @Override\n    public GameState getState() {\n        return currentState;\n    }\n\n    @Override\n    public void update(Color color, KingState kingState) {\n        boolean figuresHaveMoves = figuresHaveMovesComputation.check(color);\n        if(!figuresHaveMoves){\n            System.out.println();\n        }\n        currentState = new GameState(gameStateDefineLogic.getState(kingState, figuresHaveMoves), color);\n\n        System.out.format(\"Game status updated: %s\\n\", currentState.getValue());\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/gamestate/controller/GameStateController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/gamestate/controller/GameStateController.java	(date 1595845493014)
+@@ -1,28 +1,39 @@
+ package neointernship.chess.game.gameplay.gamestate.controller;
+ 
+ import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
++import neointernship.chess.game.gameplay.gamestate.controller.draw.DrawStateController;
+ import neointernship.chess.game.gameplay.gamestate.state.GameState;
++import neointernship.chess.game.gameplay.gamestate.state.IGameState;
+ import neointernship.chess.game.gameplay.gamestate.update.FiguresHaveMovesComputation;
+ import neointernship.chess.game.gameplay.gamestate.update.GameStateDefineLogic;
++import neointernship.chess.game.gameplay.kingstate.controller.IKingStateController;
++import neointernship.chess.game.gameplay.kingstate.controller.KingsStateController;
+ import neointernship.chess.game.model.enums.Color;
+ import neointernship.chess.game.model.enums.EnumGameState;
+ import neointernship.chess.game.model.enums.KingState;
+ import neointernship.chess.game.model.mediator.IMediator;
+-import neointernship.chess.game.model.subscriber.ISubscriber;
+-import neointernship.chess.logger.IGameLogger;
++import neointernship.chess.game.story.IStoryGame;
+ 
+-public class GameStateController implements ISubscriber, IGameStateController {
+-    private GameState currentState;
++public class GameStateController implements IGameStateController {
++    private IGameState currentState;
+ 
+     private final FiguresHaveMovesComputation figuresHaveMovesComputation;
+     private final GameStateDefineLogic gameStateDefineLogic;
+ 
++    private final DrawStateController drawStateController;
++    private final IKingStateController kingStateController;
++
+     public GameStateController(final IPossibleActionList possibleActionList,
+-                               final IMediator mediator) {
++                               final IMediator mediator,
++                               final IStoryGame storyGame) {
+ 
+         currentState = new GameState(EnumGameState.ALIVE, Color.BOTH);
+         figuresHaveMovesComputation = new FiguresHaveMovesComputation(possibleActionList, mediator);
+         gameStateDefineLogic = new GameStateDefineLogic();
++
++        drawStateController = new DrawStateController(mediator, storyGame);
++        kingStateController = new KingsStateController(possibleActionList, mediator);
++
+     }
+ 
+     @Override
+@@ -31,19 +42,25 @@
+     }
+ 
+     @Override
+-    public GameState getState() {
++    public IGameState getState() {
+         return currentState;
+     }
+ 
+     @Override
+-    public void update(Color color, KingState kingState) {
++    public void update(Color color) {
++        kingStateController.update(color);
++
++        final KingState kingState = kingStateController.getKingState(color);
++
+         boolean figuresHaveMoves = figuresHaveMovesComputation.check(color);
+-        if(!figuresHaveMoves){
+-            System.out.println();
+-        }
++
+         currentState = new GameState(gameStateDefineLogic.getState(kingState, figuresHaveMoves), color);
+ 
+-        System.out.format("Game status updated: %s\n", currentState.getValue());
++        if (currentState.getValue() == EnumGameState.ALIVE) {
++            drawStateController.update();
++            currentState = drawStateController.getState();
++        }
+     }
++
+ }
+ 
+Index: src/main/java/neointernship/chess/game/gameplay/kingstate/controller/KingsStateController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.kingstate.controller;\n\nimport neointernship.chess.game.gameplay.figureactions.IPossibleActionList;\nimport neointernship.chess.game.gameplay.kingstate.update.KingIsAttackedComputation;\nimport neointernship.chess.game.gameplay.kingstate.update.KingStateDefineLogic;\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.enums.KingState;\nimport neointernship.chess.game.model.mediator.IMediator;\nimport neointernship.chess.game.model.subscriber.ISubscriber;\n\nimport java.util.ArrayList;\nimport java.util.HashMap;\n\npublic class KingsStateController implements IKingStateController {\n    private final ArrayList<ISubscriber> subscribersList;\n\n    private final HashMap<Color, KingState> kingStateMap;\n    private final KingIsAttackedComputation kingIsAttackedComputation;\n    private final KingStateDefineLogic kingStateDefineLogic;\n\n    private Color activeColor;\n\n    public KingsStateController(final IPossibleActionList possibleActionList,\n                                final IMediator mediator,\n                                final Color activeColor) {\n        kingStateMap = new HashMap<Color, KingState>() {{\n            put(Color.WHITE, KingState.FREE);\n            put(Color.BLACK, KingState.FREE);\n        }};\n\n        subscribersList = new ArrayList<>();\n\n        kingIsAttackedComputation = new KingIsAttackedComputation(possibleActionList, mediator);\n        kingStateDefineLogic = new KingStateDefineLogic();\n\n        this.activeColor = activeColor;\n    }\n\n    public void updateState() {\n        boolean kingIsAttacked = kingIsAttackedComputation.kingIsAttacked(activeColor);\n\n        KingState newState = kingStateDefineLogic.getState(kingIsAttacked);\n        System.out.println(activeColor + \" KING STATUS UPDATED: \" + newState.toString());\n\n        if (newState != kingStateMap.get(activeColor)) {\n            for (ISubscriber currentSubscriber : subscribersList) {\n                currentSubscriber.update(activeColor, newState);\n            }\n\n            kingStateMap.replace(activeColor, newState);\n        }\n    }\n\n    @Override\n    public KingState getState() {\n        return kingStateMap.get(activeColor);\n    }\n\n    @Override\n    public void setActiveColor(final Color activeColor) {\n        this.activeColor = activeColor;\n    }\n\n    @Override\n    public void addToSubscriber(ISubscriber subscriber) {\n        subscribersList.add(subscriber);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/kingstate/controller/KingsStateController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/kingstate/controller/KingsStateController.java	(date 1595845493014)
+@@ -6,23 +6,21 @@
+ import neointernship.chess.game.model.enums.Color;
+ import neointernship.chess.game.model.enums.KingState;
+ import neointernship.chess.game.model.mediator.IMediator;
+-import neointernship.chess.game.model.subscriber.ISubscriber;
++import neointernship.chess.game.gameplay.kingstate.subscriber.IKingStateSubscriber;
+ 
+ import java.util.ArrayList;
+ import java.util.HashMap;
+ 
+ public class KingsStateController implements IKingStateController {
+-    private final ArrayList<ISubscriber> subscribersList;
++
++    private final ArrayList<IKingStateSubscriber> subscribersList;
+ 
+     private final HashMap<Color, KingState> kingStateMap;
+     private final KingIsAttackedComputation kingIsAttackedComputation;
+     private final KingStateDefineLogic kingStateDefineLogic;
+ 
+-    private Color activeColor;
+-
+     public KingsStateController(final IPossibleActionList possibleActionList,
+-                                final IMediator mediator,
+-                                final Color activeColor) {
++                                final IMediator mediator) {
+         kingStateMap = new HashMap<Color, KingState>() {{
+             put(Color.WHITE, KingState.FREE);
+             put(Color.BLACK, KingState.FREE);
+@@ -32,37 +30,24 @@
+ 
+         kingIsAttackedComputation = new KingIsAttackedComputation(possibleActionList, mediator);
+         kingStateDefineLogic = new KingStateDefineLogic();
+-
+-        this.activeColor = activeColor;
+-    }
+-
+-    public void updateState() {
+-        boolean kingIsAttacked = kingIsAttackedComputation.kingIsAttacked(activeColor);
+-
+-        KingState newState = kingStateDefineLogic.getState(kingIsAttacked);
+-        System.out.println(activeColor + " KING STATUS UPDATED: " + newState.toString());
+-
+-        if (newState != kingStateMap.get(activeColor)) {
+-            for (ISubscriber currentSubscriber : subscribersList) {
+-                currentSubscriber.update(activeColor, newState);
+-            }
+-
+-            kingStateMap.replace(activeColor, newState);
+-        }
+     }
+ 
+     @Override
+-    public KingState getState() {
+-        return kingStateMap.get(activeColor);
++    public void addToSubscriber(IKingStateSubscriber subscriber) {
++        subscribersList.add(subscriber);
+     }
+ 
+     @Override
+-    public void setActiveColor(final Color activeColor) {
+-        this.activeColor = activeColor;
++    public KingState getKingState(Color color) {
++        return kingStateMap.get(color);
+     }
+ 
+     @Override
+-    public void addToSubscriber(ISubscriber subscriber) {
+-        subscribersList.add(subscriber);
++    public void update(final Color activeColor) {
++        boolean kingIsAttacked = kingIsAttackedComputation.kingIsAttacked(activeColor);
++
++        KingState newState = kingStateDefineLogic.getState(kingIsAttacked);
++
++        kingStateMap.replace(activeColor, newState);
+     }
+ }
+Index: src/main/java/neointernship/chess/game/gameplay/kingstate/controller/IKingStateController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package neointernship.chess.game.gameplay.kingstate.controller;\n\nimport neointernship.chess.game.model.enums.Color;\nimport neointernship.chess.game.model.enums.KingState;\nimport neointernship.chess.game.model.subscriber.ISubscriber;\n\npublic interface IKingStateController {\n    void updateState();\n    KingState getState();\n    void setActiveColor(final Color activeColor);\n    void addToSubscriber(ISubscriber subscriber);\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/neointernship/chess/game/gameplay/kingstate/controller/IKingStateController.java	(revision 18efe43c9905fcf3e5bed833ea33e43afe894270)
++++ src/main/java/neointernship/chess/game/gameplay/kingstate/controller/IKingStateController.java	(date 1595845493014)
+@@ -1,12 +1,13 @@
+ package neointernship.chess.game.gameplay.kingstate.controller;
+ 
++import neointernship.chess.game.gameplay.kingstate.subscriber.IKingStateSubscriber;
+ import neointernship.chess.game.model.enums.Color;
+ import neointernship.chess.game.model.enums.KingState;
+-import neointernship.chess.game.model.subscriber.ISubscriber;
+ 
+ public interface IKingStateController {
+-    void updateState();
+-    KingState getState();
+-    void setActiveColor(final Color activeColor);
+-    void addToSubscriber(ISubscriber subscriber);
++    void update(final Color color);
++
++    void addToSubscriber(IKingStateSubscriber subscriber);
++
++    KingState getKingState(final Color color);
+ }

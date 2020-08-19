@@ -22,7 +22,6 @@ public class PossibleActionList implements IPossibleActionList {
     private final Map<Figure, Collection<IField>> realFigureActions;
     private final Map<Figure, Collection<IField>> potentialFigureAction;
 
-    private static int count = 0;
 
     public PossibleActionList(final IBoard board,
                               final IMediator mediator,

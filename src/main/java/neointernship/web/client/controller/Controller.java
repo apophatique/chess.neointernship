@@ -45,7 +45,7 @@ public class Controller {
                     endGame = true;
                 }
             } catch (final Exception e) {
-                ErrorLoggerClient.getLogger(player.getName()).logException(e);
+//                ErrorLoggerClient.getLogger(player.getName()).logException(e);
             }
         }
     }
@@ -62,7 +62,7 @@ public class Controller {
             player = new Player(color, name, input);
         } else if (playerType == PlayerType.AI_BOT) {
             name = "AI-Bot";
-            player = new ArtificialIntelligenceBot(Color.BLACK, name, 2, input);
+            player = new ArtificialIntelligenceBot(Color.BLACK, name, 3, input);
         } else {
             name = "Random bot";
             player = new RandomBot(Color.WHITE, name, input);
