@@ -9,16 +9,27 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class MediatorExtended implements IMediator {
-    private final Set<Figure> sortedMediatorSet;
+    //private final Set<Figure> sortedMediatorSet;
     private final IMediator mediator;
+    private final ArrayList<Figure> sortedFiguresList;
 
     public MediatorExtended(final IMediator mediator) {
         this.mediator = mediator;
-
+        this.sortedFiguresList = new ArrayList<Figure>() {
+            {
+                addAll(mediator.getFigures()
+                        .stream()
+                        .sorted(Comparator.comparingInt(Figure::getPrice))
+                        .collect(Collectors.toList()));
+            }
+        };
+/*
         sortedMediatorSet = new TreeSet<>(
                 Comparator.comparingInt(Figure::getPrice));
 
         sortedMediatorSet.addAll(mediator.getFigures());
+
+ */
     }
 
     @Override
@@ -33,14 +44,16 @@ public class MediatorExtended implements IMediator {
 
     @Override
     public Collection<Figure> getFigures(final Color color) {
-        return sortedMediatorSet.stream()
-                                .filter(f -> f.getColor() == color)
-                                .collect(Collectors.toList());
+        return mediator.getFigures()
+                .stream()
+                .filter(f -> f.getColor() == color)
+                .sorted(Comparator.comparingInt(Figure::getPrice))
+                .collect(Collectors.toList());
     }
 
     @Override
     public Collection<Figure> getFigures() {
-        return sortedMediatorSet;
+        return new ArrayList<>(sortedFiguresList);
     }
 
     @Override

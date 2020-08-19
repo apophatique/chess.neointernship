@@ -37,8 +37,16 @@ public class AIPossibleActionList implements IAIPossibleActionList {
         this.board = board;
 
         //this.figureMoveBarrier = new FigureMoveBarrier();
-        this.potentialPatterns = new AIPotentialBasicPatterns(null, this.mediator, board, storyGame);
-        this.realPatterns = new RealBasicPatterns(this.mediator, board, storyGame);
+        this.potentialPatterns = new AIPotentialBasicPatterns(
+                null,
+                this.mediator,
+                board,
+                storyGame
+        );
+        this.realPatterns = new RealBasicPatterns(
+                this.mediator,
+                board,
+                storyGame);
         this.intermediary = new AIIntermediary(potentialPatterns);
 
 
@@ -74,6 +82,7 @@ public class AIPossibleActionList implements IAIPossibleActionList {
     @Override
     public void updateAll() {
         potentialFigureAction.clear();
+        realFigureActions.clear();
 
         for (final Figure figure : mediator.getFigures()) {
             updatePotentialList(figure);

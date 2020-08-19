@@ -2,19 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/PossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/PossibleActionList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/model/mediator/IMediator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/model/mediator/IMediator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/DecisionTreeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/DecisionTreeCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/base/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/base/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/base/Tree.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionvalue/IValueCalculator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionvalue/PositionValueCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionvalue/PositionValueEstimator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/server/lobby/Lobby.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/server/lobby/Lobby.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/mediator/MediatorExtended.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/mediator/MediatorExtended.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionvalue/PositionValueEstimator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionvalue/PositionValueEstimator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/AIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/AIPossibleActionList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/statistics.txt" beforeDir="false" afterPath="$PROJECT_DIR$/statistics.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +70,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/neointernship/gameviewer/mediator_logs" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Server">
+  <component name="RunManager" selected="Application.Client">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="neointernship.web.client.Client" />
       <module name="chess" />
@@ -220,6 +215,7 @@
       <workItem from="1597785461941" duration="3760000" />
       <workItem from="1597790200870" duration="208000" />
       <workItem from="1597791683861" duration="2581000" />
+      <workItem from="1597798204432" duration="4309000" />
     </task>
     <servers />
   </component>
@@ -268,26 +264,26 @@
     </state>
     <state x="466" y="119" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.719@0.0.1366.719" timestamp="1595494591278" />
     <state x="255" y="136" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1596082686000" />
-    <state width="1366" height="144" key="GridCell.Tab.0.bottom" timestamp="1597794274718">
+    <state width="1366" height="136" key="GridCell.Tab.0.bottom" timestamp="1597802512953">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.bottom/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="144" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1597794274718" />
-    <state width="1366" height="144" key="GridCell.Tab.0.center" timestamp="1597794274717">
+    <state width="1366" height="136" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1597802512953" />
+    <state width="1366" height="136" key="GridCell.Tab.0.center" timestamp="1597802512952">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.center/0.0.1366.719@0.0.1366.719" timestamp="1594795861411" />
-    <state width="1366" height="144" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1597794274717" />
-    <state width="1366" height="144" key="GridCell.Tab.0.left" timestamp="1597794274716">
+    <state width="1366" height="136" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1597802512952" />
+    <state width="1366" height="136" key="GridCell.Tab.0.left" timestamp="1597802512952">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.left/0.0.1366.719@0.0.1366.719" timestamp="1594795861410" />
-    <state width="1366" height="144" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1597794274716" />
-    <state width="1366" height="144" key="GridCell.Tab.0.right" timestamp="1597794274717">
+    <state width="1366" height="136" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1597802512952" />
+    <state width="1366" height="136" key="GridCell.Tab.0.right" timestamp="1597802512953">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.right/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="144" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1597794274717" />
+    <state width="1366" height="136" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1597802512953" />
     <state width="1366" height="588" key="GridCell.Tab.1.bottom" timestamp="1597448104930">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -341,11 +337,11 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="389" y="134" width="583" height="500" key="refactoring.ChangeSignatureDialog/0.0.1366.768@0.0.1366.768" timestamp="1597667884458" />
-    <state x="344" y="169" width="672" height="677" key="run.anything.popup" timestamp="1597692472739">
+    <state x="344" y="169" width="672" height="677" key="run.anything.popup" timestamp="1597802137493">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="344" y="158" key="run.anything.popup/0.0.1366.719@0.0.1366.719" timestamp="1594882284681" />
-    <state x="344" y="169" width="672" height="677" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1597692472739" />
+    <state x="344" y="169" width="672" height="677" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1597802137493" />
     <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1597668643745">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

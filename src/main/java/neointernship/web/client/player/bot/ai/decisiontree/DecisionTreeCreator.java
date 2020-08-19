@@ -14,6 +14,7 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
 import neointernship.web.client.player.bot.ai.decisiontree.base.Node;
+import neointernship.web.client.player.bot.ai.mediator.MediatorExtended;
 import neointernship.web.client.player.bot.ai.positionvalue.PositionValueEstimator;
 import neointernship.web.client.player.bot.ai.possibleactionlist.AIPossibleActionList;
 import neointernship.web.client.player.bot.ai.possibleactionlist.IAIPossibleActionList;
@@ -39,6 +40,7 @@ public class DecisionTreeCreator {
 
 
         */
+
         final Node rootNode = new Node(
                 null,
                 mediator,
@@ -59,7 +61,6 @@ public class DecisionTreeCreator {
     }
 
     public int nextLayer(final Node currentNode, final int recursionDepth, int alpha, int beta) {
-        System.out.format("Depth: %d\n", recursionDepth);
         final Color activeColor = currentNode.getActiveColor();
         final IMediator mediator = currentNode.getMediator();
         final IBoard board = currentNode.getBoard();
@@ -73,18 +74,20 @@ public class DecisionTreeCreator {
                     activeColor
             );
         }
+        if (alpha >= beta) {
+            return alpha;
+        }
 
-        int currentScore = Integer.MIN_VALUE;
-        final IPossibleActionList possibleActionList = new PossibleActionList(board, mediator, storyGame);
-        possibleActionList.updateRealLists();
+        final IAIPossibleActionList possibleActionList = new AIPossibleActionList(board, mediator, storyGame);
+        possibleActionList.updateAll();
 
         for (final Figure figure : mediator.getFigures(activeColor)) {
-            possibleActionList.getRealList(figure).forEach(System.out::println);
-            for (final IField field : possibleActionList.getRealList(figure)) {
+            System.out.println(figure.getName());
+            for (final IField field : possibleActionList.getList(figure)) {
                 final IMediator currentMediator = new Mediator(mediator);
                 final IMoveCommand command = new AllowMoveCommand(
                         currentMediator,
-                        null, // todo: удалить
+                        null,
                         board,
                         storyGame
                 );
@@ -97,19 +100,6 @@ public class DecisionTreeCreator {
                 );
                 command.execute(answer);
 
-            /*
-                final IPossibleActionList moveList = new PossibleActionList(
-                        board,
-                        currentMediator,
-                        storyGame,
-                        actionList.getRealList(),
-                        actionList.getPotentialList(),
-                        actionList.getBarrierList()
-                );
-
-                moveList.updateRealLists();
-                                */
-
                 final Node childNode = new Node(
                         answer,
                         currentMediator,
@@ -118,19 +108,25 @@ public class DecisionTreeCreator {
                         Color.swapColor(activeColor)
                 );
 
-                final int nextDepthScore = - nextLayer(
+
+                int nextDepthScore = - nextLayer(
                         childNode,
                         recursionDepth - 1,
-                        - beta,
+                        - (alpha + 1),
                         - alpha
                 );
 
-                if (nextDepthScore > currentScore) {
-                    currentScore = nextDepthScore;
-                    currentNode.setChild(childNode);
-                }
-                if (currentScore > alpha) {
-                    alpha = currentScore;
+                if (nextDepthScore > alpha) {
+                    nextDepthScore = - nextLayer(
+                            childNode,
+                            recursionDepth - 1,
+                            - beta,
+                            - alpha
+                    );
+               }
+
+                if (nextDepthScore > alpha) {
+                    alpha = nextDepthScore;
                     currentNode.setChild(childNode);
                 }
                 if (alpha >= beta) {
@@ -139,6 +135,7 @@ public class DecisionTreeCreator {
                 }
             }
         }
-        return currentScore;
+
+        return alpha;
     }
 }

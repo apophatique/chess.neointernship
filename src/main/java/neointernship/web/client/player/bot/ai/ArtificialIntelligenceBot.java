@@ -15,6 +15,7 @@ import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;
 import neointernship.web.client.player.APlayer;
 import neointernship.web.client.player.bot.ai.decisiontree.DecisionTreeCreator;
+import neointernship.web.client.player.bot.ai.mediator.MediatorExtended;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,21 +24,14 @@ public class ArtificialIntelligenceBot extends APlayer {
     private BoardView boardView;
     private final IInput input;
 
-    private final Color color;
-    private final String name;
-    private final int recursionDepth;
+    private final int RECURSION_DEPTH = 4;
     private final DecisionTreeCreator decisionTreeCreator;
 
     public ArtificialIntelligenceBot(final Color color,
                                      final String name,
-                                     final int recursionDepth,
                                      final IInput input) {
         super(color, name);
         this.input = input;
-
-        this.color = color;
-        this.name = name;
-        this.recursionDepth = recursionDepth;
 
         decisionTreeCreator = new DecisionTreeCreator(color);
     }
@@ -86,7 +80,7 @@ public class ArtificialIntelligenceBot extends APlayer {
                 mediator,
                 board,
                 storyGame,
-                recursionDepth
+                RECURSION_DEPTH
         );
 
         String turn = "";

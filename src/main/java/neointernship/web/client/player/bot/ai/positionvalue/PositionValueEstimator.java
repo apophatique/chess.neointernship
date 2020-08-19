@@ -21,7 +21,6 @@ public class PositionValueEstimator {
             value -= figure.getPrice();
         }
 
-        System.out.println(value);
         return value;
     }
 }
