@@ -10,6 +10,6 @@ import java.util.Collection;
 import java.util.Map;
 
 public interface IAIPossibleActionList {
-    void update(final Color color, final double phase);
+    void update(final Color color, final double phase, final int recursionDepth);
     Collection<Move> getList();
 }

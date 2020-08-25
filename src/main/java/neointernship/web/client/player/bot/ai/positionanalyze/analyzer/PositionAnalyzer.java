@@ -3,18 +3,26 @@ package neointernship.web.client.player.bot.ai.positionanalyze.analyzer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
+import neointernship.web.client.player.bot.ai.extended.possibleactionlist.IAIPossibleActionList;
+import neointernship.web.client.player.bot.ai.extended.possibleactionlist.patterns.potential.move.Move;
 import neointernship.web.client.player.bot.ai.positionanalyze.PST.PSTable;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class PositionAnalyzer {
     private final IMediator mediator;
+    private final IAIPossibleActionList possibleActionList;
     private final Color activeColor;
 
     private int positionEstimation;
     private double gamePhase;
 
     public PositionAnalyzer(final IMediator mediator,
+                            final IAIPossibleActionList possibleActionList,
                             final Color activeColor) {
         this.mediator = mediator;
+        this.possibleActionList = possibleActionList;
         this.activeColor = activeColor;
 
         estimateGamePhase();
@@ -34,6 +42,7 @@ public class PositionAnalyzer {
 
     private void estimateBoard() {
         positionEstimation = 0;
+
 
         for (final Figure figure : mediator.getFigures()) {
             if (figure.getColor() == activeColor) { 

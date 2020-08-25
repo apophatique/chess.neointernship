@@ -57,7 +57,7 @@ public class AIPossibleActionList implements IAIPossibleActionList {
     }
 
     @Override
-    public void update(final Color color, final double gamePhase) {
+    public void update(final Color color, final double gamePhase, final int recursionDepth) {
         for (final Figure figure : mediator.getFigures(color)) {
             potentialAttackFields.clear();
             potentialMoveFields.clear();
@@ -91,21 +91,22 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                     return -1;
                 }).collect(Collectors.toCollection(ArrayList::new))
         );
-        unitedActionList.addAll(realMoveFields
-                .stream()
-                .sorted((o1, o2) -> Double.compare(
-                        PSTable.getMoveCost(
-                                o2.getMovingFigure(),
-                                o2.getFieldToMove(),
-                                gamePhase
-                        ),
-                        PSTable.getMoveCost(
-                                o1.getMovingFigure(),
-                                o1.getFieldToMove(),
-                                gamePhase
+            unitedActionList.addAll(realMoveFields
+                    .stream()
+                    .sorted((o1, o2) -> Double.compare(
+                            PSTable.getMoveCost(
+                                    o2.getMovingFigure(),
+                                    o2.getFieldToMove(),
+                                    gamePhase
+                            ),
+                            PSTable.getMoveCost(
+                                    o1.getMovingFigure(),
+                                    o1.getFieldToMove(),
+                                    gamePhase
                             )))
-                .collect(Collectors.toCollection(ArrayList::new))
-        );
+                    .collect(Collectors.toCollection(ArrayList::new))
+            );
+
     }
 
     @Override

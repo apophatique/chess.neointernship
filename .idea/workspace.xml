@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="" />
+    <list default="true" id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,7 +32,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="feature_bot_base_simulation" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -65,7 +76,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/neointernship/gameviewer" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Client">
+  <component name="RunManager" selected="Application.Server">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="neointernship.web.client.Client" />
       <module name="chess" />
@@ -144,11 +155,11 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.Client" />
         <item itemvalue="JUnit.neointernship.web.client.player.bot.ai.extended in chess" />
-        <item itemvalue="Application.LoggerViewer" />
         <item itemvalue="JUnit.ViewerTest.viewTest" />
+        <item itemvalue="Application.LoggerViewer" />
       </list>
     </recent_temporary>
   </component>
@@ -219,6 +230,7 @@
       <workItem from="1598235827648" duration="8676000" />
       <workItem from="1598253089498" duration="22182000" />
       <workItem from="1598322925545" duration="5477000" />
+      <workItem from="1598339243132" duration="312000" />
     </task>
     <servers />
   </component>
@@ -271,26 +283,26 @@
     </state>
     <state x="466" y="119" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.719@0.0.1366.719" timestamp="1595494591278" />
     <state x="255" y="136" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1596082686000" />
-    <state width="1366" height="98" key="GridCell.Tab.0.bottom" timestamp="1598330519114">
+    <state width="1366" height="98" key="GridCell.Tab.0.bottom" timestamp="1598338310997">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.bottom/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="98" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598330519114" />
-    <state width="1366" height="98" key="GridCell.Tab.0.center" timestamp="1598330519113">
+    <state width="1366" height="98" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598338310997" />
+    <state width="1366" height="98" key="GridCell.Tab.0.center" timestamp="1598338310997">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.center/0.0.1366.719@0.0.1366.719" timestamp="1594795861411" />
-    <state width="1366" height="98" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598330519113" />
-    <state width="1366" height="98" key="GridCell.Tab.0.left" timestamp="1598330519113">
+    <state width="1366" height="98" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598338310997" />
+    <state width="1366" height="98" key="GridCell.Tab.0.left" timestamp="1598338310996">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.left/0.0.1366.719@0.0.1366.719" timestamp="1594795861410" />
-    <state width="1366" height="98" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598330519113" />
-    <state width="1366" height="98" key="GridCell.Tab.0.right" timestamp="1598330519114">
+    <state width="1366" height="98" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598338310996" />
+    <state width="1366" height="98" key="GridCell.Tab.0.right" timestamp="1598338310997">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.right/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="98" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598330519114" />
+    <state width="1366" height="98" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598338310997" />
     <state width="1366" height="588" key="GridCell.Tab.1.bottom" timestamp="1598323224267">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

@@ -14,7 +14,6 @@
  *      - Principal variation search (NegaScout)
  *      - LVA/MVV
  *      - PST
- *      - Killer heuristic
  *      - Mathematical calculation of optimal figures values.
  *
  * This project was completed during the second month of the internship at Neolab company.

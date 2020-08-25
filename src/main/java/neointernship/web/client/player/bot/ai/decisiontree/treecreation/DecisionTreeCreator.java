@@ -70,21 +70,22 @@ public class DecisionTreeCreator {
         final IMediator mediator = currentNode.getMediator();
         final IBoard board = currentNode.getBoard();
         final IStoryGame storyGame = currentNode.getStoryGame();
-        final PositionAnalyzer positionAnalyzer = new PositionAnalyzer(mediator, activeColor);
-
-        if (recursionDepth == 0) {
-            return positionAnalyzer.getEstimation();
-        }
-
         final IAIPossibleActionList possibleActionList = new AIPossibleActionList(
                 board,
                 mediator,
                 storyGame
         );
+        final PositionAnalyzer positionAnalyzer = new PositionAnalyzer(mediator, possibleActionList, activeColor);
+
         possibleActionList.update(
                 activeColor,
-                positionAnalyzer.getGamePhase()
+                positionAnalyzer.getGamePhase(),
+                recursionDepth
         );
+        if (recursionDepth == 0) {
+            return positionAnalyzer.getEstimation();
+        }
+
         for (final Move move : possibleActionList.getList()) {
             final Figure figure = move.getMovingFigure();
             final IField field = move.getFieldToMove();
