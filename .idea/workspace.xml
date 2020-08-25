@@ -3,15 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +222,7 @@
       <workItem from="1598235827648" duration="8676000" />
       <workItem from="1598253089498" duration="22182000" />
       <workItem from="1598322925545" duration="5477000" />
-      <workItem from="1598339243132" duration="312000" />
+      <workItem from="1598339243132" duration="671000" />
     </task>
     <servers />
   </component>

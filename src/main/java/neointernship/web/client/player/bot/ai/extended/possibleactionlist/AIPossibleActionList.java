@@ -91,6 +91,10 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                     return -1;
                 }).collect(Collectors.toCollection(ArrayList::new))
         );
+        if (gamePhase > 0.95) {
+            realMoveFields = new ArrayList<>(realMoveFields.subList(0, 7));
+        }
+        if (recursionDepth != 0) {
             unitedActionList.addAll(realMoveFields
                     .stream()
                     .sorted((o1, o2) -> Double.compare(
@@ -106,7 +110,7 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                             )))
                     .collect(Collectors.toCollection(ArrayList::new))
             );
-
+        }
     }
 
     @Override
