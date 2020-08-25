@@ -11,7 +11,7 @@ public class TestAllowCommand extends TestHeadCommand {
     @BeforeClass
     public static void init() {
         TestHeadCommand.init();
-        allowMoveCommand = new AllowMoveCommand(mediator, possibleActionList, board, storyGame);
+        allowMoveCommand = new AllowMoveCommand(mediator, board, storyGame);
     }
 
     @After

@@ -19,7 +19,6 @@ import java.util.Queue;
 public class AllowMoveCommand implements IMoveCommand {
 
     private final IMediator mediator;
-    private final IPossibleActionList possibleActionList;
     private final IBoard board;
 
     private final IStoryGame storyGame;
@@ -28,11 +27,9 @@ public class AllowMoveCommand implements IMoveCommand {
 
 
     public AllowMoveCommand(final IMediator mediator,
-                            final IPossibleActionList possibleActionList,
                             final IBoard board,
                             final IStoryGame storyGame) {
         this.mediator = mediator;
-        this.possibleActionList = possibleActionList;
         this.board = board;
 
         this.storyGame = storyGame;

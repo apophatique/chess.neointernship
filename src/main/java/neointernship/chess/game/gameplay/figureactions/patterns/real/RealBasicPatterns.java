@@ -46,7 +46,7 @@ public class RealBasicPatterns implements IRealBasicPatterns {
             IPossibleActionList newPossibleActionList = new PossibleActionList(board, newMediator, newStoryGame);
 
             AllowMoveCommand allowMoveCommand =
-                    new AllowMoveCommand(newMediator, newPossibleActionList, board, newStoryGame);
+                    new AllowMoveCommand(newMediator, board, newStoryGame);
 
             command = allowMoveCommand.getCommand(startField, finishField);
             IAnswer answer = new Answer(

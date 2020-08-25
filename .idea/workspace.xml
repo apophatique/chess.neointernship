@@ -2,14 +2,55 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/intermediary/AIIntermediary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/potential/IPotentialBasicPatternsAI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs\server\error_log_server.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs\server\error_log_server.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs\server\game_log_0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs\server\game_log_0.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs\server\game_log_1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/logs\server\game_log_1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/real/RealBasicPatterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/real/RealBasicPatterns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AllowMoveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/moveaction/commands/allow/AllowMoveCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/moveaction/movesrepository/MovesRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/moveaction/movesrepository/MovesRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/DecisionTreeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/DecisionTreeCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/mediator/MediatorExtended.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/mediator/MediatorExtended.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionvalue/PositionValueEstimator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionvalue/PositionValueEstimator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/AIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/AIPossibleActionList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/DecisionTreeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/base/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/node/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/mediator/MediatorExtended.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionvalue/PositionValueEstimator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/AIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/IAIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/barier/FigureMoveBarrier.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/AIIntermediary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/potential/AIPotentialBasicPatterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/potential/AIPotentialBasicPatterns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/potential/IPotentialBasicPatternsAI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/real/AIRealBasicPatterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/real/AIRealBasicPatterns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/real/IRealBasicPatternsAI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/real/IRealBasicPatternsAI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/neointernship/chess/game/moveactions/TestAllowCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/neointernship/chess/game/moveactions/TestAllowCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/statistics.txt" beforeDir="false" afterPath="$PROJECT_DIR$/statistics.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/chess/game/gameplay/figureactions/patterns/real/RealBasicPatterns.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/chess/game/gameplay/figureactions/patterns/real/RealBasicPatterns.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/chess/game/gameplay/moveaction/commands/allow/AllowMoveCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/chess/game/gameplay/moveaction/commands/allow/AllowMoveCommand.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/chess/game/gameplay/moveaction/movesrepository/MovesRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/chess/game/gameplay/moveaction/movesrepository/MovesRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/decisiontree/DecisionTreeCreator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/decisiontree/base/Node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/mediator/MediatorExtended$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/mediator/MediatorExtended.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/positionvalue/PositionValueEstimator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/AIPossibleActionList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/IAIPossibleActionList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/barier/FigureMoveBarrier.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/AIIntermediary.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/potential/AIPotentialBasicPatterns$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/potential/AIPotentialBasicPatterns$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/potential/AIPotentialBasicPatterns$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/potential/AIPotentialBasicPatterns$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/potential/AIPotentialBasicPatterns.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/potential/IPotentialBasicPatternsAI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/real/AIRealBasicPatterns.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/neointernship/web/client/player/bot/ai/possibleactionlist/patterns/real/IRealBasicPatternsAI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/neointernship/chess/game/moveactions/TestAllowCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/neointernship/chess/game/moveactions/TestAllowCommand.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,11 +60,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="package-info" />
         <option value="package.json" />
         <option value="Enum" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
+        <option value="package-info" />
       </list>
     </option>
   </component>
@@ -49,7 +90,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/figure/factory" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -59,15 +100,19 @@
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java/neointernship/gameviewer" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="neointernship.web.client.player.bot.ai.possibleactionlist.patterns" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/figure/factory" />
+      <recent name="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/figures" />
+      <recent name="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/patterns" />
       <recent name="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist" />
       <recent name="$PROJECT_DIR$/src/main/java/neointernship/gameviewer/mediator_logs" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="neointernship.web.client.player.bot.ai.possibleactionlist" />
+      <recent name="neointernship.web.client.player.bot.ai.possibleactionlist.patterns" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/neointernship/gameviewer" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Client">
@@ -110,22 +155,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ViewerTest.displayBoardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="chess" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="neointernship.chess.gui.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="neointernship.chess.gui" />
-      <option name="MAIN_CLASS_NAME" value="neointernship.chess.gui.ViewerTest" />
-      <option name="METHOD_NAME" value="displayBoardTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ViewerTest.viewTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="chess" />
       <extension name="coverage">
@@ -142,20 +171,34 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="neointernship.web.client.player.bot.ai.extended in chess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="chess" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="neointernship.web.client.player.bot.ai.extended.mediator.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="neointernship.web.client.player.bot.ai.extended" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.Client" />
       <item itemvalue="Application.Server" />
       <item itemvalue="Application.LoggerViewer" />
-      <item itemvalue="JUnit.ViewerTest.displayBoardTest" />
       <item itemvalue="JUnit.ViewerTest.viewTest" />
+      <item itemvalue="JUnit.neointernship.web.client.player.bot.ai.extended in chess" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="JUnit.neointernship.web.client.player.bot.ai.extended in chess" />
         <item itemvalue="Application.LoggerViewer" />
         <item itemvalue="JUnit.ViewerTest.viewTest" />
-        <item itemvalue="JUnit.ViewerTest.displayBoardTest" />
       </list>
     </recent_temporary>
   </component>
@@ -215,7 +258,17 @@
       <workItem from="1597785461941" duration="3760000" />
       <workItem from="1597790200870" duration="208000" />
       <workItem from="1597791683861" duration="2581000" />
-      <workItem from="1597798204432" duration="4309000" />
+      <workItem from="1597798204432" duration="7443000" />
+      <workItem from="1597836764465" duration="2878000" />
+      <workItem from="1597873189913" duration="1174000" />
+      <workItem from="1597880848958" duration="21557000" />
+      <workItem from="1597957001184" duration="2713000" />
+      <workItem from="1597995956310" duration="15037000" />
+      <workItem from="1598076730621" duration="9165000" />
+      <workItem from="1598172534338" duration="12190000" />
+      <workItem from="1598235827648" duration="8676000" />
+      <workItem from="1598253089498" duration="22182000" />
+      <workItem from="1598322925545" duration="5477000" />
     </task>
     <servers />
   </component>
@@ -235,25 +288,29 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="450" y="189" width="522" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.768@0.0.1366.768" timestamp="1596183068255" />
-    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser" timestamp="1597663545277">
+    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser" timestamp="1597936303932">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="491" y="69" width="380" height="580" key="#com.intellij.ide.util.MemberChooser/0.0.1366.719@0.0.1366.719" timestamp="1595445728615" />
-    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser/0.0.1366.768@0.0.1366.768" timestamp="1597663545277" />
-    <state x="294" y="307" width="819" height="145" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1597354293824">
+    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser/0.0.1366.768@0.0.1366.768" timestamp="1597936303932" />
+    <state x="294" y="307" width="982" height="148" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1598236957258">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="500" y="287" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1366.719@0.0.1366.719" timestamp="1594805262968" />
-    <state x="294" y="307" width="819" height="145" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1366.768@0.0.1366.768" timestamp="1597354293824" />
+    <state x="294" y="307" width="982" height="148" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1366.768@0.0.1366.768" timestamp="1598236957258" />
     <state x="466" y="255" width="433" height="265" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1596548088325">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="466" y="255" width="433" height="265" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1366.768@0.0.1366.768" timestamp="1596548088325" />
-    <state x="359" y="0" width="876" height="765" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1597394054039">
+    <state x="407" y="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1598264779648">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="407" y="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1366.768@0.0.1366.768" timestamp="1598264779648" />
+    <state x="359" y="0" width="876" height="765" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1598088772942">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="359" y="0" width="644" height="716" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.719@0.0.1366.719" timestamp="1595481984771" />
-    <state x="359" y="0" width="876" height="765" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.768@0.0.1366.768" timestamp="1597394054039" />
+    <state x="359" y="0" width="876" height="765" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.768@0.0.1366.768" timestamp="1598088772942" />
     <state x="416" y="117" width="530" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1597667967041">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -264,42 +321,42 @@
     </state>
     <state x="466" y="119" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.719@0.0.1366.719" timestamp="1595494591278" />
     <state x="255" y="136" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1596082686000" />
-    <state width="1366" height="136" key="GridCell.Tab.0.bottom" timestamp="1597802512953">
+    <state width="1366" height="98" key="GridCell.Tab.0.bottom" timestamp="1598330519114">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.bottom/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="136" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1597802512953" />
-    <state width="1366" height="136" key="GridCell.Tab.0.center" timestamp="1597802512952">
+    <state width="1366" height="98" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598330519114" />
+    <state width="1366" height="98" key="GridCell.Tab.0.center" timestamp="1598330519113">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.center/0.0.1366.719@0.0.1366.719" timestamp="1594795861411" />
-    <state width="1366" height="136" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1597802512952" />
-    <state width="1366" height="136" key="GridCell.Tab.0.left" timestamp="1597802512952">
+    <state width="1366" height="98" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598330519113" />
+    <state width="1366" height="98" key="GridCell.Tab.0.left" timestamp="1598330519113">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.left/0.0.1366.719@0.0.1366.719" timestamp="1594795861410" />
-    <state width="1366" height="136" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1597802512952" />
-    <state width="1366" height="136" key="GridCell.Tab.0.right" timestamp="1597802512953">
+    <state width="1366" height="98" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598330519113" />
+    <state width="1366" height="98" key="GridCell.Tab.0.right" timestamp="1598330519114">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.right/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="136" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1597802512953" />
-    <state width="1366" height="588" key="GridCell.Tab.1.bottom" timestamp="1597448104930">
+    <state width="1366" height="98" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598330519114" />
+    <state width="1366" height="588" key="GridCell.Tab.1.bottom" timestamp="1598323224267">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1366" height="588" key="GridCell.Tab.1.bottom/0.0.1366.768@0.0.1366.768" timestamp="1597448104930" />
-    <state width="1366" height="588" key="GridCell.Tab.1.center" timestamp="1597448104929">
+    <state width="1366" height="588" key="GridCell.Tab.1.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598323224267" />
+    <state width="1366" height="588" key="GridCell.Tab.1.center" timestamp="1598323224266">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1366" height="588" key="GridCell.Tab.1.center/0.0.1366.768@0.0.1366.768" timestamp="1597448104929" />
-    <state width="1366" height="588" key="GridCell.Tab.1.left" timestamp="1597448104929">
+    <state width="1366" height="588" key="GridCell.Tab.1.center/0.0.1366.768@0.0.1366.768" timestamp="1598323224266" />
+    <state width="1366" height="588" key="GridCell.Tab.1.left" timestamp="1598323224266">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1366" height="588" key="GridCell.Tab.1.left/0.0.1366.768@0.0.1366.768" timestamp="1597448104929" />
-    <state width="1366" height="588" key="GridCell.Tab.1.right" timestamp="1597448104930">
+    <state width="1366" height="588" key="GridCell.Tab.1.left/0.0.1366.768@0.0.1366.768" timestamp="1598323224266" />
+    <state width="1366" height="588" key="GridCell.Tab.1.right" timestamp="1598323224267">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1366" height="588" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1597448104930" />
+    <state width="1366" height="588" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1598323224267" />
     <state x="130" y="62" width="1098" height="641" key="MergeDialog" timestamp="1596182895773">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -316,6 +373,10 @@
       <screen x="0" y="0" width="1366" height="719" />
     </state>
     <state x="166" y="0" width="1030" height="719" key="SettingsEditor/0.0.1366.719@0.0.1366.719" timestamp="1594885665669" />
+    <state x="278" y="121" width="806" height="525" key="Vcs.Push.Dialog.v2" timestamp="1598331107830">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="278" y="121" width="806" height="525" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1598331107830" />
     <state x="0" y="0" width="776" height="765" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1596662407018">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -337,11 +398,11 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="389" y="134" width="583" height="500" key="refactoring.ChangeSignatureDialog/0.0.1366.768@0.0.1366.768" timestamp="1597667884458" />
-    <state x="344" y="169" width="672" height="677" key="run.anything.popup" timestamp="1597802137493">
+    <state x="344" y="169" width="672" height="677" key="run.anything.popup" timestamp="1598019619522">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="344" y="158" key="run.anything.popup/0.0.1366.719@0.0.1366.719" timestamp="1594882284681" />
-    <state x="344" y="169" width="672" height="677" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1597802137493" />
+    <state x="344" y="169" width="672" height="677" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1598019619522" />
     <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1597668643745">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

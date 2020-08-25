@@ -1,21 +1,20 @@
 package neointernship.web.client.player.bot.ai;
 
-import neointernship.chess.game.gameplay.figureactions.IPossibleActionList;
-import neointernship.chess.game.gameplay.figureactions.PossibleActionList;
 import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.enums.EnumGameState;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
-import neointernship.chess.game.model.playmap.field.IField;
+import neointernship.chess.game.story.IStoryGame;
+import neointernship.chess.game.story.StoryGame;
 import neointernship.web.client.GUI.Input.IInput;
 import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;
 import neointernship.web.client.player.APlayer;
-import neointernship.web.client.player.bot.ai.decisiontree.DecisionTreeCreator;
-import neointernship.web.client.player.bot.ai.mediator.MediatorExtended;
+import neointernship.web.client.player.bot.ai.decisiontree.treecreation.DecisionTreeCreator;
+import neointernship.web.client.player.bot.ai.extended.mediator.MediatorExtended;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +23,7 @@ public class ArtificialIntelligenceBot extends APlayer {
     private BoardView boardView;
     private final IInput input;
 
-    private final int RECURSION_DEPTH = 4;
+    private static final int RECURSION_DEPTH = 4;
     private final DecisionTreeCreator decisionTreeCreator;
 
     public ArtificialIntelligenceBot(final Color color,
@@ -76,10 +75,16 @@ public class ArtificialIntelligenceBot extends APlayer {
         final List<Character> integers = Arrays.asList('8', '7', '6', '5', '4', '3', '2', '1');
         final List<Character> chars = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
 
+        IMediator newMediator = new MediatorExtended(mediator);
+        IStoryGame newStoryGame = new StoryGame(newMediator);
+        for (final Figure figure : newMediator.getFigures()) {
+            newStoryGame.update(figure);
+        }
+
         final IAnswer answer = decisionTreeCreator.getDecision(
-                mediator,
+                newMediator,
                 board,
-                storyGame,
+                newStoryGame,
                 RECURSION_DEPTH
         );
 

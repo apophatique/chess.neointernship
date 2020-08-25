@@ -9,7 +9,6 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.Field;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
-import neointernship.web.client.player.bot.ai.possibleactionlist.barier.FigureMoveBarrier;
 
 import java.util.ArrayList;
 import java.util.Collection;

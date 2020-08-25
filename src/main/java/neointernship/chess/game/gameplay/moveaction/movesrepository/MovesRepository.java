@@ -21,7 +21,7 @@ public class MovesRepository {
                            final IBoard board,
                            final IStoryGame storyGame) {
 
-        allowMoveCommand = new AllowMoveCommand(mediator, possibleActionList, board, storyGame);
+        allowMoveCommand = new AllowMoveCommand(mediator, board, storyGame);
         restrictCommand = new RestrictMoveCommand(mediator, possibleActionList, board);
 
         actionCommandMap = new HashMap<MoveState, IMoveCommand>() {
