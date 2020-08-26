@@ -5,6 +5,6 @@ import neointernship.chess.game.model.figure.piece.Figure;
 
 public class KingExtended extends Figure {
     public KingExtended(Color color) {
-        super("King", 'K', color, (short) 0);
+        super("King", 'K', color, (short) 1000);
     }
 }

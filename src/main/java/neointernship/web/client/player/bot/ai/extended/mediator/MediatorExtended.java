@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.factory.IFactory;
 import neointernship.chess.game.model.figure.piece.Figure;
-import neointernship.chess.game.model.figure.piece.King;
 import neointernship.chess.game.model.mediator.IMediator;
-import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.player.bot.ai.extended.figure.factory.FactoryExtended;
+import neointernship.web.client.player.bot.ai.extended.figure.figures.KingExtended;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -68,7 +67,7 @@ public class MediatorExtended implements IMediator {
     @Override
     public Figure getKing(final Color color) {
         for (final Figure figure : mediator.values()) {
-            if (figure.getClass().equals(King.class) && figure.getColor() == color) {
+            if (figure.getClass().equals(KingExtended.class) && figure.getColor() == color) {
                 return figure;
             }
         }

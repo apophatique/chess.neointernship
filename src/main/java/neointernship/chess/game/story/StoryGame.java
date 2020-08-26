@@ -25,6 +25,8 @@ public class StoryGame implements IStoryGame {
     public StoryGame(StoryGame storyGame) {
         this.mediator = storyGame.mediator;
         this.hoIsMove = new HashSet<>();
+        this.lastFigure = storyGame.lastFigure;
+        this.lastField = storyGame.lastField;
 
         this.hoIsMove.addAll(storyGame.hoIsMove);
     }

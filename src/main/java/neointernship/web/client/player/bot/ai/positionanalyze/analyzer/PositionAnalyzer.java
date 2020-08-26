@@ -44,18 +44,18 @@ public class PositionAnalyzer {
         positionEstimation = 0;
 
         for (final Figure figure : mediator.getFigures()) {
-            if (figure.getColor() == activeColor) { 
-                positionEstimation += figure.getPrice() + PSTable.getMoveCost(
+            int value = figure.getPrice();
+            if (gamePhase > 0.9) {
+                value += PSTable.getMoveCost(
                         figure,
                         mediator.getField(figure),
                         getGamePhase()
                 );
+            }
+            if (figure.getColor() == activeColor) {
+                positionEstimation += value;
             } else {
-                positionEstimation -= (figure.getPrice() + PSTable.getMoveCost(
-                        figure,
-                        mediator.getField(figure),
-                        getGamePhase()
-                ));
+                positionEstimation -= value;
             }
         }
     }

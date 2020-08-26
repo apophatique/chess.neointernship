@@ -14,6 +14,7 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
 import neointernship.chess.game.story.StoryGame;
+import neointernship.web.client.player.bot.ai.extended.mediator.MediatorExtended;
 import neointernship.web.client.player.bot.ai.extended.possibleactionlist.patterns.potential.move.Move;
 
 import java.util.ArrayList;
@@ -41,22 +42,31 @@ public class AIRealBasicPatterns implements IRealBasicPatternsAI {
         final Color colorOpponent = Color.swapColor(colorFigure);
 
         for (Move finishField : potentialMoveList) {
-
-            IMediator newMediator = new Mediator(mediator);
+            IMediator newMediator = new MediatorExtended(mediator);
             IStoryGame newStoryGame = new StoryGame((StoryGame) storyGame);
-            IPossibleActionList newPossibleActionList = new PossibleActionList(board, newMediator, newStoryGame);
+            IPossibleActionList newPossibleActionList = new PossibleActionList(
+                    board,
+                    newMediator,
+                    newStoryGame
+            );
 
-            AllowMoveCommand allowMoveCommand =
-                    new AllowMoveCommand(newMediator, board, newStoryGame);
+            AllowMoveCommand allowMoveCommand = new AllowMoveCommand(
+                    newMediator,
+                    board,
+                    newStoryGame
+            );
 
-            command = allowMoveCommand.getCommand(startField, finishField.getFieldToMove());
+            command = allowMoveCommand.getCommand(
+                    startField,
+                    finishField.getFieldToMove()
+            );
             IAnswer answer = new Answer(
                     startField.getXCoord(),
                     startField.getYCoord(),
                     finishField.getFieldToMove().getXCoord(),
                     finishField.getFieldToMove().getYCoord(),
-                    'Q');
-
+                    'Q'
+            );
             command.execute(answer);
 
             newPossibleActionList.updatePotentialLists(colorOpponent);

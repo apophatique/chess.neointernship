@@ -170,14 +170,14 @@ public class AIPotentialBasicPatterns implements IPotentialBasicPatternsAI {
             );
         }
 
-        boolean isFreePath = addMoveField(
-                figure,
-                currentField.getXCoord() + offset,
-                currentField.getYCoord(),
-                moveList
-        );
 
         addIfAisleTake(figure, attackList);
+
+        boolean isFreePath;
+        isFreePath = mediator.getFigure(board.getField(
+                currentField.getXCoord() + offset,
+                currentField.getYCoord())
+        ) == null;
 
         if (isFreePath) {
             if (currentField.getXCoord() == 1 || currentField.getXCoord() == 6) {
@@ -282,7 +282,9 @@ public class AIPotentialBasicPatterns implements IPotentialBasicPatternsAI {
 
             for (final Figure rook : mediator.getFigures(king.getColor())) {
                 // если есть ладья которой не ходил
-                if (rook.getClass() == Rook.class && !storyGame.isMove(rook) && mediator.getField(rook).getXCoord() == fieldKing.getXCoord()) {
+                if (rook.getClass() == Rook.class
+                        && !storyGame.isMove(rook)
+                        && mediator.getField(rook).getXCoord() == fieldKing.getXCoord()) {
                     // если между ними нет других фигур
                     boolean haveFigure = false;
                     final IField fieldRook = mediator.getField(rook);
@@ -333,13 +335,13 @@ public class AIPotentialBasicPatterns implements IPotentialBasicPatternsAI {
         return figure == null;
     }
 
-    private boolean addMoveField(
+    private void addMoveField(
             final Figure startFigure,
             final int newFieldXCoord,
             final int newFieldYCoord,
             final ArrayList<Move> moveList) {
         if (invalidCoordinates(newFieldXCoord, newFieldYCoord)) {
-            return false;
+            return;
         }
         final IField field = board.getField(newFieldXCoord, newFieldYCoord);
         final Figure figure = mediator.getFigure(field);
@@ -347,7 +349,6 @@ public class AIPotentialBasicPatterns implements IPotentialBasicPatternsAI {
         if (figure == null) {
             moveList.add(new Move(startFigure, field));
         }
-        return true;
     }
 
     private void addAttackField(

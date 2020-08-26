@@ -7,6 +7,7 @@ import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
+import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
@@ -66,7 +67,6 @@ public class DecisionTreeCreator {
     }
 
     public int nextLayer(final Node currentNode, final int recursionDepth, int alpha, int beta) {
-
         final Color activeColor = currentNode.getActiveColor();
         final IMediator mediator = currentNode.getMediator();
         final IBoard board = currentNode.getBoard();

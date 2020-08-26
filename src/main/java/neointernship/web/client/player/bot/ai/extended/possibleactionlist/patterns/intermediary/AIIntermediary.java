@@ -12,23 +12,23 @@ public class AIIntermediary {
     }
 
     public void updateActionLists(final Figure figure) {
-        if (BishopExtended.class.equals(figure.getClass())) {
+        if (figure.getGameSymbol() == 'B') {
             basicAttackPatterns.getDiagonalFields(figure);
 
-        } else if (QueenExtended.class.equals(figure.getClass())) {
+        } else if (figure.getGameSymbol() == 'Q') {
             basicAttackPatterns.getDiagonalFields(figure);
             basicAttackPatterns.getHorizonVerticalFields(figure);
 
-        } else if (PawnExtended.class.equals(figure.getClass())) {
+        } else if (figure.getGameSymbol() == 'P') {
             basicAttackPatterns.getPawnFields(figure);
 
-        } else if (RookExtended.class.equals(figure.getClass())) {
+        } else if (figure.getGameSymbol() == 'R') {
             basicAttackPatterns.getHorizonVerticalFields(figure);
 
-        } else if (KingExtended.class.equals(figure.getClass())) {
+        } else if (figure.getGameSymbol() == 'K') {
             basicAttackPatterns.getKingFields(figure);
 
-        } else if (KnightExtended.class.equals(figure.getClass())) {
+        } else if (figure.getGameSymbol() == 'N') {
             basicAttackPatterns.getKnightFields(figure);
         }
     }

@@ -3,6 +3,7 @@ package neointernship.web.client.player.bot.ai.extended.possibleactionlist;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
+import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.story.IStoryGame;
 import neointernship.chess.game.story.StoryGame;
@@ -88,7 +89,10 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                     if (secondFinalFigure.getPrice() > firstFinalFigure.getPrice()) {
                         return 1;
                     } else if (secondFinalFigure.getPrice() == firstFinalFigure.getPrice()) {
-                        return Short.compare(o1.getMovingFigure().getPrice(), o2.getMovingFigure().getPrice());
+                        return Short.compare(
+                                o1.getMovingFigure().getPrice(),
+                                o2.getMovingFigure().getPrice()
+                        );
                     }
 
                     return -1;
@@ -97,10 +101,6 @@ public class AIPossibleActionList implements IAIPossibleActionList {
         if (recursionDepth != 0) {
             unitedActionList.addAll(realMoveFields
                     .stream()
-                    .filter(move -> PSTable.getMoveCost(
-                            move.getMovingFigure(),
-                            move.getFieldToMove(),
-                            gamePhase) > 0)
                     .sorted((o1, o2) -> Double.compare(
                             PSTable.getMoveCost(
                                     o2.getMovingFigure(),
