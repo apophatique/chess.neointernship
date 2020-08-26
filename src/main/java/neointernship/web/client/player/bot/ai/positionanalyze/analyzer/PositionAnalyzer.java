@@ -43,7 +43,6 @@ public class PositionAnalyzer {
     private void estimateBoard() {
         positionEstimation = 0;
 
-
         for (final Figure figure : mediator.getFigures()) {
             if (figure.getColor() == activeColor) { 
                 positionEstimation += figure.getPrice() + PSTable.getMoveCost(

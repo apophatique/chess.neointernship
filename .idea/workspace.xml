@@ -3,7 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Input/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Input/Input.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +74,7 @@
       <recent name="$PROJECT_DIR$/src/main/java/neointernship/gameviewer" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Server">
+  <component name="RunManager" selected="Application.Client">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="neointernship.web.client.Client" />
       <module name="chess" />
@@ -147,8 +153,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Server" />
         <item itemvalue="Application.Client" />
+        <item itemvalue="Application.Server" />
         <item itemvalue="JUnit.neointernship.web.client.player.bot.ai.extended in chess" />
         <item itemvalue="JUnit.ViewerTest.viewTest" />
         <item itemvalue="Application.LoggerViewer" />
@@ -275,26 +281,26 @@
     </state>
     <state x="466" y="119" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.719@0.0.1366.719" timestamp="1595494591278" />
     <state x="255" y="136" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1596082686000" />
-    <state width="1366" height="98" key="GridCell.Tab.0.bottom" timestamp="1598338310997">
+    <state width="1366" height="286" key="GridCell.Tab.0.bottom" timestamp="1598442177524">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.bottom/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="98" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598338310997" />
-    <state width="1366" height="98" key="GridCell.Tab.0.center" timestamp="1598338310997">
+    <state width="1366" height="286" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598442177524" />
+    <state width="1366" height="286" key="GridCell.Tab.0.center" timestamp="1598442177522">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.center/0.0.1366.719@0.0.1366.719" timestamp="1594795861411" />
-    <state width="1366" height="98" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598338310997" />
-    <state width="1366" height="98" key="GridCell.Tab.0.left" timestamp="1598338310996">
+    <state width="1366" height="286" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598442177522" />
+    <state width="1366" height="286" key="GridCell.Tab.0.left" timestamp="1598442177521">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.left/0.0.1366.719@0.0.1366.719" timestamp="1594795861410" />
-    <state width="1366" height="98" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598338310996" />
-    <state width="1366" height="98" key="GridCell.Tab.0.right" timestamp="1598338310997">
+    <state width="1366" height="286" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598442177521" />
+    <state width="1366" height="286" key="GridCell.Tab.0.right" timestamp="1598442177523">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.right/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="98" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598338310997" />
+    <state width="1366" height="286" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598442177523" />
     <state width="1366" height="588" key="GridCell.Tab.1.bottom" timestamp="1598323224267">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

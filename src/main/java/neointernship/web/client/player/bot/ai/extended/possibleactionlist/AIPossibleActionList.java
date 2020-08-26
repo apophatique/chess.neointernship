@@ -5,6 +5,7 @@ import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.story.IStoryGame;
+import neointernship.chess.game.story.StoryGame;
 import neointernship.web.client.player.bot.ai.extended.mediator.MediatorExtended;
 import neointernship.web.client.player.bot.ai.positionanalyze.PST.PSTable;
 import neointernship.web.client.player.bot.ai.extended.possibleactionlist.patterns.intermediary.AIIntermediary;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 public class AIPossibleActionList implements IAIPossibleActionList {
     private final IMediator mediator;
+    private final IStoryGame storyGame;
     private final AIPotentialBasicPatterns potentialPatterns;
     private final IRealBasicPatternsAI realPatterns;
 
@@ -34,6 +36,7 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                                 final IMediator mediator,
                                 final IStoryGame storyGame) {
         this.mediator = new MediatorExtended(mediator);
+        this.storyGame = new StoryGame((StoryGame) storyGame);
 
         this.potentialAttackFields = new ArrayList<>();
         this.realAttackFields = new ArrayList<>();
@@ -44,14 +47,14 @@ public class AIPossibleActionList implements IAIPossibleActionList {
         this.potentialPatterns = new AIPotentialBasicPatterns(
                 this.mediator,
                 board,
-                storyGame,
+                this.storyGame,
                 potentialAttackFields,
                 potentialMoveFields
         );
         this.realPatterns = new AIRealBasicPatterns(
                 this.mediator,
                 board,
-                storyGame
+                this.storyGame
         );
         this.intermediary = new AIIntermediary(potentialPatterns);
     }
@@ -91,12 +94,13 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                     return -1;
                 }).collect(Collectors.toCollection(ArrayList::new))
         );
-        if (gamePhase > 0.95) {
-            realMoveFields = new ArrayList<>(realMoveFields.subList(0, 7));
-        }
         if (recursionDepth != 0) {
             unitedActionList.addAll(realMoveFields
                     .stream()
+                    .filter(move -> PSTable.getMoveCost(
+                            move.getMovingFigure(),
+                            move.getFieldToMove(),
+                            gamePhase) > 0)
                     .sorted((o1, o2) -> Double.compare(
                             PSTable.getMoveCost(
                                     o2.getMovingFigure(),

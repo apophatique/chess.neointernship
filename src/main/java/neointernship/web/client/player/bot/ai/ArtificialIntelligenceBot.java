@@ -24,7 +24,7 @@ public class ArtificialIntelligenceBot extends APlayer {
     private final IInput input;
 
     private static final int RECURSION_DEPTH = 4;
-    private final DecisionTreeCreator decisionTreeCreator;
+    private DecisionTreeCreator decisionTreeCreator = null;
 
     public ArtificialIntelligenceBot(final Color color,
                                      final String name,
@@ -32,16 +32,18 @@ public class ArtificialIntelligenceBot extends APlayer {
         super(color, name);
         this.input = input;
 
-        decisionTreeCreator = new DecisionTreeCreator(color);
     }
 
     @Override
     public void init(final IMediator mediator, final IBoard board, final Color color) {
         super.init(mediator, board, color);
 
+        decisionTreeCreator = new DecisionTreeCreator(color);
+
 
         this.boardView = new BoardView(mediator, board);
         if (!input.isVoid()) boardView.display();
+        System.out.println(this.getColor());
     }
 
 
@@ -76,16 +78,26 @@ public class ArtificialIntelligenceBot extends APlayer {
         final List<Character> chars = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h');
 
         IMediator newMediator = new MediatorExtended(mediator);
+        /*
         IStoryGame newStoryGame = new StoryGame(newMediator);
         for (final Figure figure : newMediator.getFigures()) {
             newStoryGame.update(figure);
-        }
+        }*/
 
+        long m = System.currentTimeMillis();
         final IAnswer answer = decisionTreeCreator.getDecision(
                 newMediator,
                 board,
-                newStoryGame,
+                storyGame,
                 RECURSION_DEPTH
+        );
+        System.out.format(
+                "%f: (%d;%d) -> (%d;%d)\n",
+                (double) (System.currentTimeMillis() - m)/1000,
+                answer.getStartX(),
+                answer.getStartY(),
+                answer.getFinalX(),
+                answer.getFinalY()
         );
 
         String turn = "";

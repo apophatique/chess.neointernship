@@ -112,14 +112,13 @@ public class Input implements IInput {
 
     public PlayerType getPlayerType() throws InterruptedException {
         Map<String, PlayerType> typeMap = new HashMap<>();
-        typeMap.put("Human", PlayerType.HUMAN);
-        typeMap.put("AI", PlayerType.AI_BOT);
-        typeMap.put("Random", PlayerType.RANDOM_BOT);
-        askLabel.setText("Кто ты?");
+        typeMap.put("human", PlayerType.HUMAN);
+        typeMap.put("ai", PlayerType.AI_BOT);
+        typeMap.put("random", PlayerType.RANDOM_BOT);
+        askLabel.setText("Who are you? (ai/human/random)");
         String answerType = getAnswer();
 
         while (!typeMap.containsKey(answerType)) {
-            askLabel.setText("человек / бот ?");
             answerType = getAnswer();
         }
 

@@ -66,6 +66,7 @@ public class DecisionTreeCreator {
     }
 
     public int nextLayer(final Node currentNode, final int recursionDepth, int alpha, int beta) {
+
         final Color activeColor = currentNode.getActiveColor();
         final IMediator mediator = currentNode.getMediator();
         final IBoard board = currentNode.getBoard();
@@ -75,13 +76,19 @@ public class DecisionTreeCreator {
                 mediator,
                 storyGame
         );
-        final PositionAnalyzer positionAnalyzer = new PositionAnalyzer(mediator, possibleActionList, activeColor);
-
+        final PositionAnalyzer positionAnalyzer = new PositionAnalyzer(
+                mediator,
+                possibleActionList,
+                activeColor
+        );
         possibleActionList.update(
                 activeColor,
                 positionAnalyzer.getGamePhase(),
                 recursionDepth
         );
+        if (activeColor != rootColor && possibleActionList.getList().isEmpty()) {
+            return Integer.MIN_VALUE;
+        }
         if (recursionDepth == 0) {
             return positionAnalyzer.getEstimation();
         }
@@ -112,20 +119,20 @@ public class DecisionTreeCreator {
                     storyGame,
                     Color.swapColor(activeColor)
             );
-            int nextDepthScore = - nextLayer(
+            int /*nextDepthScore = - nextLayer(
                     childNode,
                     recursionDepth - 1,
                     - (alpha + 1),
                     - alpha
             );
-            if (nextDepthScore > alpha) {
-                nextDepthScore = - nextLayer(
+            if (nextDepthScore > alpha && nextDepthScore < beta) {
+                */nextDepthScore = - nextLayer(
                         childNode,
                         recursionDepth - 1,
                         - beta,
                         - alpha
                 );
-            }
+            //}
 
             if (nextDepthScore > alpha) {
                 alpha = nextDepthScore;

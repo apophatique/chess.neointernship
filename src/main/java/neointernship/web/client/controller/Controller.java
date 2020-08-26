@@ -61,8 +61,8 @@ public class Controller {
             final Color color = input.getColor();
             player = new Player(color, name, input);
         } else if (playerType == PlayerType.AI_BOT) {
-            name = "AI-Bot";
-            player = new ArtificialIntelligenceBot(Color.BLACK, name, input);
+            name = "Gaziz AI-bot";
+            player = new ArtificialIntelligenceBot(Color.BOTH, name, input);
         } else {
             name = "Random bot";
             player = new RandomBot(Color.WHITE, name, input);
