@@ -9,6 +9,14 @@ import java.util.Objects;
  * @param <U> Second object type.
  */
 public final class Pair<T, U> {
+    public T getFirst() {
+        return first;
+    }
+
+    public U getSecond() {
+        return second;
+    }
+
     private final T first;
     private final U second;
 

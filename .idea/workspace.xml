@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/model/util/Pair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/model/util/Pair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Input/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Input/Input.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/potential/AIPotentialBasicPatterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/potential/AIPotentialBasicPatterns.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" afterDir="false" />
     </list>
@@ -230,7 +230,7 @@
       <workItem from="1598460456884" duration="1277000" />
       <workItem from="1598471241037" duration="7940000" />
       <workItem from="1598481426609" duration="959000" />
-      <workItem from="1598511815301" duration="7159000" />
+      <workItem from="1598511815301" duration="15436000" />
     </task>
     <servers />
   </component>
@@ -250,11 +250,11 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="450" y="189" width="522" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.768@0.0.1366.768" timestamp="1596183068255" />
-    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser" timestamp="1597936303932">
+    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser" timestamp="1598523413649">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="491" y="69" width="380" height="580" key="#com.intellij.ide.util.MemberChooser/0.0.1366.719@0.0.1366.719" timestamp="1595445728615" />
-    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser/0.0.1366.768@0.0.1366.768" timestamp="1597936303932" />
+    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser/0.0.1366.768@0.0.1366.768" timestamp="1598523413649" />
     <state x="294" y="307" width="982" height="148" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1598236957258">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -278,31 +278,35 @@
     </state>
     <state x="416" y="110" width="530" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.719@0.0.1366.719" timestamp="1595480181193" />
     <state x="416" y="117" width="530" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.768@0.0.1366.768" timestamp="1597667967041" />
+    <state x="0" y="0" width="773" height="765" key="CommitChangelistDialog2" timestamp="1598523521079">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="0" y="0" width="773" height="765" key="CommitChangelistDialog2/0.0.1366.768@0.0.1366.768" timestamp="1598523521079" />
     <state x="255" y="136" width="430" height="481" key="FileChooserDialogImpl" timestamp="1596082686000">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="466" y="119" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.719@0.0.1366.719" timestamp="1595494591278" />
     <state x="255" y="136" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1596082686000" />
-    <state width="1366" height="133" key="GridCell.Tab.0.bottom" timestamp="1598519611343">
+    <state width="1366" height="309" key="GridCell.Tab.0.bottom" timestamp="1598527603747">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.bottom/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="133" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598519611343" />
-    <state width="1366" height="133" key="GridCell.Tab.0.center" timestamp="1598519611342">
+    <state width="1366" height="309" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598527603747" />
+    <state width="1366" height="309" key="GridCell.Tab.0.center" timestamp="1598527603746">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.center/0.0.1366.719@0.0.1366.719" timestamp="1594795861411" />
-    <state width="1366" height="133" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598519611342" />
-    <state width="1366" height="133" key="GridCell.Tab.0.left" timestamp="1598519611341">
+    <state width="1366" height="309" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598527603746" />
+    <state width="1366" height="309" key="GridCell.Tab.0.left" timestamp="1598527603746">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.left/0.0.1366.719@0.0.1366.719" timestamp="1594795861410" />
-    <state width="1366" height="133" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598519611341" />
-    <state width="1366" height="133" key="GridCell.Tab.0.right" timestamp="1598519611342">
+    <state width="1366" height="309" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598527603746" />
+    <state width="1366" height="309" key="GridCell.Tab.0.right" timestamp="1598527603747">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state width="1366" height="178" key="GridCell.Tab.0.right/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="133" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598519611342" />
+    <state width="1366" height="309" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598527603747" />
     <state width="1366" height="588" key="GridCell.Tab.1.bottom" timestamp="1598323224267">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -339,10 +343,10 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="278" y="121" width="806" height="525" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1598331107830" />
-    <state x="0" y="0" width="776" height="765" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1596662407018">
+    <state x="0" y="0" width="776" height="765" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1598524441763">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="0" y="0" width="776" height="765" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.768@0.0.1366.768" timestamp="1596662407018" />
+    <state x="0" y="0" width="776" height="765" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.768@0.0.1366.768" timestamp="1598524441763" />
     <state x="12" y="68" width="916" height="752" key="dock-window-1" timestamp="1597316322444">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
@@ -360,11 +364,11 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="389" y="134" width="583" height="500" key="refactoring.ChangeSignatureDialog/0.0.1366.768@0.0.1366.768" timestamp="1597667884458" />
-    <state x="344" y="169" width="672" height="677" key="run.anything.popup" timestamp="1598019619522">
+    <state x="344" y="169" width="672" height="677" key="run.anything.popup" timestamp="1598526508324">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="344" y="158" key="run.anything.popup/0.0.1366.719@0.0.1366.719" timestamp="1594882284681" />
-    <state x="344" y="169" width="672" height="677" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1598019619522" />
+    <state x="344" y="169" width="672" height="677" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1598526508324" />
     <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1597668643745">
       <screen x="0" y="0" width="1366" height="768" />
     </state>

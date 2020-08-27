@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class PositionAnalyzer {
+    private final static double GAME_PHASE_SORT_BARRIER = 0.75;
+
     public PositionAnalyzer(final Color rootColor) {
     }
 
@@ -19,7 +21,7 @@ public class PositionAnalyzer {
         final double startPieceEstimation = 8 * 100 + 2 * 320 + 2 * 330 + 2 * 500 + 900 + 1000; // start side value: 8 pawns, 2 knighs, 2 bishops, 2 rooks and queen
         double activePlayerFiguresValue = 0;
 
-        for (final Figure figure : mediator.getFigures(activeColor)) {
+        for (final Figure figure : mediator.getFigures(Color.swapColor(activeColor))) {
             activePlayerFiguresValue += figure.getPrice();
         }
 
@@ -34,7 +36,7 @@ public class PositionAnalyzer {
 
         for (final Figure figure : mediator.getFigures()) {
             int value = figure.getPrice();
-            if (gamePhase > 0.85) {
+            if (gamePhase > GAME_PHASE_SORT_BARRIER) {
                 value += PSTable.getMoveCost(
                         figure,
                         mediator.getField(figure),

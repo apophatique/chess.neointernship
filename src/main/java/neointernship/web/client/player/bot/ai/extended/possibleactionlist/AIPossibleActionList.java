@@ -20,24 +20,23 @@ import java.util.stream.Collectors;
 
 public class AIPossibleActionList implements IAIPossibleActionList {
     private final IMediator mediator;
-    private final IStoryGame storyGame;
-    private final AIPotentialBasicPatterns potentialPatterns;
     private final IRealBasicPatternsAI realPatterns;
+    private final AIIntermediary intermediary;
 
     private final ArrayList<Move> potentialAttackFields;
     private final ArrayList<Move> realAttackFields;
     private final ArrayList<Move> potentialMoveFields;
-    private ArrayList<Move> realMoveFields;
-
+    private final ArrayList<Move> realMoveFields;
     private final ArrayList<Move> unitedActionList;
 
-    private final AIIntermediary intermediary;
+    private final static double GAME_PHASE_SORT_BARRIER = 0.75;
+    private final static short MAX_BOTTOM_DEPTH = 0;
 
     public AIPossibleActionList(final IBoard board,
                                 final IMediator mediator,
                                 final IStoryGame storyGame) {
         this.mediator = new MediatorExtended(mediator);
-        this.storyGame = new StoryGame((StoryGame) storyGame);
+        final IStoryGame newStoryGame = new StoryGame((StoryGame) storyGame);
 
         this.potentialAttackFields = new ArrayList<>();
         this.realAttackFields = new ArrayList<>();
@@ -45,19 +44,18 @@ public class AIPossibleActionList implements IAIPossibleActionList {
         this.realMoveFields = new ArrayList<>();
         this.unitedActionList = new ArrayList<>();
 
-        this.potentialPatterns = new AIPotentialBasicPatterns(
-                this.mediator,
-                board,
-                this.storyGame,
-                potentialAttackFields,
-                potentialMoveFields
-        );
         this.realPatterns = new AIRealBasicPatterns(
                 this.mediator,
                 board,
-                this.storyGame
+                newStoryGame
         );
-        this.intermediary = new AIIntermediary(potentialPatterns);
+        this.intermediary = new AIIntermediary(new AIPotentialBasicPatterns(
+                this.mediator,
+                board,
+                newStoryGame,
+                potentialAttackFields,
+                potentialMoveFields
+        ));
     }
 
     @Override
@@ -98,8 +96,8 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                     return -1;
                 }).collect(Collectors.toCollection(ArrayList::new))
         );
-        if (recursionDepth != 0) {
-            if (gamePhase > 0.75) {
+        if (recursionDepth != MAX_BOTTOM_DEPTH) {
+            if (gamePhase > GAME_PHASE_SORT_BARRIER) {
                 unitedActionList.addAll(realMoveFields
                         .stream()
                         .sorted((o1, o2) -> Double.compare(

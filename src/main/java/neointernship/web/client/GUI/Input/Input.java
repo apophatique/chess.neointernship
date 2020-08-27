@@ -27,13 +27,13 @@ public class Input implements IInput {
      * считывает сообщение
      */
     private final JTextField textfield;
-    private String name = "имя";
+    private String name = "Name";
     private PlayerType type;
 
 
     public Input() {
         frame = new JFrame(name);
-        button = new JButton("Ввод");
+        button = new JButton("Enter");
         button.setBounds(180, 95, 95, 32);
 
         askLabel = new JLabel();
@@ -55,7 +55,7 @@ public class Input implements IInput {
     }
 
     public String getUserName() throws InterruptedException {
-        askLabel.setText("Введите ваше имя: ");
+        askLabel.setText("Your name: ");
         name = getAnswer();
         frame.setTitle(name);
         return name;
@@ -63,32 +63,27 @@ public class Input implements IInput {
 
     public Color getColor() throws InterruptedException {
         Map<String, Color> colorMap = new HashMap<>();
-        colorMap.put("белые", Color.WHITE);
-        colorMap.put("черные", Color.BLACK);
-        colorMap.put("любой", Color.BOTH);
+        colorMap.put("white", Color.WHITE);
+        colorMap.put("black", Color.BLACK);
 
-        askLabel.setText("Выберите цвет");
+        askLabel.setText("white / black or press any to choose random");
 
         String answerColor = getAnswer();
 
-        while (!colorMap.containsKey(answerColor)) {
-            askLabel.setText("белые / черные / любой");
-            answerColor = getAnswer();
-        }
-        ;
+        answerColor = getAnswer();
 
-        Color color = colorMap.get(answerColor);
+        Color color = colorMap.getOrDefault(answerColor, Color.BOTH);
 
-        askLabel.setText("Ищем оппонента...");
+        askLabel.setText("Looking for opponent...");
         frame.setTitle(name + " " + color.getMessage());
         return color;
     }
 
     public String getHandShakeAnswer() throws InterruptedException {
         if (type != PlayerType.HUMAN) {
-            askLabel.setText("я играю не мешайте)");
+            askLabel.setText("Game is on");
         } else {
-            askLabel.setText("Оппонент найден. Вы готовы?");
+            askLabel.setText("Press if ready");
             return getAnswer();
         }
         return "";
@@ -99,13 +94,13 @@ public class Input implements IInput {
     }
 
     public String getMoveAnswer() throws InterruptedException {
-        askLabel.setText("Ваш ход");
+        askLabel.setText("Your turn");
 
         return getAnswer();
     }
 
     public String getTransformAnswer() throws InterruptedException {
-        askLabel.setText("В какую фигуру обратить пешку?");
+        askLabel.setText("Choose figure for transforming");
 
         return getAnswer();
     }
@@ -125,7 +120,7 @@ public class Input implements IInput {
         type = typeMap.get(answerType);
 
         if (type == PlayerType.AI_BOT || type == PlayerType.RANDOM_BOT) {
-            askLabel.setText("Я жду противника...");
+            askLabel.setText("Looking for opponent");
         }
 
         return type;
@@ -167,17 +162,17 @@ public class Input implements IInput {
 
     public void endGame(final EnumGameState enumGameState, final Color color) throws InterruptedException {
         if (enumGameState == EnumGameState.MATE) {
-            askLabel.setText("Мат. Победа " + Color.swapColor(color).getMessage());
+            askLabel.setText("Mate. Winner is " + Color.swapColor(color).getMessage());
         } else {
             if (enumGameState == EnumGameState.RESIGNATION) {
-                askLabel.setText("Игрок сдался. Победа " + Color.swapColor(color).getMessage());
+                askLabel.setText("Resignation. Winnter is " + Color.swapColor(color).getMessage());
             } else {
                 askLabel.setText(enumGameState.getMessage());
             }
         }
         button.revalidate();
         button.setVisible(true);
-        button.setText("Выход");
+        button.setText("Exit");
 
         List<Integer> holder = new LinkedList<Integer>();
 
