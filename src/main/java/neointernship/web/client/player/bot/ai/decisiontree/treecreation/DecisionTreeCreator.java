@@ -23,7 +23,7 @@ import neointernship.web.client.player.bot.ai.extended.possibleactionlist.patter
  */
 public class DecisionTreeCreator {
     private final Color rootColor;
-
+    private final PositionAnalyzer positionAnalyzer;
     /**
      * The class constructor with root color setting.
      *
@@ -31,6 +31,7 @@ public class DecisionTreeCreator {
      */
     public DecisionTreeCreator(final Color color) {
         this.rootColor = color;
+        this.positionAnalyzer = new PositionAnalyzer(rootColor);
     }
 
     /**
@@ -76,28 +77,27 @@ public class DecisionTreeCreator {
                 mediator,
                 storyGame
         );
-        final PositionAnalyzer positionAnalyzer = new PositionAnalyzer(
-                mediator,
-                possibleActionList,
-                activeColor
-        );
         possibleActionList.update(
                 activeColor,
-                positionAnalyzer.getGamePhase(),
+                positionAnalyzer.getMatchPhase(mediator, activeColor),
                 recursionDepth
         );
+
         if (activeColor != rootColor && possibleActionList.getList().isEmpty()) {
             return Integer.MIN_VALUE;
         }
         if (recursionDepth == 0) {
-            return positionAnalyzer.getEstimation();
+            return positionAnalyzer.estimateBoard(
+                    mediator,
+                    possibleActionList,
+                    activeColor
+            );
         }
 
         for (final Move move : possibleActionList.getList()) {
             final Figure figure = move.getMovingFigure();
             final IField field = move.getFieldToMove();
             final IMediator currentMediator = new MediatorExtended(mediator);
-
             final IMoveCommand command = new AllowMoveCommand(
                     currentMediator,
                     board,
@@ -110,8 +110,6 @@ public class DecisionTreeCreator {
                     field.getYCoord(),
                     ' '
             );
-            command.execute(answer);
-
             final Node childNode = new Node(
                     answer,
                     currentMediator,
@@ -119,21 +117,14 @@ public class DecisionTreeCreator {
                     storyGame,
                     Color.swapColor(activeColor)
             );
-            int /*nextDepthScore = - nextLayer(
-                    childNode,
-                    recursionDepth - 1,
-                    - (alpha + 1),
-                    - alpha
-            );
-            if (nextDepthScore > alpha && nextDepthScore < beta) {
-                */nextDepthScore = - nextLayer(
+            command.execute(answer);
+
+            final int nextDepthScore = - nextLayer(
                         childNode,
                         recursionDepth - 1,
                         - beta,
                         - alpha
-                );
-            //}
-
+            );
             if (nextDepthScore > alpha) {
                 alpha = nextDepthScore;
                 currentNode.setChild(childNode);

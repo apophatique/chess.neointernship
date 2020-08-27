@@ -11,45 +11,34 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class PositionAnalyzer {
-    private final IMediator mediator;
-    private final IAIPossibleActionList possibleActionList;
-    private final Color activeColor;
-
-    private int positionEstimation;
-    private double gamePhase;
-
-    public PositionAnalyzer(final IMediator mediator,
-                            final IAIPossibleActionList possibleActionList,
-                            final Color activeColor) {
-        this.mediator = mediator;
-        this.possibleActionList = possibleActionList;
-        this.activeColor = activeColor;
-
-        estimateGamePhase();
-        estimateBoard();
+    public PositionAnalyzer(final Color rootColor) {
     }
 
-    private void estimateGamePhase() {
-        final double startPieceEstimation = 8 * 100 + 2 * 320 + 2 * 330 + 2 * 500 + 900; // start side value: 8 pawns, 2 knighs, 2 bishops, 2 rooks and queen
+    public double getMatchPhase(final IMediator mediator,
+                                 final Color activeColor) {
+        final double startPieceEstimation = 8 * 100 + 2 * 320 + 2 * 330 + 2 * 500 + 900 + 1000; // start side value: 8 pawns, 2 knighs, 2 bishops, 2 rooks and queen
         double activePlayerFiguresValue = 0;
 
         for (final Figure figure : mediator.getFigures(activeColor)) {
             activePlayerFiguresValue += figure.getPrice();
         }
 
-        gamePhase = activePlayerFiguresValue/startPieceEstimation;
+        return activePlayerFiguresValue/startPieceEstimation;
     }
 
-    private void estimateBoard() {
-        positionEstimation = 0;
+    public int estimateBoard(final IMediator mediator,
+                               final IAIPossibleActionList possibleActionList,
+                               final Color activeColor) {
+        int positionEstimation = 0;
+        final double gamePhase = getMatchPhase(mediator, activeColor);
 
         for (final Figure figure : mediator.getFigures()) {
             int value = figure.getPrice();
-            if (gamePhase > 0.9) {
+            if (gamePhase > 0.85) {
                 value += PSTable.getMoveCost(
                         figure,
                         mediator.getField(figure),
-                        getGamePhase()
+                        gamePhase
                 );
             }
             if (figure.getColor() == activeColor) {
@@ -58,13 +47,6 @@ public class PositionAnalyzer {
                 positionEstimation -= value;
             }
         }
-    }
-
-    public int getEstimation() {
         return positionEstimation;
-    }
-
-    public double getGamePhase() {
-        return gamePhase;
     }
 }

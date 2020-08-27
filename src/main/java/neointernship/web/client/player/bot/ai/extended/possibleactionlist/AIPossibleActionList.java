@@ -99,21 +99,25 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                 }).collect(Collectors.toCollection(ArrayList::new))
         );
         if (recursionDepth != 0) {
-            unitedActionList.addAll(realMoveFields
-                    .stream()
-                    .sorted((o1, o2) -> Double.compare(
-                            PSTable.getMoveCost(
-                                    o2.getMovingFigure(),
-                                    o2.getFieldToMove(),
-                                    gamePhase
-                            ),
-                            PSTable.getMoveCost(
-                                    o1.getMovingFigure(),
-                                    o1.getFieldToMove(),
-                                    gamePhase
-                            )))
-                    .collect(Collectors.toCollection(ArrayList::new))
-            );
+            if (gamePhase > 0.75) {
+                unitedActionList.addAll(realMoveFields
+                        .stream()
+                        .sorted((o1, o2) -> Double.compare(
+                                PSTable.getMoveCost(
+                                        o2.getMovingFigure(),
+                                        o2.getFieldToMove(),
+                                        gamePhase
+                                ),
+                                PSTable.getMoveCost(
+                                        o1.getMovingFigure(),
+                                        o1.getFieldToMove(),
+                                        gamePhase
+                                )))
+                        .collect(Collectors.toCollection(ArrayList::new))
+                );
+            } else {
+                unitedActionList.addAll(realMoveFields);
+            }
         }
     }
 
