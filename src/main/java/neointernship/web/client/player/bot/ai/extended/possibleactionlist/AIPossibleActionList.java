@@ -3,7 +3,6 @@ package neointernship.web.client.player.bot.ai.extended.possibleactionlist;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
-import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.story.IStoryGame;
 import neointernship.chess.game.story.StoryGame;
@@ -29,7 +28,6 @@ public class AIPossibleActionList implements IAIPossibleActionList {
     private final ArrayList<Move> realMoveFields;
     private final ArrayList<Move> unitedActionList;
 
-    private final static double GAME_PHASE_SORT_BARRIER = 0.75;
     private final static short MAX_BOTTOM_DEPTH = 0;
 
     public AIPossibleActionList(final IBoard board,
@@ -97,7 +95,7 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                 }).collect(Collectors.toCollection(ArrayList::new))
         );
         if (recursionDepth != MAX_BOTTOM_DEPTH) {
-            if (gamePhase > GAME_PHASE_SORT_BARRIER) {
+            if (gamePhase >=0.6) {
                 unitedActionList.addAll(realMoveFields
                         .stream()
                         .sorted((o1, o2) -> Double.compare(
@@ -114,7 +112,13 @@ public class AIPossibleActionList implements IAIPossibleActionList {
                         .collect(Collectors.toCollection(ArrayList::new))
                 );
             } else {
-                unitedActionList.addAll(realMoveFields);
+                unitedActionList.addAll(realMoveFields
+                        .stream()
+                        .sorted((o1, o2) -> Short.compare(
+                                o2.getMovingFigure().getPrice(),
+                                o1.getMovingFigure().getPrice()
+                                ))
+                        .collect(Collectors.toCollection(ArrayList::new)));
             }
         }
     }

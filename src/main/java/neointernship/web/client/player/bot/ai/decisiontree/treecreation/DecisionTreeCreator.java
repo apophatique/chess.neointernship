@@ -7,7 +7,6 @@ import neointernship.chess.game.model.answer.IAnswer;
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
-import neointernship.chess.game.model.mediator.Mediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
@@ -17,6 +16,7 @@ import neointernship.web.client.player.bot.ai.positionanalyze.analyzer.PositionA
 import neointernship.web.client.player.bot.ai.extended.possibleactionlist.AIPossibleActionList;
 import neointernship.web.client.player.bot.ai.extended.possibleactionlist.IAIPossibleActionList;
 import neointernship.web.client.player.bot.ai.extended.possibleactionlist.patterns.potential.move.Move;
+import neointernship.web.client.player.bot.ai.positionanalyze.kingstate.AIKingIsAttackedViewer;
 
 /**
  *
@@ -67,11 +67,18 @@ public class DecisionTreeCreator {
                 .getAnswerToCome();
     }
 
-    public int nextLayer(final Node currentNode, final int recursionDepth, int alpha, int beta) {
+    public double nextLayer(final Node currentNode, final int recursionDepth, double alpha, double beta) {
         final Color activeColor = currentNode.getActiveColor();
         final IMediator mediator = currentNode.getMediator();
         final IBoard board = currentNode.getBoard();
         final IStoryGame storyGame = currentNode.getStoryGame();
+
+        if (recursionDepth == 0) {
+            return positionAnalyzer.estimateBoard(
+                    mediator,
+                    activeColor
+            );
+        }
         final IAIPossibleActionList possibleActionList = new AIPossibleActionList(
                 board,
                 mediator,
@@ -83,16 +90,12 @@ public class DecisionTreeCreator {
                 recursionDepth
         );
 
-        if (activeColor != rootColor && possibleActionList.getList().isEmpty()) {
+        if (possibleActionList
+                .getList()
+                .isEmpty()) {
             return Integer.MIN_VALUE;
         }
-        if (recursionDepth == 0) {
-            return positionAnalyzer.estimateBoard(
-                    mediator,
-                    possibleActionList,
-                    activeColor
-            );
-        }
+
 
         for (final Move move : possibleActionList.getList()) {
             final Figure figure = move.getMovingFigure();
@@ -119,12 +122,14 @@ public class DecisionTreeCreator {
             );
             command.execute(answer);
 
-            final int nextDepthScore = - nextLayer(
-                        childNode,
-                        recursionDepth - 1,
-                        - beta,
-                        - alpha
+
+            double nextDepthScore = - nextLayer(
+                    childNode,
+                    recursionDepth - 1,
+                    - beta,
+                    - alpha
             );
+
             if (nextDepthScore > alpha) {
                 alpha = nextDepthScore;
                 currentNode.setChild(childNode);

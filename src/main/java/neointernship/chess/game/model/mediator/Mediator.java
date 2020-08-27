@@ -11,6 +11,7 @@ import neointernship.chess.game.model.playmap.field.Field;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.web.client.communication.serializer.field.FieldDeserializer;
 import neointernship.web.client.communication.serializer.field.FieldSerializer;
+import neointernship.web.client.player.bot.ai.extended.figure.figures.KingExtended;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -82,7 +83,9 @@ public class Mediator implements IMediator, Cloneable {
     @Override
     public Figure getKing(final Color color) {
         for (final Figure figure : mediator.values()) {
-            if (figure.getClass().equals(King.class) && figure.getColor() == color) {
+            if ((figure.getClass().equals(King.class) ||
+                    figure.getClass().equals(KingExtended.class))
+                    && figure.getColor() == color) {
                 return figure;
             }
         }

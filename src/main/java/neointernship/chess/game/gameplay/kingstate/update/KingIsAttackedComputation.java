@@ -19,10 +19,18 @@ public final class KingIsAttackedComputation {
     }
 
     public boolean kingIsAttacked(Color color) {
-        Figure king = mediator.getKing(color);
-        IField kingField = mediator.getField(king);
+        final Figure king = mediator.getKing(color);
+        final IField kingField = mediator.getField(king);
+        /*
+        System.out.format("%s %s %s(%d;%d)\n",
+                king.getColor(),
+                king.getName(),
+                king.getClass().toString(),
+                kingField.getXCoord(),
+                kingField.getYCoord()
+        );*/
 
-        Color opponentColor = Color.swapColor(color);
+        final Color opponentColor = Color.swapColor(color);
         for (Figure figure : mediator.getFigures(opponentColor)) {
             Collection<IField> collection = possibleActionList.getPotentialList(figure);
             if (collection.contains(kingField)) {

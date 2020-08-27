@@ -16,6 +16,7 @@ import neointernship.chess.game.story.IStoryGame;
 import neointernship.chess.game.story.StoryGame;
 import neointernship.web.client.player.bot.ai.extended.mediator.MediatorExtended;
 import neointernship.web.client.player.bot.ai.extended.possibleactionlist.patterns.potential.move.Move;
+import neointernship.web.client.player.bot.ai.positionanalyze.kingstate.AIKingIsAttackedViewer;
 
 import java.util.ArrayList;
 import java.util.Collection;

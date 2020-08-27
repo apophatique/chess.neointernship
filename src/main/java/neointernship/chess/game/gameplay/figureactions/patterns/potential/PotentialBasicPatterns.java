@@ -9,6 +9,8 @@ import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.Field;
 import neointernship.chess.game.model.playmap.field.IField;
 import neointernship.chess.game.story.IStoryGame;
+import neointernship.web.client.player.bot.ai.extended.figure.figures.PawnExtended;
+import neointernship.web.client.player.bot.ai.extended.figure.figures.RookExtended;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -161,7 +163,7 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
 
         if (realFieldLastFigure != null && lastFieldLastFigure != null) { // может быть null если было превращение
             if (currentField.getXCoord() == startXCoord && lastFigure.getColor() == Color.swapColor(color)) {
-                if (lastFigure.getClass() == Pawn.class) {
+                if (lastFigure.getClass() == Pawn.class || lastFigure.getClass() == PawnExtended.class) {
                     if (Math.abs(realFieldLastFigure.getXCoord() - lastFieldLastFigure.getXCoord()) == 2) {
                         if (Math.abs(lastFieldLastFigure.getYCoord() - currentField.getYCoord()) == 1) {
                             possibleAttackFields.add(new Field(startXCoord + move, lastFieldLastFigure.getYCoord()));
@@ -214,7 +216,7 @@ public class PotentialBasicPatterns implements IPotentialBasicPatterns {
 
             for (final Figure rook : mediator.getFigures(king.getColor())) {
                 // если есть ладья которой не ходил
-                if (rook.getClass() == Rook.class && !storyGame.isMove(rook) && mediator.getField(rook).getXCoord() == fieldKing.getXCoord()) {
+                if ((rook.getClass() == Rook.class || rook.getClass() == RookExtended.class) && !storyGame.isMove(rook) && mediator.getField(rook).getXCoord() == fieldKing.getXCoord()) {
                     // если между ними нет других фигур
                     boolean haveFigure = false;
                     final IField fieldRook = mediator.getField(rook);
