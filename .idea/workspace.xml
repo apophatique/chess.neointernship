@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0b530e7d-b952-4cf7-a4aa-6dcc9199d8db" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_7_0_M1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_7_0_M1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_7_0_M1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_7_0_M1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_7_0_M1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_7_0_M1.xml" beforeDir="false" />
+    <list default="true" id="92634f73-026b-4e75-bc89-0ee4dd0ddcd3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/SimpleBot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chess.iml" beforeDir="false" afterPath="$PROJECT_DIR$/chess.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/package-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/package-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,27 +18,32 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1gi32k7LtZb9HX9FaTjTnYVb9Dg" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
   <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.Client">
-    <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Application.LoggerViewer">
+    <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="neointernship.web.client.Client" />
       <module name="chess" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="neointernship.web.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LoggerViewer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="neointernship.gameviewer.LoggerViewer" />
+      <module name="chess" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="neointernship.gameviewer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -68,10 +64,45 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ViewerTest.displayBoardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="chess" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="neointernship.chess.gui.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="neointernship.chess.gui" />
+      <option name="MAIN_CLASS_NAME" value="neointernship.chess.gui.ViewerTest" />
+      <option name="METHOD_NAME" value="displayBoardTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ViewerTest.viewTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="chess" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="neointernship.chess.gui.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="neointernship.chess.gui" />
+      <option name="MAIN_CLASS_NAME" value="neointernship.chess.gui.ViewerTest" />
+      <option name="METHOD_NAME" value="viewTest" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Client" />
+        <item itemvalue="JUnit.ViewerTest.viewTest" />
+        <item itemvalue="JUnit.ViewerTest.displayBoardTest" />
+        <item itemvalue="Application.LoggerViewer" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.Client" />
       </list>
     </recent_temporary>
   </component>
@@ -79,47 +110,16 @@
     <configuration />
   </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="0b530e7d-b952-4cf7-a4aa-6dcc9199d8db" name="Default Changelist" comment="" />
-      <created>1598583397893</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1598583397893</updated>
-      <workItem from="1598583479704" duration="5018000" />
-      <workItem from="1598589808044" duration="398000" />
-      <workItem from="1598593798857" duration="974000" />
-      <workItem from="1598699558798" duration="590000" />
-      <workItem from="1598774254199" duration="264000" />
-    </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
-  </component>
   <component name="WindowStateProjectService">
-    <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598586959398">
+    <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598774871422">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1598586959398" />
-    <state width="1366" height="194" key="GridCell.Tab.0.bottom" timestamp="1598589486294">
+    <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1598774871422" />
+    <state x="466" y="143" width="430" height="481" key="FileChooserDialogImpl" timestamp="1598775063498">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state width="1366" height="194" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598589486294" />
-    <state width="1366" height="194" key="GridCell.Tab.0.center" timestamp="1598589486294">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="194" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598589486294" />
-    <state width="1366" height="194" key="GridCell.Tab.0.left" timestamp="1598589486293">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="194" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598589486293" />
-    <state width="1366" height="194" key="GridCell.Tab.0.right" timestamp="1598589486294">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="194" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598589486294" />
-    <state x="454" y="91" width="453" height="586" key="git4idea.branch.GitSmartOperationDialog" timestamp="1598544845392">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="454" y="91" width="453" height="586" key="git4idea.branch.GitSmartOperationDialog/0.0.1366.768@0.0.1366.768" timestamp="1598544845392" />
+    <state x="466" y="143" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1598775063498" />
   </component>
 </project>
