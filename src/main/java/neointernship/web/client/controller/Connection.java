@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class Connection {
-    private static final String IP = "135.181.85.225";//"localhost";
+    private static final String IP = "localhost";//"localhost";
     private static final int PORT = 8081;
 
     private String ip;
