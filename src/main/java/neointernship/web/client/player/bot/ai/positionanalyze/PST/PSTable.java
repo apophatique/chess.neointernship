@@ -152,7 +152,6 @@ public class PSTable {
 
         final Pair<int[][], int[][]> costPair = costMap.get(figure.getGameSymbol());
 
-        return phase * costPair.getFirst()[xCoord][yCoord]
-                + (1 - phase) * costPair.getSecond()[xCoord][yCoord];
+        return phase * costPair.getFirst()[xCoord][yCoord] + (1 - phase) * costPair.getSecond()[xCoord][yCoord];
     }
 }

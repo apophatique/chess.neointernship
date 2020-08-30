@@ -29,11 +29,13 @@ public class PositionAnalyzer {
         final double gamePhase = getMatchPhase(mediator, activeColor);
 
         for (final Figure figure : mediator.getFigures()) {
+
             double value = figure.getPrice() + PSTable.getMoveCost(
                         figure,
                         mediator.getField(figure),
                         gamePhase
             );
+
             if (figure.getColor() == activeColor) {
                 positionEstimation += value;
             } else {

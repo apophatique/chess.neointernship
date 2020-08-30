@@ -11,7 +11,6 @@
  * The bot implementation based on the following algorithms and heuristics:
  *      - MiniMax decision rule
  *      - Alpha–beta pruning
- *      - Principal variation search (NegaScout)
  *      - LVA/MVV
  *      - PST
  *      - Mathematical calculation of optimal figures values.

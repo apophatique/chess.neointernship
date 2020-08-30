@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="">
+    <list default="true" id="0b530e7d-b952-4cf7-a4aa-6dcc9199d8db" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_7_0_M1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_7_0_M1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_7_0_M1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_7_0_M1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_7_0_M1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_7_0_M1.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/Intermediary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/Intermediary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/figureactions/patterns/potential/PotentialBasicPatterns.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/kingstate/update/KingIsAttackedComputation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/gameplay/kingstate/update/KingIsAttackedComputation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/model/mediator/Mediator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/chess/game/model/mediator/Mediator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/board/labels/ChessLabel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/board/labels/ChessLabel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Connection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/decisiontree/treecreation/DecisionTreeCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/figure/figures/KingExtended.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/figure/figures/KingExtended.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/AIPossibleActionList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/IAIPossibleActionList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/real/AIRealBasicPatterns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/possibleactionlist/patterns/real/AIRealBasicPatterns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chess.iml" beforeDir="false" afterPath="$PROJECT_DIR$/chess.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/package-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/package-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/PST/PSTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/positionanalyze/analyzer/PositionAnalyzer.java" afterDir="false" />
     </list>
@@ -22,26 +19,15 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="package.json" />
-        <option value="Enum" />
-        <option value="Class" />
-        <option value="Interface" />
-        <option value="package-info" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="feature_bot_base_simulation" />
+        <entry key="$PROJECT_DIR$" value="feature_bot_final_v1" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1eiCDTTdhXdE2RLPGUn9PdqpQlN" />
+  <component name="ProjectId" id="1gi32k7LtZb9HX9FaTjTnYVb9Dg" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
@@ -50,58 +36,18 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="flex.debug.filter.swf.load.unload" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/figure/factory" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2860465" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java/neointernship/gameviewer" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="neointernship.web.client.player.bot.ai.positionanalyze.kingstate" />
-      <recent name="neointernship.web.client.player.bot.ai.possibleactionlist" />
-      <recent name="neointernship.web.client.player.bot.ai.possibleactionlist.patterns" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/figure/factory" />
-      <recent name="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/extended/figures" />
-      <recent name="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist/patterns" />
-      <recent name="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/possibleactionlist" />
-      <recent name="$PROJECT_DIR$/src/main/java/neointernship/gameviewer/mediator_logs" />
-    </key>
   </component>
   <component name="RunManager" selected="Application.Client">
-    <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="neointernship.web.client.Client" />
       <module name="chess" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="neointernship.web.client.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="LoggerViewer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="neointernship.gameviewer.LoggerViewer" />
-      <module name="chess" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="neointernship.gameviewer.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -122,50 +68,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ViewerTest.viewTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="chess" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="neointernship.chess.gui.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="neointernship.chess.gui" />
-      <option name="MAIN_CLASS_NAME" value="neointernship.chess.gui.ViewerTest" />
-      <option name="METHOD_NAME" value="viewTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="neointernship.web.client.player.bot.ai.extended in chess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="chess" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="neointernship.web.client.player.bot.ai.extended.mediator.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="neointernship.web.client.player.bot.ai.extended" />
-      <option name="TEST_OBJECT" value="package" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Application.Client" />
-      <item itemvalue="Application.Server" />
-      <item itemvalue="Application.LoggerViewer" />
-      <item itemvalue="JUnit.ViewerTest.viewTest" />
-      <item itemvalue="JUnit.neointernship.web.client.player.bot.ai.extended in chess" />
-    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Client" />
         <item itemvalue="Application.Server" />
-        <item itemvalue="JUnit.neointernship.web.client.player.bot.ai.extended in chess" />
-        <item itemvalue="JUnit.ViewerTest.viewTest" />
-        <item itemvalue="Application.LoggerViewer" />
       </list>
     </recent_temporary>
   </component>
@@ -174,75 +80,16 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="9d1be5c6-6921-4058-97f4-36da9d199dc0" name="Default Changelist" comment="" />
-      <created>1594794906739</created>
+      <changelist id="0b530e7d-b952-4cf7-a4aa-6dcc9199d8db" name="Default Changelist" comment="" />
+      <created>1598583397893</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1594794906739</updated>
-      <workItem from="1594794911563" duration="4217000" />
-      <workItem from="1594804907162" duration="7902000" />
-      <workItem from="1594872418734" duration="2699000" />
-      <workItem from="1594876209469" duration="29146000" />
-      <workItem from="1595249892581" duration="16476000" />
-      <workItem from="1595321638802" duration="4225000" />
-      <workItem from="1595395305966" duration="4195000" />
-      <workItem from="1595419096233" duration="2055000" />
-      <workItem from="1595427375340" duration="3408000" />
-      <workItem from="1595439752422" duration="12426000" />
-      <workItem from="1595494104918" duration="4220000" />
-      <workItem from="1595500685711" duration="26626000" />
-      <workItem from="1595766478677" duration="3977000" />
-      <workItem from="1595824190494" duration="21037000" />
-      <workItem from="1595876411922" duration="13379000" />
-      <workItem from="1595916133886" duration="3719000" />
-      <workItem from="1595924262052" duration="5028000" />
-      <workItem from="1595965552769" duration="216000" />
-      <workItem from="1596002616501" duration="15266000" />
-      <workItem from="1596061109861" duration="626000" />
-      <workItem from="1596082641053" duration="35205000" />
-      <workItem from="1596178135352" duration="13167000" />
-      <workItem from="1596527489623" duration="6429000" />
-      <workItem from="1596570930327" duration="29009000" />
-      <workItem from="1596633474911" duration="35810000" />
-      <workItem from="1596740689308" duration="442000" />
-      <workItem from="1596742147800" duration="1345000" />
-      <workItem from="1596745136319" duration="2392000" />
-      <workItem from="1596753471768" duration="17152000" />
-      <workItem from="1596958352569" duration="596000" />
-      <workItem from="1597034813825" duration="16170000" />
-      <workItem from="1597072942616" duration="25906000" />
-      <workItem from="1597173376877" duration="2827000" />
-      <workItem from="1597206187744" duration="37742000" />
-      <workItem from="1597353072662" duration="31689000" />
-      <workItem from="1597518964756" duration="16772000" />
-      <workItem from="1597599124100" duration="19674000" />
-      <workItem from="1597655291325" duration="11559000" />
-      <workItem from="1597671595688" duration="15383000" />
-      <workItem from="1597724732873" duration="1423000" />
-      <workItem from="1597764513076" duration="2403000" />
-      <workItem from="1597769269110" duration="5000000" />
-      <workItem from="1597775458463" duration="8577000" />
-      <workItem from="1597785461941" duration="3760000" />
-      <workItem from="1597790200870" duration="208000" />
-      <workItem from="1597791683861" duration="2581000" />
-      <workItem from="1597798204432" duration="7443000" />
-      <workItem from="1597836764465" duration="2878000" />
-      <workItem from="1597873189913" duration="1174000" />
-      <workItem from="1597880848958" duration="21557000" />
-      <workItem from="1597957001184" duration="2713000" />
-      <workItem from="1597995956310" duration="15037000" />
-      <workItem from="1598076730621" duration="9165000" />
-      <workItem from="1598172534338" duration="12190000" />
-      <workItem from="1598235827648" duration="8676000" />
-      <workItem from="1598253089498" duration="22182000" />
-      <workItem from="1598322925545" duration="5477000" />
-      <workItem from="1598339243132" duration="671000" />
-      <workItem from="1598460456884" duration="1277000" />
-      <workItem from="1598471241037" duration="7940000" />
-      <workItem from="1598481426609" duration="959000" />
-      <workItem from="1598511815301" duration="21667000" />
-      <workItem from="1598535419110" duration="4563000" />
-      <workItem from="1598541049722" duration="3427000" />
+      <updated>1598583397893</updated>
+      <workItem from="1598583479704" duration="5018000" />
+      <workItem from="1598589808044" duration="398000" />
+      <workItem from="1598593798857" duration="974000" />
+      <workItem from="1598699558798" duration="590000" />
+      <workItem from="1598774254199" duration="264000" />
     </task>
     <servers />
   </component>
@@ -250,140 +97,29 @@
     <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="571" y="256" width="220" height="256" key="#Notifications" timestamp="1595845629445">
+    <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598586959398">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="571" y="256" width="220" height="256" key="#Notifications/0.0.1366.768@0.0.1366.768" timestamp="1595845629445" />
-    <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1596105081433">
+    <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1598586959398" />
+    <state width="1366" height="194" key="GridCell.Tab.0.bottom" timestamp="1598589486294">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.768@0.0.1366.768" timestamp="1596105081433" />
-    <state x="450" y="189" width="522" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596183068255">
+    <state width="1366" height="194" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598589486294" />
+    <state width="1366" height="194" key="GridCell.Tab.0.center" timestamp="1598589486294">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="450" y="189" width="522" height="390" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.768@0.0.1366.768" timestamp="1596183068255" />
-    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser" timestamp="1598523413649">
+    <state width="1366" height="194" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598589486294" />
+    <state width="1366" height="194" key="GridCell.Tab.0.left" timestamp="1598589486293">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="491" y="69" width="380" height="580" key="#com.intellij.ide.util.MemberChooser/0.0.1366.719@0.0.1366.719" timestamp="1595445728615" />
-    <state x="846" y="68" width="472" height="580" key="#com.intellij.ide.util.MemberChooser/0.0.1366.768@0.0.1366.768" timestamp="1598523413649" />
-    <state x="294" y="307" width="982" height="148" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1598236957258">
+    <state width="1366" height="194" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598589486293" />
+    <state width="1366" height="194" key="GridCell.Tab.0.right" timestamp="1598589486294">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="500" y="287" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1366.719@0.0.1366.719" timestamp="1594805262968" />
-    <state x="294" y="307" width="982" height="148" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.0.1366.768@0.0.1366.768" timestamp="1598236957258" />
-    <state x="466" y="255" width="433" height="265" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1596548088325">
+    <state width="1366" height="194" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598589486294" />
+    <state x="454" y="91" width="453" height="586" key="git4idea.branch.GitSmartOperationDialog" timestamp="1598544845392">
       <screen x="0" y="0" width="1366" height="768" />
     </state>
-    <state x="466" y="255" width="433" height="265" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1366.768@0.0.1366.768" timestamp="1596548088325" />
-    <state x="407" y="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages" timestamp="1598264779648">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="407" y="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/0.0.1366.768@0.0.1366.768" timestamp="1598264779648" />
-    <state x="359" y="0" width="876" height="765" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1598088772942">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="359" y="0" width="644" height="716" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.719@0.0.1366.719" timestamp="1595481984771" />
-    <state x="359" y="0" width="876" height="765" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.768@0.0.1366.768" timestamp="1598088772942" />
-    <state x="416" y="117" width="530" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1597667967041">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="416" y="110" width="530" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.719@0.0.1366.719" timestamp="1595480181193" />
-    <state x="416" y="117" width="530" height="498" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.768@0.0.1366.768" timestamp="1597667967041" />
-    <state x="0" y="0" width="773" height="765" key="CommitChangelistDialog2" timestamp="1598523521079">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="0" y="0" width="773" height="765" key="CommitChangelistDialog2/0.0.1366.768@0.0.1366.768" timestamp="1598523521079" />
-    <state x="255" y="136" width="430" height="481" key="FileChooserDialogImpl" timestamp="1596082686000">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="466" y="119" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.719@0.0.1366.719" timestamp="1595494591278" />
-    <state x="255" y="136" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1596082686000" />
-    <state width="1366" height="535" key="GridCell.Tab.0.bottom" timestamp="1598544462908">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="178" key="GridCell.Tab.0.bottom/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="535" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598544462908" />
-    <state width="1366" height="535" key="GridCell.Tab.0.center" timestamp="1598544462907">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="178" key="GridCell.Tab.0.center/0.0.1366.719@0.0.1366.719" timestamp="1594795861411" />
-    <state width="1366" height="535" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1598544462907" />
-    <state width="1366" height="535" key="GridCell.Tab.0.left" timestamp="1598544462906">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="178" key="GridCell.Tab.0.left/0.0.1366.719@0.0.1366.719" timestamp="1594795861410" />
-    <state width="1366" height="535" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1598544462906" />
-    <state width="1366" height="535" key="GridCell.Tab.0.right" timestamp="1598544462907">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="178" key="GridCell.Tab.0.right/0.0.1366.719@0.0.1366.719" timestamp="1594795861412" />
-    <state width="1366" height="535" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1598544462907" />
-    <state width="1366" height="588" key="GridCell.Tab.1.bottom" timestamp="1598323224267">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="588" key="GridCell.Tab.1.bottom/0.0.1366.768@0.0.1366.768" timestamp="1598323224267" />
-    <state width="1366" height="588" key="GridCell.Tab.1.center" timestamp="1598323224266">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="588" key="GridCell.Tab.1.center/0.0.1366.768@0.0.1366.768" timestamp="1598323224266" />
-    <state width="1366" height="588" key="GridCell.Tab.1.left" timestamp="1598323224266">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="588" key="GridCell.Tab.1.left/0.0.1366.768@0.0.1366.768" timestamp="1598323224266" />
-    <state width="1366" height="588" key="GridCell.Tab.1.right" timestamp="1598323224267">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state width="1366" height="588" key="GridCell.Tab.1.right/0.0.1366.768@0.0.1366.768" timestamp="1598323224267" />
-    <state x="130" y="62" width="1098" height="641" key="MergeDialog" timestamp="1596182895773">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="130" y="62" width="1098" height="641" key="MergeDialog/0.0.1366.768@0.0.1366.768" timestamp="1596182895773" />
-    <state x="322" y="147" width="718" height="473" key="MultipleFileMergeDialog" timestamp="1596136800854">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="322" y="147" width="718" height="473" key="MultipleFileMergeDialog/0.0.1366.768@0.0.1366.768" timestamp="1596136800854" />
-    <state x="481" y="80" width="400" height="607" key="RollbackChangesDialog" timestamp="1597305815557">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="481" y="80" width="400" height="607" key="RollbackChangesDialog/0.0.1366.768@0.0.1366.768" timestamp="1597305815556" />
-    <state x="166" y="0" width="1030" height="719" key="SettingsEditor" timestamp="1594885665669">
-      <screen x="0" y="0" width="1366" height="719" />
-    </state>
-    <state x="166" y="0" width="1030" height="719" key="SettingsEditor/0.0.1366.719@0.0.1366.719" timestamp="1594885665669" />
-    <state x="278" y="121" width="806" height="525" key="Vcs.Push.Dialog.v2" timestamp="1598331107830">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="278" y="121" width="806" height="525" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1598331107830" />
-    <state x="0" y="0" width="776" height="765" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1598524441763">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="0" y="0" width="776" height="765" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.768@0.0.1366.768" timestamp="1598524441763" />
-    <state x="12" y="68" width="916" height="752" key="dock-window-1" timestamp="1597316322444">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="12" y="68" width="916" height="752" key="dock-window-1/0.0.1366.768@0.0.1366.768" timestamp="1597316322444" />
-    <state x="462" y="91" width="438" height="586" key="git4idea.branch.GitSmartOperationDialog" timestamp="1596527770036">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="462" y="91" width="438" height="586" key="git4idea.branch.GitSmartOperationDialog/0.0.1366.768@0.0.1366.768" timestamp="1596527770036" />
-    <state x="58" y="69" width="1245" height="588" key="new project wizard" timestamp="1596061174596">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="58" y="65" width="1245" height="588" key="new project wizard/0.0.1366.719@0.0.1366.719" timestamp="1595315124078" />
-    <state x="58" y="69" width="1245" height="588" key="new project wizard/0.0.1366.768@0.0.1366.768" timestamp="1596061174596" />
-    <state x="389" y="134" width="583" height="500" key="refactoring.ChangeSignatureDialog" timestamp="1597667884458">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="389" y="134" width="583" height="500" key="refactoring.ChangeSignatureDialog/0.0.1366.768@0.0.1366.768" timestamp="1597667884458" />
-    <state x="344" y="169" width="672" height="677" key="run.anything.popup" timestamp="1598526508324">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="344" y="158" key="run.anything.popup/0.0.1366.719@0.0.1366.719" timestamp="1594882284681" />
-    <state x="344" y="169" width="672" height="677" key="run.anything.popup/0.0.1366.768@0.0.1366.768" timestamp="1598526508324" />
-    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup" timestamp="1598539677004">
-      <screen x="0" y="0" width="1366" height="768" />
-    </state>
-    <state x="346" y="89" width="672" height="678" key="search.everywhere.popup/0.0.1366.768@0.0.1366.768" timestamp="1598539677004" />
+    <state x="454" y="91" width="453" height="586" key="git4idea.branch.GitSmartOperationDialog/0.0.1366.768@0.0.1366.768" timestamp="1598544845392" />
   </component>
 </project>
