@@ -1,12 +1,17 @@
-# Chess
+# Шахматы
 
-A chess game that allows two people to play with each other, as well as automated bots for moves. 
-This project is being developed as a part of internship at neolab.io
+Клиент-серверное приложение, позволяющее играть в Шахматы. 
+В рамках данного проекта реализованы следующие виды игроков:
+  1. Игрок-человек
+  2. Бот - искусственный интеллект
+  3. Случайный бот
+
+Проект разработан в рамках стажировки в компании neolab.io
+
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-
-..README file is under development.
-
+Для старта необходимо запустить сервер (класс Server). Далее, для создания игрока необходимо запустить класс Client и в дальнейшем выбрать вид игрока
+  human - играть самостоятельно
+  ai - игра против искусственного интеллекта
+  random - игра против рандомного бота
