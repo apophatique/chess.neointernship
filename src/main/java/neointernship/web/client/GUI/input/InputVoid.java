@@ -1,4 +1,4 @@
-package neointernship.web.client.GUI.Input;
+package neointernship.web.client.GUI.input;
 
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.enums.EnumGameState;

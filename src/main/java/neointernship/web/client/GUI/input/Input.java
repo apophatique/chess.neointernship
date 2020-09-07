@@ -1,4 +1,4 @@
-package neointernship.web.client.GUI.Input;
+package neointernship.web.client.GUI.input;
 
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.game.model.enums.EnumGameState;
@@ -69,13 +69,11 @@ public class Input implements IInput {
         askLabel.setText("white / black or press any to choose random");
 
         String answerColor = getAnswer();
-
-        answerColor = getAnswer();
-
         Color color = colorMap.getOrDefault(answerColor, Color.BOTH);
 
         askLabel.setText("Looking for opponent...");
         frame.setTitle(name + " " + color.getMessage());
+
         return color;
     }
 
@@ -83,7 +81,7 @@ public class Input implements IInput {
         if (type != PlayerType.HUMAN) {
             askLabel.setText("Game is on");
         } else {
-            askLabel.setText("Press if ready");
+            askLabel.setText("Input 'yes' if ready");
             return getAnswer();
         }
         return "";
