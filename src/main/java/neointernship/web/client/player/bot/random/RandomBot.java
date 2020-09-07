@@ -9,7 +9,7 @@ import neointernship.chess.game.model.figure.piece.Figure;
 import neointernship.chess.game.model.mediator.IMediator;
 import neointernship.chess.game.model.playmap.board.IBoard;
 import neointernship.chess.game.model.playmap.field.IField;
-import neointernship.web.client.GUI.Input.IInput;
+import neointernship.web.client.GUI.input.IInput;
 import neointernship.web.client.GUI.board.view.BoardView;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.TurnStatus;

@@ -2,8 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="92634f73-026b-4e75-bc89-0ee4dd0ddcd3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/SimpleBot.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/ControllerBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/ControllerBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Input/IInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/input/IInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Input/Input.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/input/Input.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Input/InputVoid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/input/InputVoid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Input/zxc" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/input/zxc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Viewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/GUI/Viewer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/controller/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/SimpleBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/SimpleBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/ai/ArtificialIntelligenceBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/random/RandomBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/bot/random/RandomBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/human/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/neointernship/web/client/player/human/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,13 +28,22 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="ProjectId" id="1gpVUREi6XLoJ5Vgoxm0oeOC9YW" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Application.LoggerViewer">
+  <component name="RunManager" selected="Application.Client">
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="neointernship.web.client.Client" />
       <module name="chess" />
@@ -98,11 +117,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Client" />
+        <item itemvalue="Application.Server" />
         <item itemvalue="JUnit.ViewerTest.viewTest" />
         <item itemvalue="JUnit.ViewerTest.displayBoardTest" />
         <item itemvalue="Application.LoggerViewer" />
-        <item itemvalue="Application.Server" />
-        <item itemvalue="Application.Client" />
       </list>
     </recent_temporary>
   </component>
@@ -110,7 +129,19 @@
     <configuration />
   </component>
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="92634f73-026b-4e75-bc89-0ee4dd0ddcd3" name="Default Changelist" comment="" />
+      <created>1598811560325</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1598811560325</updated>
+      <workItem from="1598811636843" duration="15000" />
+      <workItem from="1599497109650" duration="1737000" />
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
   </component>
   <component name="WindowStateProjectService">
     <state x="141" y="43" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598774871422">
@@ -121,5 +152,33 @@
       <screen x="0" y="0" width="1366" height="768" />
     </state>
     <state x="466" y="143" width="430" height="481" key="FileChooserDialogImpl/0.0.1366.768@0.0.1366.768" timestamp="1598775063498" />
+    <state width="1366" height="130" key="GridCell.Tab.0.bottom" timestamp="1599498505671">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1366" height="130" key="GridCell.Tab.0.bottom/0.0.1366.768@0.0.1366.768" timestamp="1599498505671" />
+    <state width="1366" height="130" key="GridCell.Tab.0.center" timestamp="1599498505669">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1366" height="130" key="GridCell.Tab.0.center/0.0.1366.768@0.0.1366.768" timestamp="1599498505669" />
+    <state width="1366" height="130" key="GridCell.Tab.0.left" timestamp="1599498505669">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1366" height="130" key="GridCell.Tab.0.left/0.0.1366.768@0.0.1366.768" timestamp="1599498505669" />
+    <state width="1366" height="130" key="GridCell.Tab.0.right" timestamp="1599498505670">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state width="1366" height="130" key="GridCell.Tab.0.right/0.0.1366.768@0.0.1366.768" timestamp="1599498505670" />
+    <state x="130" y="62" width="1098" height="641" key="MergeDialog" timestamp="1598775181088">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="130" y="62" width="1098" height="641" key="MergeDialog/0.0.1366.768@0.0.1366.768" timestamp="1598775181088" />
+    <state x="322" y="147" width="718" height="473" key="MultipleFileMergeDialog" timestamp="1598775185123">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="322" y="147" width="718" height="473" key="MultipleFileMergeDialog/0.0.1366.768@0.0.1366.768" timestamp="1598775185123" />
+    <state x="278" y="121" width="806" height="525" key="Vcs.Push.Dialog.v2" timestamp="1598775195774">
+      <screen x="0" y="0" width="1366" height="768" />
+    </state>
+    <state x="278" y="121" width="806" height="525" key="Vcs.Push.Dialog.v2/0.0.1366.768@0.0.1366.768" timestamp="1598775195774" />
   </component>
 </project>

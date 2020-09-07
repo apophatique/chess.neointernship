@@ -2,7 +2,7 @@ package neointernship;
 
 import neointernship.chess.game.model.enums.Color;
 import neointernship.chess.logger.ErrorLoggerClient;
-import neointernship.web.client.GUI.Input.InputVoid;
+import neointernship.web.client.GUI.input.InputVoid;
 import neointernship.web.client.communication.message.ClientCodes;
 import neointernship.web.client.communication.message.MessageDto;
 import neointernship.web.client.communication.message.ModelMessageReaction;
